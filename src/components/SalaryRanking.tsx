@@ -1,17 +1,26 @@
 "use client";
 
 import Link from "next/link";
-import { mockCompanies } from "@/data/mock";
 
-export function SalaryRanking() {
+export interface RankingRow {
+  rank: number;
+  code: string;
+  name: string;
+  industry: string;
+  salary: number;
+  employees: number;
+  change: number;
+}
+
+export function SalaryRanking({ data }: { data: RankingRow[] }) {
   return (
     <div className="glass rounded-xl overflow-hidden">
       <div className="px-5 py-4 border-b border-[var(--color-border)]">
         <h2 className="text-lg font-bold text-[var(--color-text-primary)]">
-          平均年収ランキング TOP15
+          平均年収ランキング TOP{data.length}
         </h2>
         <p className="text-sm text-[var(--color-text-muted)]">
-          有価証券報告書ベース（2025年3月期）
+          有価証券報告書ベース
         </p>
       </div>
       <div className="overflow-x-auto">
@@ -27,15 +36,13 @@ export function SalaryRanking() {
               <th className="px-4 py-3 text-right font-medium hidden sm:table-cell">
                 従業員数
               </th>
-              <th className="px-4 py-3 text-right font-medium">前年比</th>
             </tr>
           </thead>
           <tbody>
-            {mockCompanies.map((company) => (
+            {data.map((company) => (
               <tr
-                key={company.rank}
-                className="border-t border-[var(--color-border)] hover:bg-[var(--color-primary-light)] transition-colors cursor-pointer"
-                onClick={() => {}}
+                key={company.code}
+                className="border-t border-[var(--color-border)] hover:bg-[var(--color-primary-light)] transition-colors"
               >
                 <td className="px-4 py-3">
                   <span
@@ -57,7 +64,7 @@ export function SalaryRanking() {
                   </Link>
                 </td>
                 <td className="px-4 py-3 text-[var(--color-text-secondary)] hidden sm:table-cell">
-                  {company.industry}
+                  {company.industry || "-"}
                 </td>
                 <td className="px-4 py-3 text-right font-bold text-[var(--color-text-primary)]">
                   {company.salary.toLocaleString()}
@@ -66,19 +73,9 @@ export function SalaryRanking() {
                   </span>
                 </td>
                 <td className="px-4 py-3 text-right text-[var(--color-text-secondary)] hidden sm:table-cell">
-                  {company.employees.toLocaleString()}名
-                </td>
-                <td className="px-4 py-3 text-right">
-                  <span
-                    className={`text-sm font-medium ${
-                      company.change >= 0
-                        ? "text-[var(--color-success)]"
-                        : "text-[var(--color-danger)]"
-                    }`}
-                  >
-                    {company.change >= 0 ? "+" : ""}
-                    {company.change}万
-                  </span>
+                  {company.employees
+                    ? `${company.employees.toLocaleString()}名`
+                    : "-"}
                 </td>
               </tr>
             ))}

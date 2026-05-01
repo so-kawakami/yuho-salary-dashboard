@@ -4,8 +4,25 @@ import { StatsCards } from "@/components/StatsCards";
 import { SalaryChecker } from "@/components/SalaryChecker";
 import { SpotlightCards } from "@/components/SpotlightCards";
 import { SalaryRanking } from "@/components/SalaryRanking";
+import { getRanking, getStatsData } from "@/db/safe-queries";
+
+export const dynamic = "force-static";
+export const revalidate = 86400; // 1日キャッシュ
 
 export default function Home() {
+  const ranking = getRanking(15);
+  const stats = getStatsData();
+
+  const rankingData = ranking.map((r) => ({
+    rank: r.rank,
+    code: r.code,
+    name: r.name,
+    industry: r.industry ?? "",
+    salary: r.salary,
+    employees: r.employees ?? 0,
+    change: 0,
+  }));
+
   return (
     <div className="flex flex-col min-h-full bg-mesh">
       <Header />
@@ -16,7 +33,7 @@ export default function Home() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-3xl mx-auto">
               <p className="text-sm font-medium text-[var(--color-primary)] mb-3 tracking-wide">
-                有価証券報告書 × 3,687社のデータ
+                有価証券報告書 × {stats.totalCompanies.toLocaleString()}社のデータ
               </p>
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] mb-6">
                 <span className="text-gradient">あの企業の年収、</span>
@@ -72,24 +89,20 @@ export default function Home() {
         </section>
 
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-12 space-y-10">
-          {/* 統計カード */}
           <section>
-            <StatsCards />
+            <StatsCards stats={stats} />
           </section>
 
-          {/* 年収偏差値チェッカー */}
           <section>
             <SalaryChecker />
           </section>
 
-          {/* 注目企業 */}
           <section>
             <SpotlightCards />
           </section>
 
-          {/* ランキングプレビュー */}
           <section>
-            <SalaryRanking />
+            <SalaryRanking data={rankingData} />
             <div className="text-center mt-4">
               <Link
                 href="/ranking"

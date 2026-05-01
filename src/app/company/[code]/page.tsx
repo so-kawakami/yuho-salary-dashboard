@@ -1,11 +1,17 @@
 import Link from "next/link";
 import { Header } from "@/components/Header";
-import { CompanyDetail } from "@/components/CompanyDetail";
-import { mockCompanies } from "@/data/mock";
+import { CompanyDetailFromDb } from "@/components/CompanyDetailFromDb";
+import { getCompany } from "@/db/safe-queries";
 
-// モック用の静的パス生成
+export const dynamic = "force-static";
+
+// よくアクセスされる企業の静的生成
 export function generateStaticParams() {
-  return mockCompanies.map((c) => ({ code: c.code }));
+  const codes = [
+    "6861", "8058", "8001", "8031", "8053",
+    "6758", "6098", "8604", "7974", "9503",
+  ];
+  return codes.map((code) => ({ code }));
 }
 
 export default async function CompanyPage({
@@ -14,9 +20,9 @@ export default async function CompanyPage({
   params: Promise<{ code: string }>;
 }) {
   const { code } = await params;
-  const company = mockCompanies.find((c) => c.code === code);
+  const data = getCompany(code);
 
-  if (!company) {
+  if (!data) {
     return (
       <div className="flex flex-col min-h-full bg-mesh">
         <Header />
@@ -25,6 +31,9 @@ export default async function CompanyPage({
             <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
               企業が見つかりません
             </h2>
+            <p className="text-[var(--color-text-muted)] mb-4">
+              コード: {code}
+            </p>
             <Link
               href="/"
               className="text-[var(--color-primary)] hover:underline"
@@ -41,7 +50,6 @@ export default async function CompanyPage({
     <div className="flex flex-col min-h-full bg-mesh">
       <Header />
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
-        {/* パンくずリスト */}
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)] mb-6">
           <Link
             href="/"
@@ -58,11 +66,14 @@ export default async function CompanyPage({
           </Link>
           <span>/</span>
           <span className="text-[var(--color-text-primary)]">
-            {company.name}
+            {data.company.name}
           </span>
         </nav>
 
-        <CompanyDetail company={company} />
+        <CompanyDetailFromDb
+          company={data.company}
+          salaryHistory={data.salaryHistory}
+        />
       </main>
 
       <footer className="glass-header py-6">
