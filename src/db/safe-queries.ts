@@ -77,6 +77,27 @@ export function getPeers(industry: string, excludeCode: string, limit = 5) {
     }));
 }
 
+export function getAllCompanies(): CompanySalary[] {
+  if (Object.keys(companiesJson).length > 0) {
+    return Object.entries(companiesJson).map(([code, data]: [string, any]) => {
+      const latest = data.salaryHistory?.[data.salaryHistory.length - 1];
+      return {
+        rank: 0,
+        code,
+        name: data.company?.name ?? "",
+        industry: data.company?.industry ?? "",
+        salary: latest?.avgSalary ? Math.round(latest.avgSalary / 10000) : 0,
+        employees: latest?.employees ?? 0,
+        change: 0,
+        avgAge: latest?.avgAge ?? 0,
+        avgTenure: latest?.avgTenure ?? 0,
+        periodEnd: latest?.fiscalYear ?? "",
+      };
+    });
+  }
+  return mockCompanies;
+}
+
 export function getCompany(code: string) {
   const data = companiesJson[code];
   if (data) return data;

@@ -7,12 +7,12 @@ export const metadata: Metadata = {
     "企業名・業種・証券コードで上場企業の平均年収を検索。有価証券報告書の公式データをもとにした正確な年収情報を確認できます。",
 };
 import { SearchForm } from "@/components/SearchForm";
-import { getRanking } from "@/db/safe-queries";
+import { getAllCompanies } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
 
 export default function SearchPage() {
-  const allCompanies = getRanking(100);
+  const allCompanies = getAllCompanies();
 
   return (
     <div className="flex flex-col min-h-full bg-mesh">
@@ -23,7 +23,7 @@ export default function SearchPage() {
             企業を探す
           </h2>
           <p className="text-sm text-[var(--color-text-muted)]">
-            企業名で検索して年収データを確認
+            全3,000社以上の年収データを企業名・業種・証券コードで検索
           </p>
         </div>
 

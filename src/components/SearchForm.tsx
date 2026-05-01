@@ -13,7 +13,7 @@ export function SearchForm({ companies }: { companies: CompanySalary[] }) {
         c.industry.toLowerCase().includes(query.toLowerCase()) ||
         c.code.includes(query)
       )
-    : companies;
+    : [];
 
   return (
     <div className="space-y-6">
@@ -84,7 +84,19 @@ export function SearchForm({ companies }: { companies: CompanySalary[] }) {
         ))}
       </div>
 
-      {filtered.length === 0 && (
+      {query.length === 0 && (
+        <div className="text-center py-16">
+          <p className="text-4xl mb-4">🔍</p>
+          <p className="text-lg font-medium text-[var(--color-text-primary)] mb-2">
+            企業名・業種・証券コードで検索
+          </p>
+          <p className="text-sm text-[var(--color-text-muted)]">
+            全{companies.length.toLocaleString()}社のデータから絞り込めます
+          </p>
+        </div>
+      )}
+
+      {query.length >= 1 && filtered.length === 0 && (
         <div className="text-center py-12">
           <p className="text-lg text-[var(--color-text-muted)]">
             「{query}」に一致する企業が見つかりませんでした
