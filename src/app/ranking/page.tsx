@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { Header } from "@/components/Header";
+
+export const metadata: Metadata = {
+  title: "年収ランキング TOP50 | 上場企業の平均年収",
+  description:
+    "有価証券報告書をもとにした上場企業の平均年収ランキングTOP50。キーエンス・三菱商事・商社・IT企業など業界トップ企業の年収を一覧で比較できます。",
+};
 import { SalaryRanking } from "@/components/SalaryRanking";
 import { IndustryChart } from "@/components/IndustryChart";
 import { TrendChart } from "@/components/TrendChart";

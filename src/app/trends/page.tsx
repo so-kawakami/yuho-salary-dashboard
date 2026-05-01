@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { Header } from "@/components/Header";
+
+export const metadata: Metadata = {
+  title: "年収トレンド | 上場企業の平均年収推移と分布",
+  description:
+    "上場企業の平均年収の推移グラフと年収帯別分布を掲載。全国平均との比較や高年収企業の特徴（平均年齢・勤続年数）もチェックできます。",
+};
 import { TrendChart } from "@/components/TrendChart";
 import { getRanking } from "@/db/safe-queries";
 

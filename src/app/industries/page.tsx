@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { Header } from "@/components/Header";
+
+export const metadata: Metadata = {
+  title: "業界別 平均年収ランキング | 業種ごとの年収比較",
+  description:
+    "卸売・IT・電機・医薬品・銀行など業界別の平均年収を有価証券報告書で比較。自分の業界の年収水準や転職先の給与水準をチェックできます。",
+};
 import { IndustryChart } from "@/components/IndustryChart";
 import { getRanking } from "@/db/safe-queries";
 

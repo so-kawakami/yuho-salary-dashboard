@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { Header } from "@/components/Header";
+
+export const metadata: Metadata = {
+  title: "企業を探す | 上場企業の年収検索",
+  description:
+    "企業名・業種・証券コードで上場企業の平均年収を検索。有価証券報告書の公式データをもとにした正確な年収情報を確認できます。",
+};
 import { SearchForm } from "@/components/SearchForm";
 import { getRanking } from "@/db/safe-queries";
 

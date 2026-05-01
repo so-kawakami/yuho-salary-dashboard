@@ -1,9 +1,47 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { CompanyDetailFromDb } from "@/components/CompanyDetailFromDb";
 import { getCompany } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ code: string }>;
+}): Promise<Metadata> {
+  const { code } = await params;
+  const data = getCompany(code);
+  if (!data) return { title: "企業が見つかりません" };
+
+  const { company, salaryHistory } = data;
+  const latest = salaryHistory[salaryHistory.length - 1];
+  const salaryMan = latest?.avgSalary
+    ? Math.round(latest.avgSalary / 10000)
+    : null;
+
+  const title = salaryMan
+    ? `${company.name}の平均年収は${salaryMan.toLocaleString()}万円【有価証券報告書】`
+    : `${company.name}の平均年収【有価証券報告書】`;
+
+  const description = salaryMan
+    ? `${company.name}の平均年収は${salaryMan.toLocaleString()}万円（${latest?.fiscalYear ?? ""}期）。従業員数・平均年齢・勤続年数など有価証券報告書の詳細データを掲載。`
+    : `${company.name}の平均年収・従業員数・平均年齢など有価証券報告書のデータを掲載。`;
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+    },
+    twitter: {
+      title,
+      description,
+    },
+  };
+}
 
 // よくアクセスされる企業の静的生成
 export function generateStaticParams() {
