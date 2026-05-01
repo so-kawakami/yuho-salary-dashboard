@@ -45,7 +45,7 @@ export default function ContactPage() {
 
           <div className="text-center py-4">
             <a
-              href="CONTACT_FORM_URL"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfVHRd1lIXFi7Lf5Z_eGWdAVvh7ChcqHmItuwGw79MI42qVUw/viewform"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white font-bold text-base shadow-lg shadow-[var(--color-primary-glow)] hover:opacity-90 transition-opacity"
