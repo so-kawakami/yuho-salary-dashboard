@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { CompanyDetailFromDb } from "@/components/CompanyDetailFromDb";
-import { getCompany } from "@/db/safe-queries";
+import { getCompany, getPeers } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
 
@@ -59,6 +59,7 @@ export default async function CompanyPage({
 }) {
   const { code } = await params;
   const data = getCompany(code);
+  const peers = data ? getPeers(data.company.industry ?? "", code) : [];
 
   if (!data) {
     return (
@@ -111,6 +112,7 @@ export default async function CompanyPage({
         <CompanyDetailFromDb
           company={data.company}
           salaryHistory={data.salaryHistory}
+          peers={peers}
         />
       </main>
 

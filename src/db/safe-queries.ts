@@ -63,6 +63,20 @@ export function getStatsData() {
   return mockStats;
 }
 
+// 同業他社比較（同じ業界の企業をランキングから取得）
+export function getPeers(industry: string, excludeCode: string, limit = 5) {
+  if (!industry || rankingJson.length === 0) return [];
+  return rankingJson
+    .filter((r: any) => r.industry === industry && r.code !== excludeCode)
+    .slice(0, limit)
+    .map((r: any) => ({
+      code: r.code ?? "",
+      name: r.name ?? "",
+      salary: r.salary ?? 0,
+      employees: r.employees ?? 0,
+    }));
+}
+
 export function getCompany(code: string) {
   const data = companiesJson[code];
   if (data) return data;
