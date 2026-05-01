@@ -1,6 +1,7 @@
 /**
- * DB接続のラッパー。DBが存在しない場合はモックデータにフォールバック。
- * Vercelデプロイ時など、SQLiteが使えない環境でもビルドできるようにする。
+ * データ取得のラッパー。
+ * 生成済みJSONから読み込む（Vercel対応）。
+ * JSONがなければモックデータにフォールバック。
  */
 
 import {
@@ -11,88 +12,70 @@ import {
   type IndustrySalary,
 } from "@/data/mock";
 
-function tryRequireDb() {
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const queries = require("./queries");
-    return queries;
-  } catch {
-    return null;
-  }
+// JSON読み込み（ビルド時に解決される）
+let rankingJson: any[] = [];
+let statsJson: any = null;
+let industriesJson: any[] = [];
+let companiesJson: Record<string, any> = {};
+
+try {
+  rankingJson = require("@/data/generated/ranking.json");
+  statsJson = require("@/data/generated/stats.json");
+  industriesJson = require("@/data/generated/industries.json");
+  companiesJson = require("@/data/generated/companies.json");
+} catch {
+  // JSONがなければモックにフォールバック
 }
 
 export function getRanking(limit = 50): CompanySalary[] {
-  const q = tryRequireDb();
-  if (q) {
-    try {
-      const rows = q.getSalaryRanking(limit);
-      if (rows.length > 0) {
-        return rows.map((r: Record<string, unknown>, i: number) => ({
-          rank: i + 1,
-          code: (r.code as string) ?? "",
-          name: (r.name as string) ?? "",
-          industry: (r.industry as string) ?? "",
-          salary: r.salary as number,
-          employees: (r.employees as number) ?? 0,
-          change: 0,
-          avgAge: (r.avgAge as number) ?? 0,
-          avgTenure: (r.avgTenure as number) ?? 0,
-          periodEnd: (r.periodEnd as string) ?? "",
-        }));
-      }
-    } catch { /* fall through to mock */ }
+  if (rankingJson.length > 0) {
+    return rankingJson.slice(0, limit).map((r: any, i: number) => ({
+      rank: i + 1,
+      code: r.code ?? "",
+      name: r.name ?? "",
+      industry: r.industry ?? "",
+      salary: r.salary ?? 0,
+      employees: r.employees ?? 0,
+      change: 0,
+      avgAge: r.avgAge ?? 0,
+      avgTenure: r.avgTenure ?? 0,
+      periodEnd: r.periodEnd ?? "",
+    }));
   }
   return mockCompanies.slice(0, limit);
 }
 
 export function getIndustries(): IndustrySalary[] {
-  const q = tryRequireDb();
-  if (q) {
-    try {
-      const rows = q.getIndustryAverages();
-      if (rows.length > 0) {
-        return rows.map((r: Record<string, unknown>) => ({
-          industry: (r.industry as string) ?? "",
-          avgSalary: r.avgSalary as number,
-          companies: (r.companies as number) ?? 0,
-        }));
-      }
-    } catch { /* fall through */ }
+  if (industriesJson.length > 0) {
+    return industriesJson.map((r: any) => ({
+      industry: r.industry ?? "",
+      avgSalary: r.avgSalary ?? 0,
+      companies: r.companies ?? 0,
+    }));
   }
   return mockIndustries;
 }
 
 export function getStatsData() {
-  const q = tryRequireDb();
-  if (q) {
-    try {
-      const s = q.getStats();
-      if (s.totalCompanies > 0) return s;
-    } catch { /* fall through */ }
+  if (statsJson && statsJson.totalCompanies > 0) {
+    return statsJson;
   }
   return mockStats;
 }
 
 export function getCompany(code: string) {
-  const q = tryRequireDb();
-  if (q) {
-    try {
-      const result = q.getCompanyByCode(code);
-      if (result) return result;
-    } catch { /* fall through */ }
-  }
+  const data = companiesJson[code];
+  if (data) return data;
 
   // モックからフォールバック
   const mock = mockCompanies.find((c) => c.code === code);
   if (!mock) return null;
   return {
     company: {
-      id: 0,
-      edinetCode: "",
-      secCode: mock.code,
       name: mock.name,
+      secCode: mock.code,
+      edinetCode: "",
       industry: mock.industry,
-      isListed: true,
     },
     salaryHistory: [
       {

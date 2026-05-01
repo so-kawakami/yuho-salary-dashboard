@@ -1,0 +1,1702 @@
+{
+  "16050": {
+    "company": {
+      "name": "株式会社ＩＮＰＥＸ",
+      "secCode": "16050",
+      "edinetCode": "E00043",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 11678262,
+        "employees": 3679,
+        "avgAge": 39.4,
+        "avgTenure": 11.6
+      }
+    ]
+  },
+  "17170": {
+    "company": {
+      "name": "明豊ファシリティワークス株式会社",
+      "secCode": "17170",
+      "edinetCode": "E05377",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11181000,
+        "employees": 200,
+        "avgAge": 46.8,
+        "avgTenure": 10.3
+      }
+    ]
+  },
+  "18020": {
+    "company": {
+      "name": "株式会社大林組",
+      "secCode": "18020",
+      "edinetCode": "E00055",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11404238,
+        "employees": 17305,
+        "avgAge": 42.4,
+        "avgTenure": 16.4
+      }
+    ]
+  },
+  "18120": {
+    "company": {
+      "name": "鹿島建設株式会社",
+      "secCode": "18120",
+      "edinetCode": "E00058",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11847369,
+        "employees": 21029,
+        "avgAge": 41.9,
+        "avgTenure": 16.4
+      }
+    ]
+  },
+  "19690": {
+    "company": {
+      "name": "高砂熱学工業株式会社",
+      "secCode": "19690",
+      "edinetCode": "E00149",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11291000,
+        "employees": 5858,
+        "avgAge": 41.6,
+        "avgTenure": 15
+      }
+    ]
+  },
+  "19790": {
+    "company": {
+      "name": "株式会社大気社",
+      "secCode": "19790",
+      "edinetCode": "E00183",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11811745,
+        "employees": 5267,
+        "avgAge": 42.3,
+        "avgTenure": 15.7
+      }
+    ]
+  },
+  "25020": {
+    "company": {
+      "name": "アサヒグループホールディングス株式会社",
+      "secCode": "25020",
+      "edinetCode": "E00394",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 12181758,
+        "employees": 28173,
+        "avgAge": 44.6,
+        "avgTenure": 1
+      }
+    ]
+  },
+  "25870": {
+    "company": {
+      "name": "サントリー食品インターナショナル株式会社",
+      "secCode": "25870",
+      "edinetCode": "E27622",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 11611682,
+        "employees": 22446,
+        "avgAge": 40.7,
+        "avgTenure": 15.7
+      }
+    ]
+  },
+  "27680": {
+    "company": {
+      "name": "双日株式会社",
+      "secCode": "27680",
+      "edinetCode": "E02958",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12742594,
+        "employees": 25118,
+        "avgAge": 41,
+        "avgTenure": 15
+      }
+    ]
+  },
+  "29860": {
+    "company": {
+      "name": "株式会社ＬＡホールディングス",
+      "secCode": "29860",
+      "edinetCode": "E35631",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 16042301,
+        "employees": 102,
+        "avgAge": 49.3,
+        "avgTenure": 4.6
+      }
+    ]
+  },
+  "30030": {
+    "company": {
+      "name": "ヒューリック株式会社",
+      "secCode": "30030",
+      "edinetCode": "E00523",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 20357108,
+        "employees": 2828,
+        "avgAge": 38,
+        "avgTenure": 6
+      }
+    ]
+  },
+  "31320": {
+    "company": {
+      "name": "マクニカホールディングス株式会社",
+      "secCode": "31320",
+      "edinetCode": "E31167",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 17496802,
+        "employees": 5071,
+        "avgAge": 51.5,
+        "avgTenure": 20.9
+      }
+    ]
+  },
+  "32310": {
+    "company": {
+      "name": "野村不動産ホールディングス株式会社",
+      "secCode": "32310",
+      "edinetCode": "E04060",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11831448,
+        "employees": 8732,
+        "avgAge": 41.7,
+        "avgTenure": 13.5
+      }
+    ]
+  },
+  "32520": {
+    "company": {
+      "name": "地主株式会社",
+      "secCode": "32520",
+      "edinetCode": "E05692",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 19157000,
+        "employees": 111,
+        "avgAge": 38.4,
+        "avgTenure": 3.7
+      }
+    ]
+  },
+  "32890": {
+    "company": {
+      "name": "東急不動産ホールディングス株式会社",
+      "secCode": "32890",
+      "edinetCode": "E27633",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12784000,
+        "employees": 21898,
+        "avgAge": 42.8,
+        "avgTenure": 15.1
+      }
+    ]
+  },
+  "33500": {
+    "company": {
+      "name": "株式会社メタプラネット",
+      "secCode": "33500",
+      "edinetCode": "E02978",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 11229000,
+        "employees": 17,
+        "avgAge": 52.7,
+        "avgTenure": 1
+      }
+    ]
+  },
+  "34310": {
+    "company": {
+      "name": "宮地エンジニアリンググループ株式会社",
+      "secCode": "34310",
+      "edinetCode": "E01461",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11695125,
+        "employees": 813,
+        "avgAge": 49.2,
+        "avgTenure": 21.2
+      }
+    ]
+  },
+  "34820": {
+    "company": {
+      "name": "ロードスターキャピタル株式会社",
+      "secCode": "34820",
+      "edinetCode": "E32779",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 12596000,
+        "employees": 62,
+        "avgAge": 41.7,
+        "avgTenure": 4.4
+      }
+    ]
+  },
+  "36880": {
+    "company": {
+      "name": "株式会社ＣＡＲＴＡ　ＨＯＬＤＩＮＧＳ",
+      "secCode": "36880",
+      "edinetCode": "E22007",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 13000000,
+        "employees": 1242,
+        "avgAge": 41.8,
+        "avgTenure": 10.1
+      }
+    ]
+  },
+  "38170": {
+    "company": {
+      "name": "株式会社ＳＲＡホールディングス",
+      "secCode": "38170",
+      "edinetCode": "E05640",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12834000,
+        "employees": 1388,
+        "avgAge": 57,
+        "avgTenure": 6.7
+      }
+    ]
+  },
+  "42350": {
+    "company": {
+      "name": "ウルトラファブリックス・ホールディングス株式会社",
+      "secCode": "42350",
+      "edinetCode": "E01061",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 14564000,
+        "employees": 321,
+        "avgAge": 53.6,
+        "avgTenure": 4
+      }
+    ]
+  },
+  "43070": {
+    "company": {
+      "name": "株式会社野村総合研究所",
+      "secCode": "43070",
+      "edinetCode": "E05062",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 13217000,
+        "employees": 16679,
+        "avgAge": 39.9,
+        "avgTenure": 13.9
+      }
+    ]
+  },
+  "43100": {
+    "company": {
+      "name": "株式会社ドリームインキュベータ",
+      "secCode": "43100",
+      "edinetCode": "E05221",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12166000,
+        "employees": 214,
+        "avgAge": 34.81,
+        "avgTenure": 3.43
+      }
+    ]
+  },
+  "43240": {
+    "company": {
+      "name": "株式会社電通グループ",
+      "secCode": "43240",
+      "edinetCode": "E04760",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 15075028,
+        "employees": 67667,
+        "avgAge": 44.9,
+        "avgTenure": 14.1
+      }
+    ]
+  },
+  "45020": {
+    "company": {
+      "name": "武田薬品工業株式会社",
+      "secCode": "45020",
+      "edinetCode": "E00919",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11038000,
+        "employees": 47455,
+        "avgAge": 43.4,
+        "avgTenure": 14.4
+      }
+    ]
+  },
+  "45190": {
+    "company": {
+      "name": "中外製薬株式会社",
+      "secCode": "45190",
+      "edinetCode": "E00932",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 12073828,
+        "employees": 7778,
+        "avgAge": 42,
+        "avgTenure": 15
+      }
+    ]
+  },
+  "45650": {
+    "company": {
+      "name": "ネクセラファーマ株式会社",
+      "secCode": "45650",
+      "edinetCode": "E00981",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 19529299,
+        "employees": 374,
+        "avgAge": 45.5,
+        "avgTenure": 2.9
+      }
+    ]
+  },
+  "45680": {
+    "company": {
+      "name": "第一三共株式会社",
+      "secCode": "45680",
+      "edinetCode": "E00984",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11142879,
+        "employees": 19765,
+        "avgAge": 46,
+        "avgTenure": 20.3
+      }
+    ]
+  },
+  "45820": {
+    "company": {
+      "name": "シンバイオ製薬株式会社",
+      "secCode": "45820",
+      "edinetCode": "E24682",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 13215000,
+        "employees": 108,
+        "avgAge": 56,
+        "avgTenure": 5.3
+      }
+    ]
+  },
+  "45870": {
+    "company": {
+      "name": "ペプチドリーム株式会社",
+      "secCode": "45870",
+      "edinetCode": "E27486",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 11692000,
+        "employees": 621,
+        "avgAge": 39.7,
+        "avgTenure": 5.3
+      }
+    ]
+  },
+  "45970": {
+    "company": {
+      "name": "ソレイジア・ファーマ株式会社",
+      "secCode": "45970",
+      "edinetCode": "E33044",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 13100000,
+        "employees": 23,
+        "avgAge": 55.1,
+        "avgTenure": 6.8
+      }
+    ]
+  },
+  "46760": {
+    "company": {
+      "name": "株式会社フジ・メディア・ホールディングス",
+      "secCode": "46760",
+      "edinetCode": "E04462",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 16600000,
+        "employees": 7302,
+        "avgAge": 49.6,
+        "avgTenure": 19.1
+      }
+    ]
+  },
+  "46860": {
+    "company": {
+      "name": "株式会社ジャストシステム",
+      "secCode": "46860",
+      "edinetCode": "E04996",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 14321260,
+        "employees": 297,
+        "avgAge": 39,
+        "avgTenure": 13.8
+      }
+    ]
+  },
+  "48120": {
+    "company": {
+      "name": "株式会社電通総研",
+      "secCode": "48120",
+      "edinetCode": "E05147",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 11229000,
+        "employees": 4413,
+        "avgAge": 40.1,
+        "avgTenure": 10.8
+      }
+    ]
+  },
+  "49010": {
+    "company": {
+      "name": "富士フイルムホールディングス株式会社",
+      "secCode": "49010",
+      "edinetCode": "E00988",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11242845,
+        "employees": 72593,
+        "avgAge": 43.5,
+        "avgTenure": 17.5
+      }
+    ]
+  },
+  "50210": {
+    "company": {
+      "name": "コスモエネルギーホールディングス株式会社",
+      "secCode": "50210",
+      "edinetCode": "E31632",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11507592,
+        "employees": 6487,
+        "avgAge": 43,
+        "avgTenure": 14
+      }
+    ]
+  },
+  "50760": {
+    "company": {
+      "name": "インフロニア・ホールディングス株式会社",
+      "secCode": "50760",
+      "edinetCode": "E36723",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11055000,
+        "employees": 8076,
+        "avgAge": 42.8,
+        "avgTenure": 14.2
+      }
+    ]
+  },
+  "54110": {
+    "company": {
+      "name": "ＪＦＥホールディングス株式会社",
+      "secCode": "54110",
+      "edinetCode": "E01264",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12643000,
+        "employees": 61296,
+        "avgAge": 47,
+        "avgTenure": 22.9
+      }
+    ]
+  },
+  "58420": {
+    "company": {
+      "name": "インテグラル株式会社",
+      "secCode": "58420",
+      "edinetCode": "E25156",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 25777000,
+        "employees": 82,
+        "avgAge": 39,
+        "avgTenure": 4.8
+      }
+    ]
+  },
+  "60350": {
+    "company": {
+      "name": "株式会社アイ・アールジャパンホールディングス",
+      "secCode": "60350",
+      "edinetCode": "E31054",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12813000,
+        "employees": 177,
+        "avgAge": 46.4,
+        "avgTenure": 10
+      }
+    ]
+  },
+  "60880": {
+    "company": {
+      "name": "株式会社シグマクシス・ホールディングス",
+      "secCode": "60880",
+      "edinetCode": "E30130",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12077458,
+        "employees": 730,
+        "avgAge": 45.4,
+        "avgTenure": 8.9
+      }
+    ]
+  },
+  "60980": {
+    "company": {
+      "name": "株式会社リクルートホールディングス",
+      "secCode": "60980",
+      "edinetCode": "E07801",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11453407,
+        "employees": 49480,
+        "avgAge": 40.5,
+        "avgTenure": 8.5
+      }
+    ]
+  },
+  "61460": {
+    "company": {
+      "name": "株式会社ディスコ",
+      "secCode": "61460",
+      "edinetCode": "E01506",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 16718921,
+        "employees": 5256,
+        "avgAge": 37.3,
+        "avgTenure": 10.7
+      }
+    ]
+  },
+  "61930": {
+    "company": {
+      "name": "バーチャレクス・ホールディングス株式会社",
+      "secCode": "61930",
+      "edinetCode": "E32203",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11256000,
+        "employees": 380,
+        "avgAge": 44,
+        "avgTenure": 1.3
+      }
+    ]
+  },
+  "66250": {
+    "company": {
+      "name": "ＪＡＬＣＯホールディングス株式会社",
+      "secCode": "66250",
+      "edinetCode": "E25686",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11221000,
+        "employees": 15,
+        "avgAge": 45.6,
+        "avgTenure": 4.5
+      }
+    ]
+  },
+  "67580": {
+    "company": {
+      "name": "ソニーグループ株式会社",
+      "secCode": "67580",
+      "edinetCode": "E01777",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11183744,
+        "employees": 112300,
+        "avgAge": 42.5,
+        "avgTenure": 15.8
+      }
+    ]
+  },
+  "68610": {
+    "company": {
+      "name": "株式会社キーエンス",
+      "secCode": "68610",
+      "edinetCode": "E01967",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 20391138,
+        "employees": 12261,
+        "avgAge": 34.8,
+        "avgTenure": 11.1
+      }
+    ]
+  },
+  "69540": {
+    "company": {
+      "name": "ファナック株式会社",
+      "secCode": "69540",
+      "edinetCode": "E01946",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11639000,
+        "employees": 10113,
+        "avgAge": 39.9,
+        "avgTenure": 15
+      }
+    ]
+  },
+  "70380": {
+    "company": {
+      "name": "フロンティア・マネジメント株式会社",
+      "secCode": "70380",
+      "edinetCode": "E34290",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 12098000,
+        "employees": 433,
+        "avgAge": 37.4,
+        "avgTenure": 3
+      }
+    ]
+  },
+  "71670": {
+    "company": {
+      "name": "株式会社めぶきフィナンシャルグループ",
+      "secCode": "71670",
+      "edinetCode": "E30103",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12032000,
+        "employees": 5828,
+        "avgAge": 47.8,
+        "avgTenure": 24.8
+      }
+    ]
+  },
+  "71860": {
+    "company": {
+      "name": "株式会社コンコルディア・フィナンシャルグループ",
+      "secCode": "71860",
+      "edinetCode": "E32022",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12133000,
+        "employees": 5941,
+        "avgAge": 38.5,
+        "avgTenure": 9.4
+      }
+    ]
+  },
+  "73270": {
+    "company": {
+      "name": "株式会社第四北越フィナンシャルグループ",
+      "secCode": "73270",
+      "edinetCode": "E34113",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11812000,
+        "employees": 3504,
+        "avgAge": 47.3,
+        "avgTenure": 24.9
+      }
+    ]
+  },
+  "73470": {
+    "company": {
+      "name": "株式会社マーキュリアホールディングス",
+      "secCode": "73470",
+      "edinetCode": "E36498",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 18014000,
+        "employees": 119,
+        "avgAge": 44,
+        "avgTenure": 5.4
+      }
+    ]
+  },
+  "78320": {
+    "company": {
+      "name": "株式会社バンダイナムコホールディングス",
+      "secCode": "78320",
+      "edinetCode": "E02481",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12161000,
+        "employees": 11345,
+        "avgAge": 46.7,
+        "avgTenure": 19.3
+      }
+    ]
+  },
+  "80010": {
+    "company": {
+      "name": "伊藤忠商事株式会社",
+      "secCode": "80010",
+      "edinetCode": "E02497",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 18045578,
+        "employees": 115089,
+        "avgAge": 42.2,
+        "avgTenure": 18
+      }
+    ]
+  },
+  "80020": {
+    "company": {
+      "name": "丸紅株式会社",
+      "secCode": "80020",
+      "edinetCode": "E02498",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 17087936,
+        "employees": 51834,
+        "avgAge": 42.5,
+        "avgTenure": 17.9
+      }
+    ]
+  },
+  "80120": {
+    "company": {
+      "name": "長瀬産業株式会社",
+      "secCode": "80120",
+      "edinetCode": "E02552",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11365000,
+        "employees": 7484,
+        "avgAge": 41.3,
+        "avgTenure": 14.8
+      }
+    ]
+  },
+  "80150": {
+    "company": {
+      "name": "豊田通商株式会社",
+      "secCode": "80150",
+      "edinetCode": "E02505",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 13202952,
+        "employees": 69111,
+        "avgAge": 43.1,
+        "avgTenure": 17
+      }
+    ]
+  },
+  "80200": {
+    "company": {
+      "name": "兼松株式会社",
+      "secCode": "80200",
+      "edinetCode": "E02506",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11434189,
+        "employees": 8644,
+        "avgAge": 38.2,
+        "avgTenure": 12.7
+      }
+    ]
+  },
+  "80310": {
+    "company": {
+      "name": "三井物産株式会社",
+      "secCode": "80310",
+      "edinetCode": "E02513",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 19964000,
+        "employees": 56400,
+        "avgAge": 42.2,
+        "avgTenure": 17.7
+      }
+    ]
+  },
+  "80350": {
+    "company": {
+      "name": "東京エレクトロン株式会社",
+      "secCode": "80350",
+      "edinetCode": "E02652",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 13543475,
+        "employees": 19573,
+        "avgAge": 43.5,
+        "avgTenure": 14.9
+      }
+    ]
+  },
+  "80530": {
+    "company": {
+      "name": "住友商事株式会社",
+      "secCode": "80530",
+      "edinetCode": "E02528",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 17443137,
+        "employees": 83327,
+        "avgAge": 43.2,
+        "avgTenure": 18
+      }
+    ]
+  },
+  "80580": {
+    "company": {
+      "name": "三菱商事株式会社",
+      "secCode": "80580",
+      "edinetCode": "E02529",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 20333662,
+        "employees": 62062,
+        "avgAge": 42.4,
+        "avgTenure": 17
+      }
+    ]
+  },
+  "81310": {
+    "company": {
+      "name": "株式会社ミツウロコグループホールディングス",
+      "secCode": "81310",
+      "edinetCode": "E01074",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 13111000,
+        "employees": 1776,
+        "avgAge": 43.8,
+        "avgTenure": 7.8
+      }
+    ]
+  },
+  "83090": {
+    "company": {
+      "name": "三井住友トラストグループ株式会社",
+      "secCode": "83090",
+      "edinetCode": "E03611",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 13507000,
+        "employees": 4149,
+        "avgAge": 48.9,
+        "avgTenure": 21.5
+      }
+    ]
+  },
+  "83160": {
+    "company": {
+      "name": "株式会社三井住友フィナンシャルグループ",
+      "secCode": "83160",
+      "edinetCode": "E03614",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11342000,
+        "employees": 122978,
+        "avgAge": 39,
+        "avgTenure": 14
+      }
+    ]
+  },
+  "84110": {
+    "company": {
+      "name": "株式会社みずほフィナンシャルグループ",
+      "secCode": "84110",
+      "edinetCode": "E03615",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11174000,
+        "employees": 52554,
+        "avgAge": 41.8,
+        "avgTenure": 16.3
+      }
+    ]
+  },
+  "85950": {
+    "company": {
+      "name": "ジャフコ　グループ株式会社",
+      "secCode": "85950",
+      "edinetCode": "E04806",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12661807,
+        "employees": 163,
+        "avgAge": 42,
+        "avgTenure": 13
+      }
+    ]
+  },
+  "86010": {
+    "company": {
+      "name": "株式会社大和証券グループ本社",
+      "secCode": "86010",
+      "edinetCode": "E03753",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 16264750,
+        "employees": 14783,
+        "avgAge": 40.9,
+        "avgTenure": 13.7
+      }
+    ]
+  },
+  "86040": {
+    "company": {
+      "name": "野村ホールディングス株式会社",
+      "secCode": "86040",
+      "edinetCode": "E03752",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 13761056,
+        "employees": 27242,
+        "avgAge": 43,
+        "avgTenure": 4
+      }
+    ]
+  },
+  "86090": {
+    "company": {
+      "name": "株式会社岡三証券グループ",
+      "secCode": "86090",
+      "edinetCode": "E03756",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12102818,
+        "employees": 3343,
+        "avgAge": 47,
+        "avgTenure": 16
+      }
+    ]
+  },
+  "86300": {
+    "company": {
+      "name": "ＳＯＭＰＯホールディングス株式会社",
+      "secCode": "86300",
+      "edinetCode": "E23924",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12183576,
+        "employees": 54106,
+        "avgAge": 43.8,
+        "avgTenure": 13.5
+      }
+    ]
+  },
+  "86970": {
+    "company": {
+      "name": "株式会社日本取引所グループ",
+      "secCode": "86970",
+      "edinetCode": "E03814",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11102143,
+        "employees": 1263,
+        "avgAge": 47.3,
+        "avgTenure": 20.1
+      }
+    ]
+  },
+  "87250": {
+    "company": {
+      "name": "ＭＳ＆ＡＤインシュアランスグループホールディングス株式会社",
+      "secCode": "87250",
+      "edinetCode": "E03854",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11435904,
+        "employees": 38247,
+        "avgAge": 47.9,
+        "avgTenure": 22.9
+      }
+    ]
+  },
+  "87390": {
+    "company": {
+      "name": "スパークス・グループ株式会社",
+      "secCode": "87390",
+      "edinetCode": "E05242",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 14110000,
+        "employees": 193,
+        "avgAge": 49.1,
+        "avgTenure": 9
+      }
+    ]
+  },
+  "87660": {
+    "company": {
+      "name": "東京海上ホールディングス株式会社",
+      "secCode": "87660",
+      "edinetCode": "E03847",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 15356700,
+        "employees": 51436,
+        "avgAge": 41.7,
+        "avgTenure": 16.2
+      }
+    ]
+  },
+  "87950": {
+    "company": {
+      "name": "株式会社Ｔ＆Ｄホールディングス",
+      "secCode": "87950",
+      "edinetCode": "E03851",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11070000,
+        "employees": 20896,
+        "avgAge": 47,
+        "avgTenure": 21.8
+      }
+    ]
+  },
+  "88010": {
+    "company": {
+      "name": "三井不動産株式会社",
+      "secCode": "88010",
+      "edinetCode": "E03855",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 17562000,
+        "employees": 26630,
+        "avgAge": 42.4,
+        "avgTenure": 16.4
+      }
+    ]
+  },
+  "88020": {
+    "company": {
+      "name": "三菱地所株式会社",
+      "secCode": "88020",
+      "edinetCode": "E03856",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 13478300,
+        "employees": 11412,
+        "avgAge": 40,
+        "avgTenure": 13
+      }
+    ]
+  },
+  "88040": {
+    "company": {
+      "name": "東京建物株式会社",
+      "secCode": "88040",
+      "edinetCode": "E03859",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 11108000,
+        "employees": 4925,
+        "avgAge": 41,
+        "avgTenure": 11
+      }
+    ]
+  },
+  "90640": {
+    "company": {
+      "name": "ヤマトホールディングス株式会社",
+      "secCode": "90640",
+      "edinetCode": "E04187",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12262553,
+        "employees": 172822,
+        "avgAge": 50.8,
+        "avgTenure": 24.7
+      }
+    ]
+  },
+  "91010": {
+    "company": {
+      "name": "日本郵船株式会社",
+      "secCode": "91010",
+      "edinetCode": "E04235",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 14354240,
+        "employees": 35230,
+        "avgAge": 38.1,
+        "avgTenure": 14.4
+      }
+    ]
+  },
+  "91040": {
+    "company": {
+      "name": "株式会社　商船三井",
+      "secCode": "91040",
+      "edinetCode": "E04236",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 14367707,
+        "employees": 10500,
+        "avgAge": 38.5,
+        "avgTenure": 13.4
+      }
+    ]
+  },
+  "91070": {
+    "company": {
+      "name": "川崎汽船株式会社",
+      "secCode": "91070",
+      "edinetCode": "E04237",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12227592,
+        "employees": 5176,
+        "avgAge": 38.5,
+        "avgTenure": 14
+      }
+    ]
+  },
+  "91190": {
+    "company": {
+      "name": "飯野海運株式会社",
+      "secCode": "91190",
+      "edinetCode": "E04243",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12866000,
+        "employees": 698,
+        "avgAge": 38.3,
+        "avgTenure": 13
+      }
+    ]
+  },
+  "92600": {
+    "company": {
+      "name": "西本Ｗｉｓｍｅｔｔａｃホールディングス株式会社",
+      "secCode": "92600",
+      "edinetCode": "E33381",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2024-12",
+        "avgSalary": 12293000,
+        "employees": 2158,
+        "avgAge": 43.7,
+        "avgTenure": 5.1
+      }
+    ]
+  },
+  "94010": {
+    "company": {
+      "name": "株式会社ＴＢＳホールディングス",
+      "secCode": "94010",
+      "edinetCode": "E04375",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12639000,
+        "employees": 8095,
+        "avgAge": 46.2,
+        "avgTenure": 13.3
+      }
+    ]
+  },
+  "94020": {
+    "company": {
+      "name": "中部日本放送株式会社",
+      "secCode": "94020",
+      "edinetCode": "E04376",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12685000,
+        "employees": 735,
+        "avgAge": 53.4,
+        "avgTenure": 26.9
+      }
+    ]
+  },
+  "94040": {
+    "company": {
+      "name": "日本テレビホールディングス株式会社",
+      "secCode": "94040",
+      "edinetCode": "E04410",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 13903413,
+        "employees": 5771,
+        "avgAge": 48.7,
+        "avgTenure": 17.4
+      }
+    ]
+  },
+  "94050": {
+    "company": {
+      "name": "朝日放送グループホールディングス株式会社",
+      "secCode": "94050",
+      "edinetCode": "E04380",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11578000,
+        "employees": 1692,
+        "avgAge": 48.5,
+        "avgTenure": 19.2
+      }
+    ]
+  },
+  "94070": {
+    "company": {
+      "name": "株式会社ＲＫＢ毎日ホールディングス",
+      "secCode": "94070",
+      "edinetCode": "E04382",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11976000,
+        "employees": 694,
+        "avgAge": 48.2,
+        "avgTenure": 22.3
+      }
+    ]
+  },
+  "94120": {
+    "company": {
+      "name": "株式会社スカパーＪＳＡＴホールディングス",
+      "secCode": "94120",
+      "edinetCode": "E04497",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12736858,
+        "employees": 819,
+        "avgAge": 47,
+        "avgTenure": 5
+      }
+    ]
+  },
+  "94130": {
+    "company": {
+      "name": "株式会社テレビ東京ホールディングス",
+      "secCode": "94130",
+      "edinetCode": "E24545",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 13642358,
+        "employees": 1651,
+        "avgAge": 47,
+        "avgTenure": 19
+      }
+    ]
+  },
+  "94350": {
+    "company": {
+      "name": "株式会社光通信",
+      "secCode": "94350",
+      "edinetCode": "E04948",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 24086850,
+        "employees": 3939,
+        "avgAge": 47.9,
+        "avgTenure": 24.6
+      }
+    ]
+  },
+  "95130": {
+    "company": {
+      "name": "電源開発株式会社",
+      "secCode": "95130",
+      "edinetCode": "E04510",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11170431,
+        "employees": 7127,
+        "avgAge": 41.4,
+        "avgTenure": 18.6
+      }
+    ]
+  },
+  "96840": {
+    "company": {
+      "name": "株式会社スクウェア・エニックス・ホールディングス",
+      "secCode": "96840",
+      "edinetCode": "E04859",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 14364991,
+        "employees": 4604,
+        "avgAge": 48.6,
+        "avgTenure": 5.9
+      }
+    ]
+  },
+  "99840": {
+    "company": {
+      "name": "ソフトバンクグループ株式会社",
+      "secCode": "99840",
+      "edinetCode": "E02778",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 13631161,
+        "employees": 67229,
+        "avgAge": 41.3,
+        "avgTenure": 10.1
+      }
+    ]
+  },
+  "247A0": {
+    "company": {
+      "name": "Ａｉロボティクス株式会社",
+      "secCode": "247A0",
+      "edinetCode": "E39903",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 12448000,
+        "employees": 27,
+        "avgAge": 32.1,
+        "avgTenure": 2.5
+      }
+    ]
+  },
+  "147A0": {
+    "company": {
+      "name": "株式会社ソラコム",
+      "secCode": "147A0",
+      "edinetCode": "E39483",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11495000,
+        "employees": 176,
+        "avgAge": 41.14,
+        "avgTenure": 3.98
+      }
+    ]
+  },
+  "285A0": {
+    "company": {
+      "name": "キオクシアホールディングス株式会社",
+      "secCode": "285A0",
+      "edinetCode": "E35948",
+      "industry": null
+    },
+    "salaryHistory": [
+      {
+        "fiscalYear": "2025-03",
+        "avgSalary": 11485500,
+        "employees": 15042,
+        "avgAge": 46.5,
+        "avgTenure": 14.5
+      }
+    ]
+  }
+}
