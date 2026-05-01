@@ -202,6 +202,14 @@ export default function Home() {
           <p className="mt-1 text-xs text-[var(--color-text-muted)]">
             ※ 平均年収は各企業の有価証券報告書に記載された「平均年間給与」の値です
           </p>
+          <div className="mt-4 flex justify-center gap-6">
+            <Link href="/privacy" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
+              プライバシーポリシー
+            </Link>
+            <Link href="/contact" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
+              お問い合わせ
+            </Link>
+          </div>
         </div>
       </footer>
     </div>
