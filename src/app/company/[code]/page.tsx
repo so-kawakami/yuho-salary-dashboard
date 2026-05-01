@@ -43,13 +43,15 @@ export async function generateMetadata({
   };
 }
 
-// よくアクセスされる企業の静的生成
+// 全企業分を静的生成
 export function generateStaticParams() {
-  const codes = [
-    "6861", "8058", "8001", "8031", "8053",
-    "6758", "6098", "8604", "7974", "9503",
-  ];
-  return codes.map((code) => ({ code }));
+  try {
+    const codes: string[] = require("@/data/generated/company-codes.json");
+    return codes.map((code) => ({ code }));
+  } catch {
+    // JSONがなければフォールバック
+    return ["6861", "8058", "8001", "8031", "8053"].map((code) => ({ code }));
+  }
 }
 
 export default async function CompanyPage({

@@ -12,9 +12,14 @@ import path from "path";
 const DB_PATH = path.join(process.cwd(), "data", "yuho.db");
 const OUT_DIR = path.join(process.cwd(), "src", "data", "generated");
 
+if (!fs.existsSync(DB_PATH)) {
+  console.log("⚠️  DBファイルが見つかりません。モックデータでビルドします。");
+  process.exit(0);
+}
+
 const db = new Database(DB_PATH, { readonly: true });
 
-// ランキング TOP100
+// ランキング TOP200（ページ表示用）
 const ranking = db
   .prepare(
     `SELECT
@@ -31,7 +36,7 @@ const ranking = db
     JOIN companies c ON s.company_id = c.id
     WHERE s.avg_salary IS NOT NULL
     ORDER BY s.avg_salary DESC
-    LIMIT 100`
+    LIMIT 200`
   )
   .all()
   .map((row: any, i: number) => ({
@@ -88,36 +93,49 @@ const industries = db
       COUNT(DISTINCT c.id) as companies
     FROM salary_data s
     JOIN companies c ON s.company_id = c.id
-    WHERE s.avg_salary IS NOT NULL AND c.industry IS NOT NULL
+    WHERE s.avg_salary IS NOT NULL AND c.industry IS NOT NULL AND c.industry != ''
     GROUP BY c.industry
     ORDER BY AVG(s.avg_salary) DESC`
   )
   .all();
 
-// 企業詳細（ランキングTOP100 + 主要企業）
+// 全企業の詳細データ（静的ページ生成 + 企業ページ表示に使用）
+console.log("📦 全企業データをエクスポート中...");
+
+const allCompanies = db
+  .prepare(
+    `SELECT
+      c.id,
+      c.sec_code as secCode,
+      c.edinet_code as edinetCode,
+      c.name,
+      c.industry,
+      c.is_listed as isListed
+    FROM companies c
+    WHERE EXISTS (SELECT 1 FROM salary_data s WHERE s.company_id = c.id AND s.avg_salary IS NOT NULL)`
+  )
+  .all() as any[];
+
 const companyDetails: Record<string, any> = {};
-for (const r of ranking) {
-  const company = db
-    .prepare(
-      `SELECT * FROM companies WHERE sec_code = ? OR edinet_code = ?`
-    )
-    .get(r.code, r.code) as any;
+const companyCodes: string[] = []; // 静的ページ生成用のコード一覧
 
-  if (!company) continue;
-
+for (const company of allCompanies) {
   const history = db
     .prepare(
       `SELECT fiscal_year as fiscalYear, avg_salary as avgSalary,
               employees, avg_age as avgAge, avg_tenure as avgTenure
        FROM salary_data WHERE company_id = ? ORDER BY fiscal_year`
     )
-    .all(company.id);
+    .all(company.id) as any[];
 
-  companyDetails[r.code] = {
+  const code = company.secCode ?? company.edinetCode;
+  companyCodes.push(code);
+
+  companyDetails[code] = {
     company: {
       name: company.name,
-      secCode: company.sec_code,
-      edinetCode: company.edinet_code,
+      secCode: company.secCode,
+      edinetCode: company.edinetCode,
       industry: company.industry,
     },
     salaryHistory: history,
@@ -143,11 +161,17 @@ fs.writeFileSync(
   path.join(OUT_DIR, "companies.json"),
   JSON.stringify(companyDetails, null, 2)
 );
+// 静的ページ生成用のコード一覧
+fs.writeFileSync(
+  path.join(OUT_DIR, "company-codes.json"),
+  JSON.stringify(companyCodes, null, 2)
+);
+
+db.close();
 
 console.log("✅ JSON エクスポート完了!");
 console.log(`   ランキング: ${ranking.length}社`);
 console.log(`   企業詳細: ${Object.keys(companyDetails).length}社`);
 console.log(`   業界: ${industries.length}件`);
+console.log(`   静的ページ対象: ${companyCodes.length}社`);
 console.log(`   出力先: ${OUT_DIR}`);
-
-db.close();

@@ -1,1 +1,172 @@
-[]
+[
+  {
+    "industry": "海運",
+    "avgSalary": 1052,
+    "companies": 11
+  },
+  {
+    "industry": "保険",
+    "avgSalary": 1018,
+    "companies": 9
+  },
+  {
+    "industry": "証券",
+    "avgSalary": 973,
+    "companies": 34
+  },
+  {
+    "industry": "鉱業",
+    "avgSalary": 858,
+    "companies": 5
+  },
+  {
+    "industry": "医薬品",
+    "avgSalary": 850,
+    "companies": 65
+  },
+  {
+    "industry": "石油・石炭",
+    "avgSalary": 845,
+    "companies": 8
+  },
+  {
+    "industry": "-",
+    "avgSalary": 828,
+    "companies": 1
+  },
+  {
+    "industry": "建設",
+    "avgSalary": 823,
+    "companies": 108
+  },
+  {
+    "industry": "不動産",
+    "avgSalary": 798,
+    "companies": 76
+  },
+  {
+    "industry": "電気・ガス",
+    "avgSalary": 788,
+    "companies": 25
+  },
+  {
+    "industry": "銀行",
+    "avgSalary": 766,
+    "companies": 77
+  },
+  {
+    "industry": "その他金融",
+    "avgSalary": 748,
+    "companies": 29
+  },
+  {
+    "industry": "卸売",
+    "avgSalary": 736,
+    "companies": 212
+  },
+  {
+    "industry": "空運",
+    "avgSalary": 722,
+    "companies": 4
+  },
+  {
+    "industry": "電気機器",
+    "avgSalary": 721,
+    "companies": 191
+  },
+  {
+    "industry": "精密機器",
+    "avgSalary": 708,
+    "companies": 39
+  },
+  {
+    "industry": "鉄鋼",
+    "avgSalary": 707,
+    "companies": 37
+  },
+  {
+    "industry": "化学",
+    "avgSalary": 705,
+    "companies": 181
+  },
+  {
+    "industry": "機械",
+    "avgSalary": 694,
+    "companies": 177
+  },
+  {
+    "industry": "情報・通信",
+    "avgSalary": 688,
+    "companies": 365
+  },
+  {
+    "industry": "ガラス・土石",
+    "avgSalary": 685,
+    "companies": 43
+  },
+  {
+    "industry": "非鉄金属",
+    "avgSalary": 685,
+    "companies": 30
+  },
+  {
+    "industry": "食料品",
+    "avgSalary": 680,
+    "companies": 99
+  },
+  {
+    "industry": "輸送用機器",
+    "avgSalary": 672,
+    "companies": 79
+  },
+  {
+    "industry": "倉庫・運輸",
+    "avgSalary": 659,
+    "companies": 26
+  },
+  {
+    "industry": "陸運",
+    "avgSalary": 657,
+    "companies": 56
+  },
+  {
+    "industry": "水産・農林",
+    "avgSalary": 646,
+    "companies": 7
+  },
+  {
+    "industry": "金属製品",
+    "avgSalary": 645,
+    "companies": 67
+  },
+  {
+    "industry": "その他製品",
+    "avgSalary": 632,
+    "companies": 72
+  },
+  {
+    "industry": "パルプ・紙",
+    "avgSalary": 618,
+    "companies": 21
+  },
+  {
+    "industry": "ゴム",
+    "avgSalary": 610,
+    "companies": 17
+  },
+  {
+    "industry": "繊維",
+    "avgSalary": 601,
+    "companies": 34
+  },
+  {
+    "industry": "サービス",
+    "avgSalary": 601,
+    "companies": 307
+  },
+  {
+    "industry": "小売",
+    "avgSalary": 563,
+    "companies": 145
+  }
+]
