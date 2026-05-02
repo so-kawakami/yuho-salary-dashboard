@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import rankingJson from "@/data/generated/ranking.json";
+import { getAllIndustrySlugs } from "@/db/safe-queries";
 
 const SITE_URL = "https://yuho-salary-dashboard.vercel.app";
 
@@ -40,6 +41,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
+  // 業界別個別ページ
+  const industrySlugs = getAllIndustrySlugs();
+  const industryPages: MetadataRoute.Sitemap = industrySlugs.map((slug) => ({
+    url: `${SITE_URL}/industries/${encodeURIComponent(slug)}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
   // 企業個別ページ（全社分）
   const companyPages: MetadataRoute.Sitemap = rankingJson.map((company) => ({
     url: `${SITE_URL}/company/${company.code}`,
@@ -48,5 +58,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...companyPages];
+  return [...staticPages, ...industryPages, ...companyPages];
 }

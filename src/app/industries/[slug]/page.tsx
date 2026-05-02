@@ -18,9 +18,22 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const industry = decodeURIComponent(slug);
+
+  const industries = getIndustries();
+  const industryData = industries.find((i) => i.industry === industry);
+  const avgSalary = industryData?.avgSalary ?? 0;
+  const count = industryData?.companies ?? 0;
+
+  const title = `${industry}の平均年収ランキング【上場企業${count}社】| 有価証券報告書`;
+  const description = avgSalary
+    ? `${industry}の上場企業${count}社の平均年収は${avgSalary.toLocaleString()}万円。有価証券報告書をもとにした${industry}の年収ランキングを掲載。企業ごとの従業員数・平均年齢・勤続年数も確認できます。`
+    : `${industry}の上場企業${count}社の平均年収ランキング。有価証券報告書の公式データから集計。`;
+
   return {
-    title: `${industry}の平均年収ランキング | 有価証券報告書`,
-    description: `${industry}業界の上場企業平均年収ランキング。有価証券報告書のデータをもとに各社の年収・従業員数・平均年齢を比較できます。`,
+    title,
+    description,
+    openGraph: { title, description },
+    twitter: { title, description },
   };
 }
 
