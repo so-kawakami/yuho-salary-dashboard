@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export const dynamic = "force-static";
 
 export default function RankingPage() {
-  const ranking = getRanking(100);
+  const ranking = getRanking(200);
   const data = ranking.map((r) => ({
     rank: r.rank,
     code: r.code,
@@ -33,7 +33,7 @@ export default function RankingPage() {
             年収ランキング
           </h2>
           <p className="text-sm text-[var(--color-text-muted)]">
-            有価証券報告書ベース・業界や規模でフィルタリング可能
+            有価証券報告書ベース・上位200社・業界や規模でフィルタリング可能
           </p>
         </div>
         <RankingWithFilter data={data} />

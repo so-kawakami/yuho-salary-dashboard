@@ -4,14 +4,23 @@ import Link from "next/link";
 import { useState } from "react";
 import type { CompanySalary } from "@/data/mock";
 
+// 全角→半角に変換（英数字・記号）
+function normalize(str: string): string {
+  return str
+    .normalize("NFKC")
+    .toLowerCase();
+}
+
 export function SearchForm({ companies }: { companies: CompanySalary[] }) {
   const [query, setQuery] = useState("");
 
+  const normalizedQuery = normalize(query);
+
   const filtered = query.length >= 1
     ? companies.filter((c) =>
-        c.name.toLowerCase().includes(query.toLowerCase()) ||
-        c.industry.toLowerCase().includes(query.toLowerCase()) ||
-        c.code.includes(query)
+        normalize(c.name).includes(normalizedQuery) ||
+        normalize(c.industry).includes(normalizedQuery) ||
+        normalize(c.code).includes(normalizedQuery)
       )
     : [];
 
