@@ -6,9 +6,7 @@ import { getCompaniesByIndustry, getAllIndustrySlugs, getIndustries } from "@/db
 export const dynamic = "force-static";
 
 export function generateStaticParams() {
-  return getAllIndustrySlugs().map((industry) => ({
-    slug: encodeURIComponent(industry),
-  }));
+  return getAllIndustrySlugs().map((industry) => ({ slug: industry }));
 }
 
 export async function generateMetadata({
@@ -17,7 +15,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const industry = decodeURIComponent(slug);
+  const industry = slug;
 
   const industries = getIndustries();
   const industryData = industries.find((i) => i.industry === industry);
@@ -43,7 +41,7 @@ export default async function IndustryPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const industry = decodeURIComponent(slug);
+  const industry = slug;
   const companies = getCompaniesByIndustry(industry);
   const industries = getIndustries();
   const industryData = industries.find((i) => i.industry === industry);

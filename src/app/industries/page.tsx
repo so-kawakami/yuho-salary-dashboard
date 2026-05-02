@@ -63,7 +63,7 @@ export default function IndustriesPage() {
             <div key={ind.name} className="glass rounded-xl p-5">
               <div className="flex items-center justify-between mb-3">
                 <Link
-                  href={`/industries/${encodeURIComponent(ind.name)}`}
+                  href={`/industries/${ind.name}`}
                   className="text-base font-bold text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors"
                 >
                   {ind.name}
@@ -76,7 +76,7 @@ export default function IndustriesPage() {
                     平均 {ind.avgSalary.toLocaleString()}万円
                   </span>
                   <Link
-                    href={`/industries/${encodeURIComponent(ind.name)}`}
+                    href={`/industries/${ind.name}`}
                     className="text-xs text-[var(--color-primary)] hover:underline"
                   >
                     一覧→

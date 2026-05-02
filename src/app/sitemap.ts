@@ -44,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 業界別個別ページ
   const industrySlugs = getAllIndustrySlugs();
   const industryPages: MetadataRoute.Sitemap = industrySlugs.map((slug) => ({
-    url: `${SITE_URL}/industries/${encodeURIComponent(slug)}`,
+    url: `${SITE_URL}/industries/${slug}`,
     lastModified: now,
     changeFrequency: "monthly" as const,
     priority: 0.8,
