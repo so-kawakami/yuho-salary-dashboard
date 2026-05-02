@@ -21,7 +21,17 @@ export function getSalaryRanking(limit = 50) {
       schema.companies,
       eq(schema.salaryData.companyId, schema.companies.id)
     )
-    .where(isNotNull(schema.salaryData.avgSalary))
+    .where(
+      and(
+        isNotNull(schema.salaryData.avgSalary),
+        sql`${schema.salaryData.fiscalYear} = (
+          SELECT MAX(s2.fiscal_year)
+          FROM salary_data s2
+          WHERE s2.company_id = ${schema.salaryData.companyId}
+            AND s2.avg_salary IS NOT NULL
+        )`
+      )
+    )
     .orderBy(desc(schema.salaryData.avgSalary))
     .limit(limit)
     .all()

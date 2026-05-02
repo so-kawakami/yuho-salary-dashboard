@@ -35,6 +35,12 @@ const ranking = db
     FROM salary_data s
     JOIN companies c ON s.company_id = c.id
     WHERE s.avg_salary IS NOT NULL
+      AND s.fiscal_year = (
+        SELECT MAX(s2.fiscal_year)
+        FROM salary_data s2
+        WHERE s2.company_id = s.company_id
+          AND s2.avg_salary IS NOT NULL
+      )
     ORDER BY s.avg_salary DESC
     LIMIT 200`
   )
