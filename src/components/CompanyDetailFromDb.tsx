@@ -198,7 +198,7 @@ export function CompanyDetailFromDb({
       </div>
 
       {/* 広告 */}
-      <AdBanner slot="REPLACE_WITH_YOUR_SLOT_ID" format="horizontal" className="my-2" />
+      <AdBanner slot="9555970163" format="horizontal" className="my-2" />
 
       {/* 年収推移グラフ + 同業他社比較 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

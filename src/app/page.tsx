@@ -125,7 +125,7 @@ export default function Home() {
           </section>
 
           {/* 広告 */}
-          <AdBanner slot="REPLACE_WITH_YOUR_SLOT_ID" format="auto" />
+          <AdBanner slot="7121378512" format="auto" />
 
           {/* 業界別ハイライト */}
           {topIndustries.length > 0 && (
