@@ -36,9 +36,20 @@ export default async function IndustryPage({
   const industryData = industries.find((i) => i.industry === industry);
   const avgSalary = industryData?.avgSalary ?? 0;
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "ホーム", item: "https://yuho-salary-dashboard.vercel.app" },
+      { "@type": "ListItem", position: 2, name: "業界別", item: "https://yuho-salary-dashboard.vercel.app/industries" },
+      { "@type": "ListItem", position: 3, name: industry, item: `https://yuho-salary-dashboard.vercel.app/industries/${slug}` },
+    ],
+  };
+
   return (
     <div className="flex flex-col min-h-full bg-mesh">
       <Header />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8 space-y-8">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
           <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">
