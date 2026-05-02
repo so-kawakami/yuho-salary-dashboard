@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description:
     "卸売・IT・電機・医薬品・銀行など業界別の平均年収を有価証券報告書で比較。自分の業界の年収水準や転職先の給与水準をチェックできます。",
 };
+import Link from "next/link";
 import { IndustryChart } from "@/components/IndustryChart";
 import { getRanking } from "@/db/safe-queries";
 
@@ -61,9 +62,12 @@ export default function IndustriesPage() {
           {industries.map((ind) => (
             <div key={ind.name} className="glass rounded-xl p-5">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-base font-bold text-[var(--color-text-primary)]">
+                <Link
+                  href={`/industries/${encodeURIComponent(ind.name)}`}
+                  className="text-base font-bold text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors"
+                >
                   {ind.name}
-                </h3>
+                </Link>
                 <div className="flex items-center gap-3">
                   <span className="text-sm text-[var(--color-text-muted)]">
                     {ind.count}社
@@ -71,6 +75,12 @@ export default function IndustriesPage() {
                   <span className="text-sm font-bold text-[var(--color-primary)]">
                     平均 {ind.avgSalary.toLocaleString()}万円
                   </span>
+                  <Link
+                    href={`/industries/${encodeURIComponent(ind.name)}`}
+                    className="text-xs text-[var(--color-primary)] hover:underline"
+                  >
+                    一覧→
+                  </Link>
                 </div>
               </div>
               <div className="flex flex-wrap gap-2">

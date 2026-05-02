@@ -77,6 +77,21 @@ export function getPeers(industry: string, excludeCode: string, limit = 5) {
     }));
 }
 
+export function getCompaniesByIndustry(industry: string, limit = 100): CompanySalary[] {
+  const all = getAllCompanies();
+  return all
+    .filter((c) => c.industry === industry && c.salary > 0)
+    .sort((a, b) => b.salary - a.salary)
+    .slice(0, limit);
+}
+
+export function getAllIndustrySlugs(): string[] {
+  if (industriesJson.length > 0) {
+    return industriesJson.map((r: any) => r.industry).filter(Boolean);
+  }
+  return [];
+}
+
 export function getAllCompanies(): CompanySalary[] {
   if (Object.keys(companiesJson).length > 0) {
     return Object.entries(companiesJson).map(([code, data]: [string, any]) => {
