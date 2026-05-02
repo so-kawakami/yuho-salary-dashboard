@@ -307,6 +307,48 @@ export function CompanyDetailFromDb({
         </div>
       </div>
 
+      {/* 転職・求人リンク */}
+      <div className="glass rounded-2xl p-6">
+        <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
+          {company.name}の求人を探す
+        </h2>
+        <p className="text-xs text-[var(--color-text-muted)] mb-4">
+          主要転職サイトで{company.name}の求人情報を確認できます
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {[
+            {
+              name: "doda",
+              color: "from-orange-500 to-orange-600",
+              url: `https://doda.jp/DodaFront/View/JobSearchResult/j_ks__searchkeyword-${encodeURIComponent(company.name)}/`,
+            },
+            {
+              name: "リクナビNEXT",
+              color: "from-blue-500 to-blue-600",
+              url: `https://next.rikunabi.com/tag/KEYWORD_${encodeURIComponent(company.name)}/`,
+            },
+            {
+              name: "ビズリーチ",
+              color: "from-red-500 to-red-600",
+              url: `https://www.bizreach.jp/job-list/?free_word=${encodeURIComponent(company.name)}`,
+            },
+          ].map((site) => (
+            <a
+              key={site.name}
+              href={site.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r ${site.color} text-white text-sm font-bold hover:opacity-90 transition-opacity`}
+            >
+              {site.name}で求人を探す
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          ))}
+        </div>
+      </div>
+
       {/* データ注釈 */}
       <div className="glass rounded-2xl p-5">
         <h2 className="text-sm font-bold text-[var(--color-text-primary)] mb-1">
