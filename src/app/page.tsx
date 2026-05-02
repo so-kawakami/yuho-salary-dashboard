@@ -3,6 +3,7 @@ import { Header } from "@/components/Header";
 import { StatsCards } from "@/components/StatsCards";
 import { SalaryChecker } from "@/components/SalaryChecker";
 import { SalaryRanking } from "@/components/SalaryRanking";
+import { AdBanner } from "@/components/AdBanner";
 import { getRanking, getStatsData } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
@@ -41,8 +42,30 @@ export default function Home() {
     .filter((r) => r.avgAge > 0 && r.avgAge < 38 && r.salary > 600)
     .slice(0, 4);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "有報年収ダッシュボード",
+    url: "https://yuho-salary-dashboard.vercel.app",
+    description:
+      "金融庁EDINETの有価証券報告書をもとに、上場企業3,000社以上の平均年収を集計・公開。業界別ランキング・企業検索・年収偏差値チェッカーが使えます。",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate:
+          "https://yuho-salary-dashboard.vercel.app/search?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
     <div className="flex flex-col min-h-full bg-mesh">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <Header />
 
       <main className="flex-1">
@@ -100,6 +123,9 @@ export default function Home() {
           <section>
             <SalaryChecker />
           </section>
+
+          {/* 広告 */}
+          <AdBanner slot="REPLACE_WITH_YOUR_SLOT_ID" format="auto" />
 
           {/* 業界別ハイライト */}
           {topIndustries.length > 0 && (

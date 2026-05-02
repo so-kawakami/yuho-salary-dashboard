@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { AdBanner } from "@/components/AdBanner";
 import {
   LineChart,
   Line,
@@ -195,6 +196,9 @@ export function CompanyDetailFromDb({
           </div>
         ))}
       </div>
+
+      {/* 広告 */}
+      <AdBanner slot="REPLACE_WITH_YOUR_SLOT_ID" format="horizontal" className="my-2" />
 
       {/* 年収推移グラフ + 同業他社比較 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
