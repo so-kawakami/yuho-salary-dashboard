@@ -23,6 +23,39 @@
   },
   {
     "rank": 3,
+    "code": "68610",
+    "name": "株式会社キーエンス",
+    "industry": "電気機器",
+    "salary": 2279,
+    "employees": 10580,
+    "avgAge": 35.8,
+    "avgTenure": 12.1,
+    "periodEnd": "2023-03-20"
+  },
+  {
+    "rank": 4,
+    "code": "68610",
+    "name": "株式会社キーエンス",
+    "industry": "電気機器",
+    "salary": 2182,
+    "employees": 8961,
+    "avgAge": 36.1,
+    "avgTenure": 12.5,
+    "periodEnd": "2022-03-20"
+  },
+  {
+    "rank": 5,
+    "code": "94350",
+    "name": "株式会社光通信",
+    "industry": "情報・通信",
+    "salary": 2101,
+    "employees": 4488,
+    "avgAge": 42.5,
+    "avgTenure": 14,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 6,
     "code": "80580",
     "name": "三菱商事株式会社",
     "industry": "卸売",
@@ -33,7 +66,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 4,
+    "rank": 7,
     "code": "68610",
     "name": "株式会社キーエンス",
     "industry": "電気機器",
@@ -44,7 +77,7 @@
     "periodEnd": "2024-03-20"
   },
   {
-    "rank": 5,
+    "rank": 8,
     "code": "94350",
     "name": "株式会社光通信",
     "industry": "情報・通信",
@@ -55,7 +88,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 6,
+    "rank": 9,
     "code": "68610",
     "name": "株式会社キーエンス",
     "industry": "電気機器",
@@ -66,7 +99,7 @@
     "periodEnd": "2025-03-20"
   },
   {
-    "rank": 7,
+    "rank": 10,
     "code": "30030",
     "name": "ヒューリック株式会社",
     "industry": "不動産",
@@ -77,7 +110,7 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 8,
+    "rank": 11,
     "code": "80580",
     "name": "三菱商事株式会社",
     "industry": "卸売",
@@ -88,7 +121,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 9,
+    "rank": 12,
     "code": "80310",
     "name": "三井物産株式会社",
     "industry": "卸売",
@@ -99,7 +132,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 10,
+    "rank": 13,
     "code": "45650",
     "name": "ネクセラファーマ株式会社",
     "industry": "医薬品",
@@ -110,7 +143,18 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 11,
+    "rank": 14,
+    "code": "80580",
+    "name": "三菱商事株式会社",
+    "industry": "卸売",
+    "salary": 1939,
+    "employees": 79706,
+    "avgAge": 42.9,
+    "avgTenure": 18,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 15,
     "code": "32520",
     "name": "地主株式会社",
     "industry": "不動産",
@@ -121,7 +165,7 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 12,
+    "rank": 16,
     "code": "80310",
     "name": "三井物産株式会社",
     "industry": "卸売",
@@ -132,7 +176,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 13,
+    "rank": 17,
     "code": "31320",
     "name": "マクニカホールディングス株式会社",
     "industry": "卸売",
@@ -143,7 +187,18 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 14,
+    "rank": 18,
+    "code": "31320",
+    "name": "マクニカホールディングス株式会社",
+    "industry": "卸売",
+    "salary": 1873,
+    "employees": 3925,
+    "avgAge": 49.2,
+    "avgTenure": 21.4,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 19,
     "code": "80010",
     "name": "伊藤忠商事株式会社",
     "industry": "卸売",
@@ -154,7 +209,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 15,
+    "rank": 20,
     "code": "73470",
     "name": "株式会社マーキュリアホールディングス",
     "industry": "証券",
@@ -165,7 +220,7 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 16,
+    "rank": 21,
     "code": "192A0",
     "name": "インテグループ株式会社",
     "industry": "",
@@ -176,7 +231,29 @@
     "periodEnd": "2024-05-31"
   },
   {
-    "rank": 17,
+    "rank": 22,
+    "code": "80310",
+    "name": "三井物産株式会社",
+    "industry": "卸売",
+    "salary": 1783,
+    "employees": 46811,
+    "avgAge": 42.3,
+    "avgTenure": 18.1,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 23,
+    "code": "43100",
+    "name": "株式会社ドリームインキュベータ",
+    "industry": "サービス",
+    "salary": 1776,
+    "employees": 136,
+    "avgAge": 37.1,
+    "avgTenure": 3.7,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 24,
     "code": "80530",
     "name": "住友商事株式会社",
     "industry": "卸売",
@@ -187,7 +264,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 18,
+    "rank": 25,
     "code": "88010",
     "name": "三井不動産株式会社",
     "industry": "不動産",
@@ -198,7 +275,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 19,
+    "rank": 26,
     "code": "80010",
     "name": "伊藤忠商事株式会社",
     "industry": "卸売",
@@ -209,7 +286,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 20,
+    "rank": 27,
     "code": "31320",
     "name": "マクニカホールディングス株式会社",
     "industry": "卸売",
@@ -220,7 +297,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 21,
+    "rank": 28,
     "code": "80530",
     "name": "住友商事株式会社",
     "industry": "卸売",
@@ -231,7 +308,29 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 22,
+    "rank": 29,
+    "code": "80010",
+    "name": "伊藤忠商事株式会社",
+    "industry": "卸売",
+    "salary": 1730,
+    "employees": 110698,
+    "avgAge": 42.4,
+    "avgTenure": 18,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 30,
+    "code": "31320",
+    "name": "マクニカホールディングス株式会社",
+    "industry": "卸売",
+    "salary": 1719,
+    "employees": 4203,
+    "avgAge": 49.6,
+    "avgTenure": 21.8,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 31,
     "code": "80020",
     "name": "丸紅株式会社",
     "industry": "卸売",
@@ -242,7 +341,18 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 23,
+    "rank": 32,
+    "code": "94350",
+    "name": "株式会社光通信",
+    "industry": "情報・通信",
+    "salary": 1682,
+    "employees": 5310,
+    "avgAge": 43.7,
+    "avgTenure": 5,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 33,
     "code": "91040",
     "name": "株式会社　商船三井",
     "industry": "海運",
@@ -253,7 +363,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 24,
+    "rank": 34,
     "code": "61460",
     "name": "株式会社ディスコ",
     "industry": "機械",
@@ -264,7 +374,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 25,
+    "rank": 35,
     "code": "46760",
     "name": "株式会社フジ・メディア・ホールディングス",
     "industry": "情報・通信",
@@ -275,7 +385,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 26,
+    "rank": 36,
     "code": "80020",
     "name": "丸紅株式会社",
     "industry": "卸売",
@@ -286,7 +396,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 27,
+    "rank": 37,
     "code": "45920",
     "name": "サンバイオ株式会社",
     "industry": "医薬品",
@@ -297,7 +407,7 @@
     "periodEnd": "2025-01-31"
   },
   {
-    "rank": 28,
+    "rank": 38,
     "code": "69200",
     "name": "レーザーテック株式会社",
     "industry": "",
@@ -308,7 +418,7 @@
     "periodEnd": "2024-06-30"
   },
   {
-    "rank": 29,
+    "rank": 39,
     "code": "86010",
     "name": "株式会社大和証券グループ本社",
     "industry": "証券",
@@ -319,7 +429,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 30,
+    "rank": 40,
     "code": "46760",
     "name": "株式会社フジ・メディア・ホールディングス",
     "industry": "情報・通信",
@@ -330,7 +440,29 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 31,
+    "rank": 41,
+    "code": "80530",
+    "name": "住友商事株式会社",
+    "industry": "卸売",
+    "salary": 1605,
+    "employees": 78235,
+    "avgAge": 43.2,
+    "avgTenure": 18,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 42,
+    "code": "14140",
+    "name": "ショーボンドホールディングス株式会社",
+    "industry": "",
+    "salary": 1605,
+    "employees": 951,
+    "avgAge": 54.5,
+    "avgTenure": 21.9,
+    "periodEnd": "2022-06-30"
+  },
+  {
+    "rank": 43,
     "code": "29860",
     "name": "株式会社ＬＡホールディングス",
     "industry": "不動産",
@@ -341,7 +473,73 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 32,
+    "rank": 44,
+    "code": "80020",
+    "name": "丸紅株式会社",
+    "industry": "卸売",
+    "salary": 1593,
+    "employees": 45995,
+    "avgAge": 42.3,
+    "avgTenure": 17.6,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 45,
+    "code": "69200",
+    "name": "レーザーテック株式会社",
+    "industry": "",
+    "salary": 1581,
+    "employees": 859,
+    "avgAge": 40.3,
+    "avgTenure": 8.6,
+    "periodEnd": "2023-06-30"
+  },
+  {
+    "rank": 46,
+    "code": "46760",
+    "name": "株式会社フジ・メディア・ホールディングス",
+    "industry": "情報・通信",
+    "salary": 1580,
+    "employees": 6327,
+    "avgAge": 49.1,
+    "avgTenure": 17.9,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 47,
+    "code": "80010",
+    "name": "伊藤忠商事株式会社",
+    "industry": "卸売",
+    "salary": 1579,
+    "employees": 115124,
+    "avgAge": 42.2,
+    "avgTenure": 18,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 48,
+    "code": "80580",
+    "name": "三菱商事株式会社",
+    "industry": "卸売",
+    "salary": 1558,
+    "employees": 80728,
+    "avgAge": 42.8,
+    "avgTenure": 18,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 49,
+    "code": "80310",
+    "name": "三井物産株式会社",
+    "industry": "卸売",
+    "salary": 1549,
+    "employees": 44336,
+    "avgAge": 42.1,
+    "avgTenure": 18,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 50,
     "code": "87660",
     "name": "東京海上ホールディングス株式会社",
     "industry": "保険",
@@ -352,7 +550,40 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 33,
+    "rank": 51,
+    "code": "14140",
+    "name": "ショーボンドホールディングス株式会社",
+    "industry": "",
+    "salary": 1525,
+    "employees": 985,
+    "avgAge": 53.1,
+    "avgTenure": 21.8,
+    "periodEnd": "2023-06-30"
+  },
+  {
+    "rank": 52,
+    "code": "94130",
+    "name": "株式会社テレビ東京ホールディングス",
+    "industry": "情報・通信",
+    "salary": 1522,
+    "employees": 1691,
+    "avgAge": 49,
+    "avgTenure": 23.4,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 53,
+    "code": "91040",
+    "name": "株式会社　商船三井",
+    "industry": "海運",
+    "salary": 1517,
+    "employees": 8748,
+    "avgAge": 37.8,
+    "avgTenure": 13.5,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 54,
     "code": "43240",
     "name": "株式会社電通グループ",
     "industry": "サービス",
@@ -363,7 +594,7 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 34,
+    "rank": 55,
     "code": "61460",
     "name": "株式会社ディスコ",
     "industry": "機械",
@@ -374,7 +605,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 35,
+    "rank": 56,
     "code": "36080",
     "name": "株式会社ＴＳＩホールディングス",
     "industry": "繊維",
@@ -385,7 +616,18 @@
     "periodEnd": "2025-02-28"
   },
   {
-    "rank": 36,
+    "rank": 57,
+    "code": "71670",
+    "name": "株式会社めぶきフィナンシャルグループ",
+    "industry": "銀行",
+    "salary": 1490,
+    "employees": 6221,
+    "avgAge": 51.2,
+    "avgTenure": 27.3,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 58,
     "code": "87390",
     "name": "スパークス・グループ株式会社",
     "industry": "証券",
@@ -396,7 +638,29 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 37,
+    "rank": 59,
+    "code": "80020",
+    "name": "丸紅株式会社",
+    "industry": "卸売",
+    "salary": 1469,
+    "employees": 46100,
+    "avgAge": 42.3,
+    "avgTenure": 17.6,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 60,
+    "code": "94010",
+    "name": "株式会社ＴＢＳホールディングス",
+    "industry": "情報・通信",
+    "salary": 1459,
+    "employees": 6586,
+    "avgAge": 47.2,
+    "avgTenure": 19.7,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 61,
     "code": "42350",
     "name": "ウルトラファブリックス・ホールディングス株式会社",
     "industry": "化学",
@@ -407,7 +671,7 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 38,
+    "rank": 62,
     "code": "86300",
     "name": "ＳＯＭＰＯホールディングス株式会社",
     "industry": "保険",
@@ -418,7 +682,29 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 39,
+    "rank": 63,
+    "code": "94010",
+    "name": "株式会社ＴＢＳホールディングス",
+    "industry": "情報・通信",
+    "salary": 1449,
+    "employees": 6454,
+    "avgAge": 49.1,
+    "avgTenure": 22,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 64,
+    "code": "69200",
+    "name": "レーザーテック株式会社",
+    "industry": "",
+    "salary": 1448,
+    "employees": 662,
+    "avgAge": 40.9,
+    "avgTenure": 9.2,
+    "periodEnd": "2022-06-30"
+  },
+  {
+    "rank": 65,
     "code": "94130",
     "name": "株式会社テレビ東京ホールディングス",
     "industry": "情報・通信",
@@ -429,7 +715,40 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 40,
+    "rank": 66,
+    "code": "86040",
+    "name": "野村ホールディングス株式会社",
+    "industry": "証券",
+    "salary": 1440,
+    "employees": 26585,
+    "avgAge": 43,
+    "avgTenure": 4,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 67,
+    "code": "46860",
+    "name": "株式会社ジャストシステム",
+    "industry": "情報・通信",
+    "salary": 1438,
+    "employees": 313,
+    "avgAge": 39.6,
+    "avgTenure": 14,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 68,
+    "code": "86040",
+    "name": "野村ホールディングス株式会社",
+    "industry": "証券",
+    "salary": 1437,
+    "employees": 26775,
+    "avgAge": 44,
+    "avgTenure": 4,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 69,
     "code": "91040",
     "name": "株式会社　商船三井",
     "industry": "海運",
@@ -440,7 +759,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 41,
+    "rank": 70,
     "code": "96840",
     "name": "株式会社スクウェア・エニックス・ホールディングス",
     "industry": "情報・通信",
@@ -451,7 +770,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 42,
+    "rank": 71,
     "code": "91010",
     "name": "日本郵船株式会社",
     "industry": "海運",
@@ -462,7 +781,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 43,
+    "rank": 72,
     "code": "46860",
     "name": "株式会社ジャストシステム",
     "industry": "情報・通信",
@@ -473,7 +792,18 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 44,
+    "rank": 73,
+    "code": "87660",
+    "name": "東京海上ホールディングス株式会社",
+    "industry": "保険",
+    "salary": 1430,
+    "employees": 43217,
+    "avgAge": 43.2,
+    "avgTenure": 17.5,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 74,
     "code": "46860",
     "name": "株式会社ジャストシステム",
     "industry": "情報・通信",
@@ -484,7 +814,40 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 45,
+    "rank": 75,
+    "code": "96840",
+    "name": "株式会社スクウェア・エニックス・ホールディングス",
+    "industry": "情報・通信",
+    "salary": 1427,
+    "employees": 5637,
+    "avgAge": 47.1,
+    "avgTenure": 4.8,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 76,
+    "code": "94130",
+    "name": "株式会社テレビ東京ホールディングス",
+    "industry": "情報・通信",
+    "salary": 1415,
+    "employees": 1634,
+    "avgAge": 48.1,
+    "avgTenure": 22.1,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 77,
+    "code": "87660",
+    "name": "東京海上ホールディングス株式会社",
+    "industry": "保険",
+    "salary": 1412,
+    "employees": 43048,
+    "avgAge": 43.3,
+    "avgTenure": 18.2,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 78,
     "code": "87390",
     "name": "スパークス・グループ株式会社",
     "industry": "証券",
@@ -495,7 +858,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 46,
+    "rank": 79,
     "code": "86040",
     "name": "野村ホールディングス株式会社",
     "industry": "証券",
@@ -506,7 +869,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 47,
+    "rank": 80,
     "code": "91190",
     "name": "飯野海運株式会社",
     "industry": "海運",
@@ -517,7 +880,18 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 48,
+    "rank": 81,
+    "code": "80530",
+    "name": "住友商事株式会社",
+    "industry": "卸売",
+    "salary": 1406,
+    "employees": 74253,
+    "avgAge": 43.1,
+    "avgTenure": 18,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 82,
     "code": "51030",
     "name": "昭和ホールディングス株式会社",
     "industry": "ゴム",
@@ -528,7 +902,18 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 49,
+    "rank": 83,
+    "code": "80350",
+    "name": "東京エレクトロン株式会社",
+    "industry": "電気機器",
+    "salary": 1398,
+    "employees": 17204,
+    "avgAge": 43.6,
+    "avgTenure": 15.6,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 84,
     "code": "91070",
     "name": "川崎汽船株式会社",
     "industry": "海運",
@@ -539,7 +924,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 50,
+    "rank": 85,
     "code": "94040",
     "name": "日本テレビホールディングス株式会社",
     "industry": "情報・通信",
@@ -550,7 +935,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 51,
+    "rank": 86,
     "code": "87660",
     "name": "東京海上ホールディングス株式会社",
     "industry": "保険",
@@ -561,7 +946,18 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 52,
+    "rank": 87,
+    "code": "94040",
+    "name": "日本テレビホールディングス株式会社",
+    "industry": "情報・通信",
+    "salary": 1379,
+    "employees": 5096,
+    "avgAge": 48,
+    "avgTenure": 20.3,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 88,
     "code": "91010",
     "name": "日本郵船株式会社",
     "industry": "海運",
@@ -572,7 +968,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 53,
+    "rank": 89,
     "code": "86040",
     "name": "野村ホールディングス株式会社",
     "industry": "証券",
@@ -583,7 +979,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 54,
+    "rank": 90,
     "code": "34310",
     "name": "宮地エンジニアリンググループ株式会社",
     "industry": "金属製品",
@@ -594,7 +990,18 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 55,
+    "rank": 91,
+    "code": "85950",
+    "name": "ジャフコ　グループ株式会社",
+    "industry": "証券",
+    "salary": 1365,
+    "employees": 147,
+    "avgAge": 42,
+    "avgTenure": 14,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 92,
     "code": "94130",
     "name": "株式会社テレビ東京ホールディングス",
     "industry": "情報・通信",
@@ -605,7 +1012,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 56,
+    "rank": 93,
     "code": "99840",
     "name": "ソフトバンクグループ株式会社",
     "industry": "情報・通信",
@@ -616,7 +1023,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 57,
+    "rank": 94,
     "code": "99840",
     "name": "ソフトバンクグループ株式会社",
     "industry": "情報・通信",
@@ -627,7 +1034,29 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 58,
+    "rank": 95,
+    "code": "94040",
+    "name": "日本テレビホールディングス株式会社",
+    "industry": "情報・通信",
+    "salary": 1358,
+    "employees": 5101,
+    "avgAge": 48.2,
+    "avgTenure": 16.3,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 96,
+    "code": "87390",
+    "name": "スパークス・グループ株式会社",
+    "industry": "証券",
+    "salary": 1356,
+    "employees": 173,
+    "avgAge": 49.7,
+    "avgTenure": 10,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 97,
     "code": "80350",
     "name": "東京エレクトロン株式会社",
     "industry": "電気機器",
@@ -638,7 +1067,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 59,
+    "rank": 98,
     "code": "83090",
     "name": "三井住友トラストグループ株式会社",
     "industry": "銀行",
@@ -649,7 +1078,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 60,
+    "rank": 99,
     "code": "65320",
     "name": "株式会社ベイカレント",
     "industry": "サービス",
@@ -660,7 +1089,7 @@
     "periodEnd": "2025-02-28"
   },
   {
-    "rank": 61,
+    "rank": 100,
     "code": "88020",
     "name": "三菱地所株式会社",
     "industry": "不動産",
@@ -671,7 +1100,73 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 62,
+    "rank": 101,
+    "code": "99840",
+    "name": "ソフトバンクグループ株式会社",
+    "industry": "情報・通信",
+    "salary": 1339,
+    "employees": 63339,
+    "avgAge": 40.5,
+    "avgTenure": 9.5,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 102,
+    "code": "37910",
+    "name": "株式会社ＩＧポート",
+    "industry": "",
+    "salary": 1336,
+    "employees": 400,
+    "avgAge": 49.93,
+    "avgTenure": 4.42,
+    "periodEnd": "2023-05-31"
+  },
+  {
+    "rank": 103,
+    "code": "61460",
+    "name": "株式会社ディスコ",
+    "industry": "機械",
+    "salary": 1329,
+    "employees": 4553,
+    "avgAge": 37.6,
+    "avgTenure": 11.1,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 104,
+    "code": "91070",
+    "name": "川崎汽船株式会社",
+    "industry": "海運",
+    "salary": 1328,
+    "employees": 4918,
+    "avgAge": 39,
+    "avgTenure": 14.6,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 105,
+    "code": "99840",
+    "name": "ソフトバンクグループ株式会社",
+    "industry": "情報・通信",
+    "salary": 1322,
+    "employees": 59721,
+    "avgAge": 40.6,
+    "avgTenure": 9.4,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 106,
+    "code": "91010",
+    "name": "日本郵船株式会社",
+    "industry": "海運",
+    "salary": 1322,
+    "employees": 35502,
+    "avgAge": 39.9,
+    "avgTenure": 14.2,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 107,
     "code": "43070",
     "name": "株式会社野村総合研究所",
     "industry": "情報・通信",
@@ -682,7 +1177,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 63,
+    "rank": 108,
     "code": "45820",
     "name": "シンバイオ製薬株式会社",
     "industry": "医薬品",
@@ -693,7 +1188,7 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 64,
+    "rank": 109,
     "code": "80150",
     "name": "豊田通商株式会社",
     "industry": "卸売",
@@ -704,7 +1199,18 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 65,
+    "rank": 110,
+    "code": "94050",
+    "name": "朝日放送グループホールディングス株式会社",
+    "industry": "情報・通信",
+    "salary": 1314,
+    "employees": 1561,
+    "avgAge": 49.3,
+    "avgTenure": 21.5,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 111,
     "code": "96840",
     "name": "株式会社スクウェア・エニックス・ホールディングス",
     "industry": "情報・通信",
@@ -715,7 +1221,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 66,
+    "rank": 112,
     "code": "94010",
     "name": "株式会社ＴＢＳホールディングス",
     "industry": "情報・通信",
@@ -726,7 +1232,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 67,
+    "rank": 113,
     "code": "81310",
     "name": "株式会社ミツウロコグループホールディングス",
     "industry": "卸売",
@@ -737,7 +1243,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 68,
+    "rank": 114,
     "code": "45970",
     "name": "ソレイジア・ファーマ株式会社",
     "industry": "医薬品",
@@ -748,7 +1254,18 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 69,
+    "rank": 115,
+    "code": "46860",
+    "name": "株式会社ジャストシステム",
+    "industry": "情報・通信",
+    "salary": 1309,
+    "employees": 321,
+    "avgAge": 39.3,
+    "avgTenure": 13.7,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 116,
     "code": "83090",
     "name": "三井住友トラストグループ株式会社",
     "industry": "銀行",
@@ -759,7 +1276,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 70,
+    "rank": 117,
     "code": "62090",
     "name": "リケンＮＰＲ株式会社",
     "industry": "機械",
@@ -770,7 +1287,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 71,
+    "rank": 118,
     "code": "36880",
     "name": "株式会社ＣＡＲＴＡ　ＨＯＬＤＩＮＧＳ",
     "industry": "",
@@ -781,7 +1298,7 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 72,
+    "rank": 119,
     "code": "86010",
     "name": "株式会社大和証券グループ本社",
     "industry": "証券",
@@ -792,7 +1309,18 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 73,
+    "rank": 120,
+    "code": "73830",
+    "name": "株式会社ネットプロテクションズホールディングス",
+    "industry": "その他金融",
+    "salary": 1297,
+    "employees": 221,
+    "avgAge": 41.6,
+    "avgTenure": 2.6,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 121,
     "code": "94040",
     "name": "日本テレビホールディングス株式会社",
     "industry": "情報・通信",
@@ -803,7 +1331,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 74,
+    "rank": 122,
     "code": "88010",
     "name": "三井不動産株式会社",
     "industry": "不動産",
@@ -814,7 +1342,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 75,
+    "rank": 123,
     "code": "91190",
     "name": "飯野海運株式会社",
     "industry": "海運",
@@ -825,7 +1353,29 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 76,
+    "rank": 124,
+    "code": "80350",
+    "name": "東京エレクトロン株式会社",
+    "industry": "電気機器",
+    "salary": 1285,
+    "employees": 15634,
+    "avgAge": 44,
+    "avgTenure": 16.4,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 125,
+    "code": "69540",
+    "name": "ファナック株式会社",
+    "industry": "電気機器",
+    "salary": 1283,
+    "employees": 9432,
+    "avgAge": 40.2,
+    "avgTenure": 14.2,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 126,
     "code": "38170",
     "name": "株式会社ＳＲＡホールディングス",
     "industry": "情報・通信",
@@ -836,7 +1386,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 77,
+    "rank": 127,
     "code": "60350",
     "name": "株式会社アイ・アールジャパンホールディングス",
     "industry": "サービス",
@@ -847,7 +1397,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 78,
+    "rank": 128,
     "code": "85950",
     "name": "ジャフコ　グループ株式会社",
     "industry": "証券",
@@ -858,7 +1408,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 79,
+    "rank": 129,
     "code": "32890",
     "name": "東急不動産ホールディングス株式会社",
     "industry": "不動産",
@@ -869,7 +1419,29 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 80,
+    "rank": 130,
+    "code": "24330",
+    "name": "株式会社博報堂ＤＹホールディングス",
+    "industry": "サービス",
+    "salary": 1275,
+    "employees": 27936,
+    "avgAge": 43.9,
+    "avgTenure": 13.6,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 131,
+    "code": "83090",
+    "name": "三井住友トラストグループ株式会社",
+    "industry": "銀行",
+    "salary": 1274,
+    "employees": 3828,
+    "avgAge": 49.9,
+    "avgTenure": 20.9,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 132,
     "code": "43100",
     "name": "株式会社ドリームインキュベータ",
     "industry": "サービス",
@@ -880,7 +1452,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 81,
+    "rank": 133,
     "code": "27680",
     "name": "双日株式会社",
     "industry": "卸売",
@@ -891,7 +1463,18 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 82,
+    "rank": 134,
+    "code": "88010",
+    "name": "三井不動産株式会社",
+    "industry": "不動産",
+    "salary": 1273,
+    "employees": 24408,
+    "avgAge": 40.4,
+    "avgTenure": 11.1,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 135,
     "code": "94120",
     "name": "株式会社スカパーＪＳＡＴホールディングス",
     "industry": "情報・通信",
@@ -902,7 +1485,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 83,
+    "rank": 136,
     "code": "88020",
     "name": "三菱地所株式会社",
     "industry": "不動産",
@@ -913,7 +1496,18 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 84,
+    "rank": 137,
+    "code": "94070",
+    "name": "株式会社ＲＫＢ毎日ホールディングス",
+    "industry": "",
+    "salary": 1273,
+    "employees": 659,
+    "avgAge": 50.8,
+    "avgTenure": 24.7,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 138,
     "code": "80350",
     "name": "東京エレクトロン株式会社",
     "industry": "電気機器",
@@ -924,7 +1518,18 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 85,
+    "rank": 139,
+    "code": "94120",
+    "name": "株式会社スカパーＪＳＡＴホールディングス",
+    "industry": "情報・通信",
+    "salary": 1271,
+    "employees": 841,
+    "avgAge": 50,
+    "avgTenure": 4,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 140,
     "code": "43070",
     "name": "株式会社野村総合研究所",
     "industry": "情報・通信",
@@ -935,7 +1540,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 86,
+    "rank": 141,
     "code": "60350",
     "name": "株式会社アイ・アールジャパンホールディングス",
     "industry": "サービス",
@@ -946,7 +1551,18 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 87,
+    "rank": 142,
+    "code": "88010",
+    "name": "三井不動産株式会社",
+    "industry": "不動産",
+    "salary": 1269,
+    "employees": 24706,
+    "avgAge": 40.2,
+    "avgTenure": 10.6,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 143,
     "code": "94020",
     "name": "中部日本放送株式会社",
     "industry": "",
@@ -957,7 +1573,18 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 88,
+    "rank": 144,
+    "code": "83090",
+    "name": "三井住友トラストグループ株式会社",
+    "industry": "銀行",
+    "salary": 1268,
+    "employees": 3588,
+    "avgAge": 49.8,
+    "avgTenure": 21.1,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 145,
     "code": "94070",
     "name": "株式会社ＲＫＢ毎日ホールディングス",
     "industry": "",
@@ -968,7 +1595,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 89,
+    "rank": 146,
     "code": "14140",
     "name": "ショーボンドホールディングス株式会社",
     "industry": "",
@@ -979,7 +1606,7 @@
     "periodEnd": "2024-06-30"
   },
   {
-    "rank": 90,
+    "rank": 147,
     "code": "85950",
     "name": "ジャフコ　グループ株式会社",
     "industry": "証券",
@@ -990,7 +1617,18 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 91,
+    "rank": 148,
+    "code": "58310",
+    "name": "株式会社しずおかフィナンシャルグループ",
+    "industry": "銀行",
+    "salary": 1265,
+    "employees": 3945,
+    "avgAge": 45.9,
+    "avgTenure": 23.5,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 149,
     "code": "58310",
     "name": "株式会社しずおかフィナンシャルグループ",
     "industry": "銀行",
@@ -1001,7 +1639,18 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 92,
+    "rank": 150,
+    "code": "88020",
+    "name": "三菱地所株式会社",
+    "industry": "不動産",
+    "salary": 1264,
+    "employees": 10202,
+    "avgAge": 42,
+    "avgTenure": 17,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 151,
     "code": "54110",
     "name": "ＪＦＥホールディングス株式会社",
     "industry": "鉄鋼",
@@ -1012,7 +1661,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 93,
+    "rank": 152,
     "code": "94010",
     "name": "株式会社ＴＢＳホールディングス",
     "industry": "情報・通信",
@@ -1023,7 +1672,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 94,
+    "rank": 153,
     "code": "80150",
     "name": "豊田通商株式会社",
     "industry": "卸売",
@@ -1034,7 +1683,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 95,
+    "rank": 154,
     "code": "94050",
     "name": "朝日放送グループホールディングス株式会社",
     "industry": "情報・通信",
@@ -1045,7 +1694,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 96,
+    "rank": 155,
     "code": "34820",
     "name": "ロードスターキャピタル株式会社",
     "industry": "不動産",
@@ -1056,7 +1705,18 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 97,
+    "rank": 156,
+    "code": "96840",
+    "name": "株式会社スクウェア・エニックス・ホールディングス",
+    "industry": "情報・通信",
+    "salary": 1259,
+    "employees": 4712,
+    "avgAge": 46.5,
+    "avgTenure": 5.1,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 157,
     "code": "88900",
     "name": "株式会社レーサム",
     "industry": "",
@@ -1067,7 +1727,40 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 98,
+    "rank": 158,
+    "code": "94050",
+    "name": "朝日放送グループホールディングス株式会社",
+    "industry": "情報・通信",
+    "salary": 1253,
+    "employees": 1509,
+    "avgAge": 49.2,
+    "avgTenure": 22.4,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 159,
+    "code": "85950",
+    "name": "ジャフコ　グループ株式会社",
+    "industry": "証券",
+    "salary": 1252,
+    "employees": 135,
+    "avgAge": 44,
+    "avgTenure": 16,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 160,
+    "code": "69540",
+    "name": "ファナック株式会社",
+    "industry": "電気機器",
+    "salary": 1248,
+    "employees": 8675,
+    "avgAge": 40.3,
+    "avgTenure": 14.4,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 161,
     "code": "27680",
     "name": "双日株式会社",
     "industry": "卸売",
@@ -1078,7 +1771,18 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 99,
+    "rank": 162,
+    "code": "88020",
+    "name": "三菱地所株式会社",
+    "industry": "不動産",
+    "salary": 1246,
+    "employees": 10655,
+    "avgAge": 40,
+    "avgTenure": 14,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 163,
     "code": "87370",
     "name": "株式会社あかつき本社",
     "industry": "証券",
@@ -1089,7 +1793,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 100,
+    "rank": 164,
     "code": "141A0",
     "name": "株式会社トライアルホールディングス",
     "industry": "",
@@ -1100,7 +1804,7 @@
     "periodEnd": "2024-06-30"
   },
   {
-    "rank": 101,
+    "rank": 165,
     "code": "247A0",
     "name": "Ａｉロボティクス株式会社",
     "industry": "化学",
@@ -1111,7 +1815,40 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 102,
+    "rank": 166,
+    "code": "43070",
+    "name": "株式会社野村総合研究所",
+    "industry": "情報・通信",
+    "salary": 1242,
+    "employees": 17394,
+    "avgAge": 40.6,
+    "avgTenure": 14.6,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 167,
+    "code": "54110",
+    "name": "ＪＦＥホールディングス株式会社",
+    "industry": "鉄鋼",
+    "salary": 1241,
+    "employees": 64241,
+    "avgAge": 46.1,
+    "avgTenure": 21.8,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 168,
+    "code": "94070",
+    "name": "株式会社ＲＫＢ毎日ホールディングス",
+    "industry": "",
+    "salary": 1240,
+    "employees": 660,
+    "avgAge": 50.1,
+    "avgTenure": 23.8,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 169,
     "code": "69540",
     "name": "ファナック株式会社",
     "industry": "電気機器",
@@ -1122,7 +1859,40 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 103,
+    "rank": 170,
+    "code": "71670",
+    "name": "株式会社めぶきフィナンシャルグループ",
+    "industry": "銀行",
+    "salary": 1234,
+    "employees": 5971,
+    "avgAge": 48.7,
+    "avgTenure": 25,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 171,
+    "code": "43070",
+    "name": "株式会社野村総合研究所",
+    "industry": "情報・通信",
+    "salary": 1232,
+    "employees": 16512,
+    "avgAge": 40.6,
+    "avgTenure": 14.8,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 172,
+    "code": "86300",
+    "name": "ＳＯＭＰＯホールディングス株式会社",
+    "industry": "保険",
+    "salary": 1231,
+    "employees": 49057,
+    "avgAge": 43.7,
+    "avgTenure": 14.9,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 173,
     "code": "92600",
     "name": "西本Ｗｉｓｍｅｔｔａｃホールディングス株式会社",
     "industry": "",
@@ -1133,7 +1903,7 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 104,
+    "rank": 174,
     "code": "90640",
     "name": "ヤマトホールディングス株式会社",
     "industry": "陸運",
@@ -1144,7 +1914,18 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 105,
+    "rank": 175,
+    "code": "86010",
+    "name": "株式会社大和証券グループ本社",
+    "industry": "証券",
+    "salary": 1223,
+    "employees": 14731,
+    "avgAge": 40.4,
+    "avgTenure": 14.7,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 176,
     "code": "91070",
     "name": "川崎汽船株式会社",
     "industry": "海運",
@@ -1155,7 +1936,18 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 106,
+    "rank": 177,
+    "code": "86010",
+    "name": "株式会社大和証券グループ本社",
+    "industry": "証券",
+    "salary": 1219,
+    "employees": 14889,
+    "avgAge": 40.3,
+    "avgTenure": 15.2,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 178,
     "code": "86300",
     "name": "ＳＯＭＰＯホールディングス株式会社",
     "industry": "保険",
@@ -1166,7 +1958,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 107,
+    "rank": 179,
     "code": "25020",
     "name": "アサヒグループホールディングス株式会社",
     "industry": "食料品",
@@ -1177,7 +1969,18 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 108,
+    "rank": 180,
+    "code": "73370",
+    "name": "株式会社ひろぎんホールディングス",
+    "industry": "銀行",
+    "salary": 1218,
+    "employees": 3798,
+    "avgAge": 46.7,
+    "avgTenure": 23.7,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 181,
     "code": "43100",
     "name": "株式会社ドリームインキュベータ",
     "industry": "サービス",
@@ -1188,7 +1991,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 109,
+    "rank": 182,
     "code": "78320",
     "name": "株式会社バンダイナムコホールディングス",
     "industry": "その他製品",
@@ -1199,7 +2002,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 110,
+    "rank": 183,
     "code": "58340",
     "name": "ＳＢＩリーシングサービス株式会社",
     "industry": "証券",
@@ -1210,7 +2013,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 111,
+    "rank": 184,
     "code": "71860",
     "name": "株式会社コンコルディア・フィナンシャルグループ",
     "industry": "銀行",
@@ -1221,7 +2024,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 112,
+    "rank": 185,
     "code": "86090",
     "name": "株式会社岡三証券グループ",
     "industry": "証券",
@@ -1232,7 +2035,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 113,
+    "rank": 186,
     "code": "70380",
     "name": "フロンティア・マネジメント株式会社",
     "industry": "サービス",
@@ -1243,7 +2046,18 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 114,
+    "rank": 187,
+    "code": "27680",
+    "name": "双日株式会社",
+    "industry": "卸売",
+    "salary": 1208,
+    "employees": 20669,
+    "avgAge": 41.7,
+    "avgTenure": 15.4,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 188,
     "code": "60880",
     "name": "株式会社シグマクシス・ホールディングス",
     "industry": "サービス",
@@ -1254,7 +2068,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 115,
+    "rank": 189,
     "code": "45190",
     "name": "中外製薬株式会社",
     "industry": "医薬品",
@@ -1265,7 +2079,7 @@
     "periodEnd": "2024-12-31"
   },
   {
-    "rank": 116,
+    "rank": 190,
     "code": "186A0",
     "name": "株式会社アストロスケールホールディングス",
     "industry": "",
@@ -1276,7 +2090,29 @@
     "periodEnd": "2024-04-30"
   },
   {
-    "rank": 117,
+    "rank": 191,
+    "code": "78320",
+    "name": "株式会社バンダイナムコホールディングス",
+    "industry": "その他製品",
+    "salary": 1205,
+    "employees": 9886,
+    "avgAge": 47.2,
+    "avgTenure": 19.5,
+    "periodEnd": "2022-03-31"
+  },
+  {
+    "rank": 192,
+    "code": "80200",
+    "name": "兼松株式会社",
+    "industry": "卸売",
+    "salary": 1204,
+    "employees": 7866,
+    "avgAge": 38.5,
+    "avgTenure": 13.7,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 193,
     "code": "94120",
     "name": "株式会社スカパーＪＳＡＴホールディングス",
     "industry": "情報・通信",
@@ -1287,7 +2123,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 118,
+    "rank": 194,
     "code": "71670",
     "name": "株式会社めぶきフィナンシャルグループ",
     "industry": "銀行",
@@ -1298,7 +2134,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 119,
+    "rank": 195,
     "code": "32360",
     "name": "株式会社プロパスト",
     "industry": "",
@@ -1309,7 +2145,7 @@
     "periodEnd": "2024-05-31"
   },
   {
-    "rank": 120,
+    "rank": 196,
     "code": "71670",
     "name": "株式会社めぶきフィナンシャルグループ",
     "industry": "銀行",
@@ -1320,7 +2156,7 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 121,
+    "rank": 197,
     "code": "94070",
     "name": "株式会社ＲＫＢ毎日ホールディングス",
     "industry": "",
@@ -1331,7 +2167,7 @@
     "periodEnd": "2025-03-31"
   },
   {
-    "rank": 122,
+    "rank": 198,
     "code": "73270",
     "name": "株式会社第四北越フィナンシャルグループ",
     "industry": "銀行",
@@ -1342,7 +2178,18 @@
     "periodEnd": "2024-03-31"
   },
   {
-    "rank": 123,
+    "rank": 199,
+    "code": "86090",
+    "name": "株式会社岡三証券グループ",
+    "industry": "証券",
+    "salary": 1193,
+    "employees": 3358,
+    "avgAge": 52,
+    "avgTenure": 3,
+    "periodEnd": "2023-03-31"
+  },
+  {
+    "rank": 200,
     "code": "90640",
     "name": "ヤマトホールディングス株式会社",
     "industry": "陸運",
@@ -1351,852 +2198,5 @@
     "avgAge": 51.3,
     "avgTenure": 24.1,
     "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 124,
-    "code": "18120",
-    "name": "鹿島建設株式会社",
-    "industry": "建設",
-    "salary": 1184,
-    "employees": 21029,
-    "avgAge": 41.9,
-    "avgTenure": 16.4,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 125,
-    "code": "91680",
-    "name": "株式会社ライズ・コンサルティング・グループ",
-    "industry": "サービス",
-    "salary": 1183,
-    "employees": 330,
-    "avgAge": 33.5,
-    "avgTenure": 2.3,
-    "periodEnd": "2025-02-28"
-  },
-  {
-    "rank": 126,
-    "code": "32310",
-    "name": "野村不動産ホールディングス株式会社",
-    "industry": "不動産",
-    "salary": 1183,
-    "employees": 8732,
-    "avgAge": 41.7,
-    "avgTenure": 13.5,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 127,
-    "code": "94020",
-    "name": "中部日本放送株式会社",
-    "industry": "",
-    "salary": 1181,
-    "employees": 695,
-    "avgAge": 52.1,
-    "avgTenure": 25.6,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 128,
-    "code": "73270",
-    "name": "株式会社第四北越フィナンシャルグループ",
-    "industry": "銀行",
-    "salary": 1181,
-    "employees": 3504,
-    "avgAge": 47.3,
-    "avgTenure": 24.9,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 129,
-    "code": "19790",
-    "name": "株式会社大気社",
-    "industry": "建設",
-    "salary": 1181,
-    "employees": 5267,
-    "avgAge": 42.3,
-    "avgTenure": 15.7,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 130,
-    "code": "38170",
-    "name": "株式会社ＳＲＡホールディングス",
-    "industry": "情報・通信",
-    "salary": 1178,
-    "employees": 1386,
-    "avgAge": 57,
-    "avgTenure": 6.5,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 131,
-    "code": "18120",
-    "name": "鹿島建設株式会社",
-    "industry": "建設",
-    "salary": 1177,
-    "employees": 19813,
-    "avgAge": 43.7,
-    "avgTenure": 17.9,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 132,
-    "code": "81310",
-    "name": "株式会社ミツウロコグループホールディングス",
-    "industry": "卸売",
-    "salary": 1171,
-    "employees": 1753,
-    "avgAge": 43.1,
-    "avgTenure": 7,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 133,
-    "code": "37910",
-    "name": "株式会社ＩＧポート",
-    "industry": "",
-    "salary": 1171,
-    "employees": 461,
-    "avgAge": 45.23,
-    "avgTenure": 6.94,
-    "periodEnd": "2024-05-31"
-  },
-  {
-    "rank": 134,
-    "code": "54110",
-    "name": "ＪＦＥホールディングス株式会社",
-    "industry": "鉄鋼",
-    "salary": 1171,
-    "employees": 62218,
-    "avgAge": 47.5,
-    "avgTenure": 23.6,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 135,
-    "code": "34310",
-    "name": "宮地エンジニアリンググループ株式会社",
-    "industry": "金属製品",
-    "salary": 1169,
-    "employees": 813,
-    "avgAge": 49.2,
-    "avgTenure": 21.2,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 136,
-    "code": "45870",
-    "name": "ペプチドリーム株式会社",
-    "industry": "医薬品",
-    "salary": 1169,
-    "employees": 621,
-    "avgAge": 39.7,
-    "avgTenure": 5.3,
-    "periodEnd": "2024-12-31"
-  },
-  {
-    "rank": 137,
-    "code": "16050",
-    "name": "株式会社ＩＮＰＥＸ",
-    "industry": "鉱業",
-    "salary": 1167,
-    "employees": 3679,
-    "avgAge": 39.4,
-    "avgTenure": 11.6,
-    "periodEnd": "2024-12-31"
-  },
-  {
-    "rank": 138,
-    "code": "43850",
-    "name": "株式会社メルカリ",
-    "industry": "",
-    "salary": 1166,
-    "employees": 2080,
-    "avgAge": 36,
-    "avgTenure": 3.5,
-    "periodEnd": "2024-06-30"
-  },
-  {
-    "rank": 139,
-    "code": "69540",
-    "name": "ファナック株式会社",
-    "industry": "電気機器",
-    "salary": 1163,
-    "employees": 10113,
-    "avgAge": 39.9,
-    "avgTenure": 15,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 140,
-    "code": "25870",
-    "name": "サントリー食品インターナショナル株式会社",
-    "industry": "食料品",
-    "salary": 1161,
-    "employees": 22446,
-    "avgAge": 40.7,
-    "avgTenure": 15.7,
-    "periodEnd": "2024-12-31"
-  },
-  {
-    "rank": 141,
-    "code": "47160",
-    "name": "日本オラクル株式会社",
-    "industry": "",
-    "salary": 1160,
-    "employees": 2257,
-    "avgAge": 44.2,
-    "avgTenure": 9.9,
-    "periodEnd": "2024-05-31"
-  },
-  {
-    "rank": 142,
-    "code": "24330",
-    "name": "株式会社博報堂ＤＹホールディングス",
-    "industry": "サービス",
-    "salary": 1157,
-    "employees": 28894,
-    "avgAge": 41.3,
-    "avgTenure": 11.1,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 143,
-    "code": "94050",
-    "name": "朝日放送グループホールディングス株式会社",
-    "industry": "情報・通信",
-    "salary": 1157,
-    "employees": 1692,
-    "avgAge": 48.5,
-    "avgTenure": 19.2,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 144,
-    "code": "31480",
-    "name": "株式会社クリエイトＳＤホールディングス",
-    "industry": "",
-    "salary": 1151,
-    "employees": 4797,
-    "avgAge": 50.3,
-    "avgTenure": 19.6,
-    "periodEnd": "2024-05-31"
-  },
-  {
-    "rank": 145,
-    "code": "50210",
-    "name": "コスモエネルギーホールディングス株式会社",
-    "industry": "石油・石炭",
-    "salary": 1150,
-    "employees": 6487,
-    "avgAge": 43,
-    "avgTenure": 14,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 146,
-    "code": "147A0",
-    "name": "株式会社ソラコム",
-    "industry": "情報・通信",
-    "salary": 1149,
-    "employees": 176,
-    "avgAge": 41.14,
-    "avgTenure": 3.98,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 147,
-    "code": "285A0",
-    "name": "キオクシアホールディングス株式会社",
-    "industry": "電気機器",
-    "salary": 1148,
-    "employees": 15042,
-    "avgAge": 46.5,
-    "avgTenure": 14.5,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 148,
-    "code": "23370",
-    "name": "いちご株式会社",
-    "industry": "不動産",
-    "salary": 1147,
-    "employees": 671,
-    "avgAge": 43,
-    "avgTenure": 6.6,
-    "periodEnd": "2025-02-28"
-  },
-  {
-    "rank": 149,
-    "code": "60980",
-    "name": "株式会社リクルートホールディングス",
-    "industry": "サービス",
-    "salary": 1145,
-    "employees": 49480,
-    "avgAge": 40.5,
-    "avgTenure": 8.5,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 150,
-    "code": "87250",
-    "name": "ＭＳ＆ＡＤインシュアランスグループホールディングス株式会社",
-    "industry": "保険",
-    "salary": 1143,
-    "employees": 38247,
-    "avgAge": 47.9,
-    "avgTenure": 22.9,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 151,
-    "code": "80200",
-    "name": "兼松株式会社",
-    "industry": "卸売",
-    "salary": 1143,
-    "employees": 8644,
-    "avgAge": 38.2,
-    "avgTenure": 12.7,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 152,
-    "code": "91100",
-    "name": "ＮＳユナイテッド海運株式会社",
-    "industry": "海運",
-    "salary": 1143,
-    "employees": 649,
-    "avgAge": 40.2,
-    "avgTenure": 13.8,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 153,
-    "code": "61820",
-    "name": "株式会社メタリアル",
-    "industry": "サービス",
-    "salary": 1140,
-    "employees": 229,
-    "avgAge": 43,
-    "avgTenure": 4.9,
-    "periodEnd": "2025-02-28"
-  },
-  {
-    "rank": 154,
-    "code": "67300",
-    "name": "株式会社アクセル",
-    "industry": "電気機器",
-    "salary": 1140,
-    "employees": 128,
-    "avgAge": 48.1,
-    "avgTenure": 12.3,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 155,
-    "code": "18020",
-    "name": "株式会社大林組",
-    "industry": "建設",
-    "salary": 1140,
-    "employees": 17305,
-    "avgAge": 42.4,
-    "avgTenure": 16.4,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 156,
-    "code": "80120",
-    "name": "長瀬産業株式会社",
-    "industry": "卸売",
-    "salary": 1136,
-    "employees": 7484,
-    "avgAge": 41.3,
-    "avgTenure": 14.8,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 157,
-    "code": "83160",
-    "name": "株式会社三井住友フィナンシャルグループ",
-    "industry": "銀行",
-    "salary": 1134,
-    "employees": 122978,
-    "avgAge": 39,
-    "avgTenure": 14,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 158,
-    "code": "60880",
-    "name": "株式会社シグマクシス・ホールディングス",
-    "industry": "サービス",
-    "salary": 1133,
-    "employees": 665,
-    "avgAge": 45.9,
-    "avgTenure": 9.2,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 159,
-    "code": "19690",
-    "name": "高砂熱学工業株式会社",
-    "industry": "建設",
-    "salary": 1129,
-    "employees": 5858,
-    "avgAge": 41.6,
-    "avgTenure": 15,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 160,
-    "code": "61930",
-    "name": "バーチャレクス・ホールディングス株式会社",
-    "industry": "サービス",
-    "salary": 1125,
-    "employees": 380,
-    "avgAge": 44,
-    "avgTenure": 1.3,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 161,
-    "code": "49010",
-    "name": "富士フイルムホールディングス株式会社",
-    "industry": "化学",
-    "salary": 1124,
-    "employees": 72593,
-    "avgAge": 43.5,
-    "avgTenure": 17.5,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 162,
-    "code": "48120",
-    "name": "株式会社電通総研",
-    "industry": "情報・通信",
-    "salary": 1122,
-    "employees": 4413,
-    "avgAge": 40.1,
-    "avgTenure": 10.8,
-    "periodEnd": "2024-12-31"
-  },
-  {
-    "rank": 163,
-    "code": "33500",
-    "name": "株式会社メタプラネット",
-    "industry": "卸売",
-    "salary": 1122,
-    "employees": 17,
-    "avgAge": 52.7,
-    "avgTenure": 1,
-    "periodEnd": "2024-12-31"
-  },
-  {
-    "rank": 164,
-    "code": "66250",
-    "name": "ＪＡＬＣＯホールディングス株式会社",
-    "industry": "不動産",
-    "salary": 1122,
-    "employees": 15,
-    "avgAge": 45.6,
-    "avgTenure": 4.5,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 165,
-    "code": "88030",
-    "name": "平和不動産株式会社",
-    "industry": "不動産",
-    "salary": 1119,
-    "employees": 255,
-    "avgAge": 43.1,
-    "avgTenure": 15.1,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 166,
-    "code": "60980",
-    "name": "株式会社リクルートホールディングス",
-    "industry": "サービス",
-    "salary": 1119,
-    "employees": 51373,
-    "avgAge": 39.8,
-    "avgTenure": 7.9,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 167,
-    "code": "50210",
-    "name": "コスモエネルギーホールディングス株式会社",
-    "industry": "石油・石炭",
-    "salary": 1118,
-    "employees": 6530,
-    "avgAge": 43,
-    "avgTenure": 16,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 168,
-    "code": "67580",
-    "name": "ソニーグループ株式会社",
-    "industry": "電気機器",
-    "salary": 1118,
-    "employees": 112300,
-    "avgAge": 42.5,
-    "avgTenure": 15.8,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 169,
-    "code": "17170",
-    "name": "明豊ファシリティワークス株式会社",
-    "industry": "サービス",
-    "salary": 1118,
-    "employees": 200,
-    "avgAge": 46.8,
-    "avgTenure": 10.3,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 170,
-    "code": "84110",
-    "name": "株式会社みずほフィナンシャルグループ",
-    "industry": "銀行",
-    "salary": 1117,
-    "employees": 52554,
-    "avgAge": 41.8,
-    "avgTenure": 16.3,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 171,
-    "code": "95130",
-    "name": "電源開発株式会社",
-    "industry": "電気・ガス",
-    "salary": 1117,
-    "employees": 7127,
-    "avgAge": 41.4,
-    "avgTenure": 18.6,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 172,
-    "code": "147A0",
-    "name": "株式会社ソラコム",
-    "industry": "情報・通信",
-    "salary": 1116,
-    "employees": 150,
-    "avgAge": 41.05,
-    "avgTenure": 3.64,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 173,
-    "code": "88180",
-    "name": "京阪神ビルディング株式会社",
-    "industry": "不動産",
-    "salary": 1116,
-    "employees": 60,
-    "avgAge": 48.9,
-    "avgTenure": 9.3,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 174,
-    "code": "45680",
-    "name": "第一三共株式会社",
-    "industry": "医薬品",
-    "salary": 1114,
-    "employees": 19765,
-    "avgAge": 46,
-    "avgTenure": 20.3,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 175,
-    "code": "45680",
-    "name": "第一三共株式会社",
-    "industry": "医薬品",
-    "salary": 1113,
-    "employees": 18726,
-    "avgAge": 45.5,
-    "avgTenure": 20.3,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 176,
-    "code": "67580",
-    "name": "ソニーグループ株式会社",
-    "industry": "電気機器",
-    "salary": 1113,
-    "employees": 113000,
-    "avgAge": 42.4,
-    "avgTenure": 15.8,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 177,
-    "code": "32890",
-    "name": "東急不動産ホールディングス株式会社",
-    "industry": "不動産",
-    "salary": 1113,
-    "employees": 21170,
-    "avgAge": 42,
-    "avgTenure": 14.3,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 178,
-    "code": "88040",
-    "name": "東京建物株式会社",
-    "industry": "不動産",
-    "salary": 1110,
-    "employees": 4925,
-    "avgAge": 41,
-    "avgTenure": 11,
-    "periodEnd": "2024-12-31"
-  },
-  {
-    "rank": 179,
-    "code": "45030",
-    "name": "アステラス製薬株式会社",
-    "industry": "医薬品",
-    "salary": 1110,
-    "employees": 14754,
-    "avgAge": 42.7,
-    "avgTenure": 16.5,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 180,
-    "code": "86970",
-    "name": "株式会社日本取引所グループ",
-    "industry": "その他金融",
-    "salary": 1110,
-    "employees": 1263,
-    "avgAge": 47.3,
-    "avgTenure": 20.1,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 181,
-    "code": "87950",
-    "name": "株式会社Ｔ＆Ｄホールディングス",
-    "industry": "保険",
-    "salary": 1107,
-    "employees": 20896,
-    "avgAge": 47,
-    "avgTenure": 21.8,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 182,
-    "code": "50760",
-    "name": "インフロニア・ホールディングス株式会社",
-    "industry": "建設",
-    "salary": 1105,
-    "employees": 8076,
-    "avgAge": 42.8,
-    "avgTenure": 14.2,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 183,
-    "code": "45020",
-    "name": "武田薬品工業株式会社",
-    "industry": "医薬品",
-    "salary": 1103,
-    "employees": 47455,
-    "avgAge": 43.4,
-    "avgTenure": 14.4,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 184,
-    "code": "88030",
-    "name": "平和不動産株式会社",
-    "industry": "不動産",
-    "salary": 1103,
-    "employees": 259,
-    "avgAge": 42.5,
-    "avgTenure": 14.6,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 185,
-    "code": "46840",
-    "name": "株式会社オービック",
-    "industry": "情報・通信",
-    "salary": 1103,
-    "employees": 2189,
-    "avgAge": 35.9,
-    "avgTenure": 13,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 186,
-    "code": "91100",
-    "name": "ＮＳユナイテッド海運株式会社",
-    "industry": "海運",
-    "salary": 1102,
-    "employees": 656,
-    "avgAge": 40.1,
-    "avgTenure": 14.7,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 187,
-    "code": "77810",
-    "name": "株式会社平山ホールディングス",
-    "industry": "",
-    "salary": 1101,
-    "employees": 3096,
-    "avgAge": 50.31,
-    "avgTenure": 3.77,
-    "periodEnd": "2024-06-30"
-  },
-  {
-    "rank": 188,
-    "code": "87250",
-    "name": "ＭＳ＆ＡＤインシュアランスグループホールディングス株式会社",
-    "industry": "保険",
-    "salary": 1101,
-    "employees": 38391,
-    "avgAge": 48.3,
-    "avgTenure": 23.2,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 189,
-    "code": "50270",
-    "name": "ＡｎｙＭｉｎｄ　Ｇｒｏｕｐ株式会社",
-    "industry": "情報・通信",
-    "salary": 1100,
-    "employees": 1941,
-    "avgAge": 38,
-    "avgTenure": 4.2,
-    "periodEnd": "2024-12-31"
-  },
-  {
-    "rank": 190,
-    "code": "319A0",
-    "name": "株式会社技術承継機構",
-    "industry": "金属製品",
-    "salary": 1100,
-    "employees": 558,
-    "avgAge": 37.3,
-    "avgTenure": 1.6,
-    "periodEnd": "2024-12-31"
-  },
-  {
-    "rank": 191,
-    "code": "50760",
-    "name": "インフロニア・ホールディングス株式会社",
-    "industry": "建設",
-    "salary": 1099,
-    "employees": 8037,
-    "avgAge": 41.9,
-    "avgTenure": 14.8,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 192,
-    "code": "83160",
-    "name": "株式会社三井住友フィナンシャルグループ",
-    "industry": "銀行",
-    "salary": 1095,
-    "employees": 120373,
-    "avgAge": 39,
-    "avgTenure": 14,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 193,
-    "code": "80120",
-    "name": "長瀬産業株式会社",
-    "industry": "卸売",
-    "salary": 1095,
-    "employees": 7528,
-    "avgAge": 41.8,
-    "avgTenure": 15.7,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 194,
-    "code": "78320",
-    "name": "株式会社バンダイナムコホールディングス",
-    "industry": "その他製品",
-    "salary": 1095,
-    "employees": 11159,
-    "avgAge": 47.2,
-    "avgTenure": 19.9,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 195,
-    "code": "83060",
-    "name": "株式会社三菱ＵＦＪフィナンシャル・グループ",
-    "industry": "銀行",
-    "salary": 1093,
-    "employees": 156253,
-    "avgAge": 40.1,
-    "avgTenure": 13.1,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 196,
-    "code": "24330",
-    "name": "株式会社博報堂ＤＹホールディングス",
-    "industry": "サービス",
-    "salary": 1091,
-    "employees": 29386,
-    "avgAge": 41.4,
-    "avgTenure": 12.8,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 197,
-    "code": "87950",
-    "name": "株式会社Ｔ＆Ｄホールディングス",
-    "industry": "保険",
-    "salary": 1091,
-    "employees": 20408,
-    "avgAge": 46.1,
-    "avgTenure": 21.3,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 198,
-    "code": "32310",
-    "name": "野村不動産ホールディングス株式会社",
-    "industry": "不動産",
-    "salary": 1090,
-    "employees": 7929,
-    "avgAge": 41.2,
-    "avgTenure": 12.9,
-    "periodEnd": "2024-03-31"
-  },
-  {
-    "rank": 199,
-    "code": "19750",
-    "name": "株式会社朝日工業社",
-    "industry": "建設",
-    "salary": 1089,
-    "employees": 1092,
-    "avgAge": 45.3,
-    "avgTenure": 18.4,
-    "periodEnd": "2025-03-31"
-  },
-  {
-    "rank": 200,
-    "code": "58340",
-    "name": "ＳＢＩリーシングサービス株式会社",
-    "industry": "証券",
-    "salary": 1087,
-    "employees": 58,
-    "avgAge": 42,
-    "avgTenure": 2.9,
-    "periodEnd": "2025-03-31"
   }
 ]
