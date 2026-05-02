@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
+  Dot,
 } from "recharts";
 import { calcSalaryPercentile } from "@/data/mock";
 
@@ -206,7 +207,13 @@ export function CompanyDetailFromDb({
           {trend.length > 0 ? (
             <div className="h-[260px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={trend} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+                <LineChart data={trend} margin={{ top: 5, right: 30, bottom: 5, left: 0 }}>
+                  <defs>
+                    <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#1a56db" />
+                      <stop offset="100%" stopColor="#7c3aed" />
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                   <XAxis dataKey="year" tick={{ fontSize: 11 }} />
                   <YAxis
@@ -229,15 +236,15 @@ export function CompanyDetailFromDb({
                       label={{ value: "業界平均", position: "right", fontSize: 10, fill: "#9ca3af" }}
                     />
                   )}
-                  <Bar dataKey="salary" radius={[6, 6, 0, 0]} barSize={36} fill="url(#grad)">
-                    <defs>
-                      <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="#1a56db" />
-                        <stop offset="100%" stopColor="#7c3aed" />
-                      </linearGradient>
-                    </defs>
-                  </Bar>
-                </BarChart>
+                  <Line
+                    type="monotone"
+                    dataKey="salary"
+                    stroke="url(#lineGrad)"
+                    strokeWidth={3}
+                    dot={{ fill: "#1a56db", r: 5, strokeWidth: 2, stroke: "#fff" }}
+                    activeDot={{ r: 7, fill: "#7c3aed" }}
+                  />
+                </LineChart>
               </ResponsiveContainer>
             </div>
           ) : (
