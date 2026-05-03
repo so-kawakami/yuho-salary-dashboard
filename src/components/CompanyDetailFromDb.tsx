@@ -197,6 +197,24 @@ export function CompanyDetailFromDb({
         ))}
       </div>
 
+      {/* 自動生成分析テキスト */}
+      {salaryMan > 0 && (
+        <CompanyAnalysis
+          companyName={company.name}
+          industry={company.industry}
+          salaryMan={salaryMan}
+          change={change}
+          percentile={percentile}
+          industryAvg={industryAvg}
+          employees={latest?.employees ?? null}
+          avgAge={latest?.avgAge ?? null}
+          avgTenure={latest?.avgTenure ?? null}
+          trendYears={trend.length}
+          fiscalYear={latest?.fiscalYear ?? null}
+          peers={peers}
+        />
+      )}
+
       {/* 広告 */}
       <AdBanner slot="9555970163" format="horizontal" className="my-2" />
 
@@ -311,6 +329,29 @@ export function CompanyDetailFromDb({
         </div>
       </div>
 
+      {/* 他社と比較 */}
+      {peers.length > 0 && (
+        <div className="glass rounded-2xl p-6">
+          <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
+            他社と年収を比較
+          </h2>
+          <p className="text-xs text-[var(--color-text-muted)] mb-4">
+            {company.name}と同業他社の年収をサイドバイサイドで比較
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {peers.map((peer) => (
+              <Link
+                key={peer.code}
+                href={`/compare/${company.secCode ?? ""}-vs-${peer.code}`}
+                className="text-xs px-4 py-2 rounded-full glass text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary-light)] transition-colors"
+              >
+                vs {peer.name}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* 転職・求人リンク */}
       <div className="glass rounded-2xl p-6">
         <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
@@ -395,6 +436,121 @@ function rankLabel(deviation: number): string {
   if (deviation >= 45) return "平均的";
   if (deviation >= 40) return "やや低い";
   return "低め";
+}
+
+function CompanyAnalysis({
+  companyName,
+  industry,
+  salaryMan,
+  change,
+  percentile,
+  industryAvg,
+  employees,
+  avgAge,
+  avgTenure,
+  trendYears,
+  fiscalYear,
+  peers,
+}: {
+  companyName: string;
+  industry: string | null;
+  salaryMan: number;
+  change: number | null;
+  percentile: { percentile: number; deviation: number; label: string };
+  industryAvg: number | null;
+  employees: number | null;
+  avgAge: number | null;
+  avgTenure: number | null;
+  trendYears: number;
+  fiscalYear: string | null;
+  peers: Peer[];
+}) {
+  const paragraphs: string[] = [];
+
+  // 第1段落: 基本情報
+  let intro = `${companyName}の平均年収は${salaryMan.toLocaleString()}万円です`;
+  if (fiscalYear) intro += `（${fiscalYear}期・有価証券報告書より）`;
+  intro += "。";
+  if (percentile.percentile >= 80) {
+    intro += `上場企業の中で上位${100 - percentile.percentile}%に位置し、偏差値は${percentile.deviation}と非常に高い水準です。`;
+  } else if (percentile.percentile >= 60) {
+    intro += `上場企業の中で上位${100 - percentile.percentile}%に位置し、偏差値${percentile.deviation}とやや高めの水準です。`;
+  } else {
+    intro += `上場企業全体での偏差値は${percentile.deviation}で、${percentile.label}の水準です。`;
+  }
+  paragraphs.push(intro);
+
+  // 第2段落: 業界比較
+  if (industry && industryAvg && industryAvg > 0) {
+    const ratio = (salaryMan / industryAvg).toFixed(1);
+    const diff = salaryMan - industryAvg;
+    let industryText = `${industry}業界の平均年収${industryAvg.toLocaleString()}万円と比較すると、`;
+    if (diff > 100) {
+      industryText += `${diff.toLocaleString()}万円上回っており、業界平均の約${ratio}倍の水準です。`;
+    } else if (diff > 0) {
+      industryText += `${diff.toLocaleString()}万円上回っています。`;
+    } else if (diff < -100) {
+      industryText += `${Math.abs(diff).toLocaleString()}万円下回っています。`;
+    } else if (diff < 0) {
+      industryText += `やや下回る水準です。`;
+    } else {
+      industryText += `ほぼ同等の水準です。`;
+    }
+    if (peers.length > 0) {
+      const higher = peers.filter((p) => p.salary > salaryMan).length;
+      const lower = peers.filter((p) => p.salary <= salaryMan).length;
+      if (higher === 0) {
+        industryText += `同業他社${peers.length}社の中ではトップの年収です。`;
+      } else {
+        industryText += `同業他社${peers.length}社中、${higher}社が${companyName}より高い年収水準となっています。`;
+      }
+    }
+    paragraphs.push(industryText);
+  }
+
+  // 第3段落: 組織の特徴
+  const orgParts: string[] = [];
+  if (employees) {
+    orgParts.push(`従業員数は${employees.toLocaleString()}名`);
+  }
+  if (avgAge) {
+    const ageDesc = avgAge < 35 ? "若い組織" : avgAge < 40 ? "比較的若い組織" : avgAge < 45 ? "標準的な年齢構成" : "経験豊富な組織";
+    orgParts.push(`平均年齢は${avgAge}歳（${ageDesc}）`);
+  }
+  if (avgTenure) {
+    const tenureDesc = avgTenure < 8 ? "転職が活発" : avgTenure < 15 ? "標準的な定着率" : "長期的に働く社員が多い";
+    orgParts.push(`平均勤続年数は${avgTenure}年（${tenureDesc}）`);
+  }
+  if (orgParts.length > 0) {
+    paragraphs.push(orgParts.join("、") + "です。");
+  }
+
+  // 第4段落: 年収推移
+  if (change !== null && trendYears >= 2) {
+    let trendText = `前年と比較すると年収は${Math.abs(change)}万円${change >= 0 ? "増加" : "減少"}しています。`;
+    if (trendYears >= 3) {
+      trendText += `${trendYears}年分の推移データが確認できます。`;
+    }
+    paragraphs.push(trendText);
+  }
+
+  return (
+    <div className="glass rounded-2xl p-6">
+      <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
+        {companyName}の年収分析
+      </h2>
+      <p className="text-xs text-[var(--color-text-muted)] mb-4">
+        有価証券報告書データに基づく自動分析
+      </p>
+      <div className="space-y-3">
+        {paragraphs.map((p, i) => (
+          <p key={i} className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+            {p}
+          </p>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 function ShareButtons({ companyName, salary, code }: { companyName: string; salary: number; code: string }) {
