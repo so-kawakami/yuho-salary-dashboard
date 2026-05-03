@@ -15,7 +15,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const industry = slug;
+  const industry = decodeURIComponent(slug);
 
   const industries = getIndustries();
   const industryData = industries.find((i) => i.industry === industry);
@@ -41,7 +41,7 @@ export default async function IndustryPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const industry = slug;
+  const industry = decodeURIComponent(slug);
   const companies = getCompaniesByIndustry(industry);
   const industries = getIndustries();
   const industryData = industries.find((i) => i.industry === industry);
