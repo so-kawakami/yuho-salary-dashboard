@@ -30,13 +30,13 @@ const TAGS = {
   avgTenure: "jpcrp_cor:AverageLengthOfServiceYearsInformationAboutReportingCompanyInformationAboutEmployees",
   tempWorkers: "jpcrp_cor:AverageNumberOfTemporaryWorkers",
 
-  // DEI指標（2023年度以降の開示義務化）
-  genderWageGapAll:  "jpcrp_cor:RatioOfAnnualWagesBetweenMaleAndFemaleAllWorkers",
-  genderWageGapFull: "jpcrp_cor:RatioOfAnnualWagesBetweenMaleAndFemaleFullTimeWorkers",
-  genderWageGapPart: "jpcrp_cor:RatioOfAnnualWagesBetweenMaleAndFemalePartTimeWorkers",
-  maleParentalLeave: "jpcrp_cor:RateOfMaleEmployeesWhoTookChildcareLeave",
-  femaleManager:     "jpcrp_cor:RatioOfWomenInManagerialPositions",
-  // discover-tagsで確認済み: 女性役員比率（0〜1の小数）
+  // DEI指標（2023年度以降の開示義務化）※discover-tags-byidで三菱商事から確認済み
+  genderWageGapAll:  "jpcrp_cor:AllEmployeesDifferencesInWagesBetweenMaleAndFemaleEmployeesMetricsOfReportingCompany",
+  genderWageGapFull: "jpcrp_cor:RegularEmployeesDifferencesInWagesBetweenMaleAndFemaleEmployeesMetricsOfReportingCompany",
+  genderWageGapPart: "jpcrp_cor:NonRegularEmployeesDifferencesInWagesBetweenMaleAndFemaleEmployeesMetricsOfReportingCompany",
+  maleParentalLeave: "jpcrp_cor:AllEmployeesCalculatedBasedOnProvisionsOfArticle714Item2OfOrdinanceForEnforcementOfActOnChildcareLeaveCaregiverLeaveAndOtherMeasuresForTheWelfareOfWorkersCaringForChildrenOrOtherFamilyMembersRatioOfMaleEmployeesTakingChildcareLeaveMetricsOfReportingCompany",
+  femaleManager:     "jpcrp_cor:RatioOfFemaleEmployeesInManagerialPositionsMetricsOfReportingCompany",
+  // 女性役員比率（フォールバック用）
   femaleDirRatio:    "jpcrp_cor:RatioOfFemaleDirectorsAndOtherOfficers",
 
   // 役員報酬（discover-tagsで確認済みの正しいタグ名）
@@ -215,16 +215,16 @@ async function downloadAndParse(docId: string, apiKey: string): Promise<ParsedDa
         const n = parseInt(value, 10); if (n >= 0) result.tempWorkers = n;
       }
 
-      // DEI: 男女賃金格差（0より大きく200以下の数値 = %)
-      if (tagId === TAGS.genderWageGapAll)  { const n = parseFloat(value); if (n > 0 && n <= 200) result.genderWageGapAll = n; }
-      if (tagId === TAGS.genderWageGapFull) { const n = parseFloat(value); if (n > 0 && n <= 200) result.genderWageGapFull = n; }
-      if (tagId === TAGS.genderWageGapPart) { const n = parseFloat(value); if (n > 0 && n <= 200) result.genderWageGapPart = n; }
+      // DEI: 男女賃金格差（0〜1の小数 → %に変換。例: 0.629 → 62.9%）
+      if (tagId === TAGS.genderWageGapAll)  { const n = parseFloat(value); if (n > 0 && n <= 2) result.genderWageGapAll = Math.round(n * 1000) / 10; }
+      if (tagId === TAGS.genderWageGapFull) { const n = parseFloat(value); if (n > 0 && n <= 2) result.genderWageGapFull = Math.round(n * 1000) / 10; }
+      if (tagId === TAGS.genderWageGapPart) { const n = parseFloat(value); if (n > 0 && n <= 2) result.genderWageGapPart = Math.round(n * 1000) / 10; }
 
-      // DEI: 男性育休取得率（0〜100%)
-      if (tagId === TAGS.maleParentalLeave) { const n = parseFloat(value); if (n >= 0 && n <= 100) result.maleParentalLeaveRate = n; }
+      // DEI: 男性育休取得率（0〜の小数 → %に変換。100%超もあり得る）
+      if (tagId === TAGS.maleParentalLeave) { const n = parseFloat(value); if (n >= 0) result.maleParentalLeaveRate = Math.round(n * 1000) / 10; }
 
-      // DEI: 女性管理職比率（0〜100%）
-      if (tagId === TAGS.femaleManager) { const n = parseFloat(value); if (n >= 0 && n <= 100) result.femaleManagerRate = n; }
+      // DEI: 女性管理職比率（0〜1の小数 → %に変換）
+      if (tagId === TAGS.femaleManager) { const n = parseFloat(value); if (n >= 0 && n <= 1) result.femaleManagerRate = Math.round(n * 1000) / 10; }
 
       // DEI: 女性役員比率（0〜1の小数 → %）※femaleManagerRateのフォールバック
       if (tagId === TAGS.femaleDirRatio && result.femaleManagerRate === null) {
