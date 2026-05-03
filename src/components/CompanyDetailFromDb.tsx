@@ -502,7 +502,7 @@ function DeiSection({ latest }: { latest: SalaryRecord }) {
     {
       label: "男性育休取得率",
       value: latest.maleParentalLeaveRate,
-      desc: "男性従業員の育休取得率",
+      desc: "前年度取得者を含むため100%超の場合あり",
       good: 50,
     },
     {
