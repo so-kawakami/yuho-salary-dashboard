@@ -38,7 +38,7 @@ export default function IndustriesPage() {
           </p>
         </div>
 
-        <IndustryChart />
+        <IndustryChart data={industries} />
 
         {/* 業界ごとの企業一覧 */}
         <div className="space-y-6">
