@@ -8,39 +8,22 @@ export const metadata: Metadata = {
 };
 import Link from "next/link";
 import { IndustryChart } from "@/components/IndustryChart";
-import { getRanking } from "@/db/safe-queries";
+import { getIndustries, getCompaniesByIndustry } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
 
 export default function IndustriesPage() {
-  // ランキングデータから業界ごとに集計
-  const ranking = getRanking(100);
-  const industryMap = new Map<
-    string,
-    { total: number; count: number; companies: typeof ranking }
-  >();
+  const industries = getIndustries();
 
-  for (const r of ranking) {
-    const ind = r.industry || "その他";
-    const entry = industryMap.get(ind) ?? {
-      total: 0,
-      count: 0,
-      companies: [] as typeof ranking,
-    };
-    entry.total += r.salary;
-    entry.count += 1;
-    entry.companies.push(r);
-    industryMap.set(ind, entry);
-  }
-
-  const industries = [...industryMap.entries()]
-    .map(([name, data]) => ({
-      name,
-      avgSalary: Math.round(data.total / data.count),
-      count: data.count,
-      companies: data.companies.sort((a, b) => b.salary - a.salary),
-    }))
-    .sort((a, b) => b.avgSalary - a.avgSalary);
+  // 各業界のトップ企業を取得
+  const industriesWithCompanies = industries
+    .filter((i) => i.industry && i.companies > 0)
+    .map((i) => ({
+      name: i.industry,
+      avgSalary: i.avgSalary,
+      count: i.companies,
+      topCompanies: getCompaniesByIndustry(i.industry, 8),
+    }));
 
   return (
     <div className="flex flex-col min-h-full bg-mesh">
@@ -51,7 +34,7 @@ export default function IndustriesPage() {
             業界別 平均年収
           </h2>
           <p className="text-sm text-[var(--color-text-muted)]">
-            有価証券報告書ベースの業界別平均年収比較
+            有価証券報告書ベース・全{industries.reduce((s, i) => s + i.companies, 0).toLocaleString()}社の集計
           </p>
         </div>
 
@@ -59,7 +42,7 @@ export default function IndustriesPage() {
 
         {/* 業界ごとの企業一覧 */}
         <div className="space-y-6">
-          {industries.map((ind) => (
+          {industriesWithCompanies.map((ind) => (
             <div key={ind.name} className="glass rounded-xl p-5">
               <div className="flex items-center justify-between mb-3">
                 <Link
@@ -84,7 +67,7 @@ export default function IndustriesPage() {
                 </div>
               </div>
               <div className="flex flex-wrap gap-2">
-                {ind.companies.slice(0, 8).map((c) => (
+                {ind.topCompanies.map((c) => (
                   <a
                     key={c.code}
                     href={`/company/${c.code}`}

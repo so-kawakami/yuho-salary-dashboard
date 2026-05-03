@@ -2,9 +2,8 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { StatsCards } from "@/components/StatsCards";
 import { SalaryChecker } from "@/components/SalaryChecker";
-import { SalaryRanking } from "@/components/SalaryRanking";
 import { AdBanner } from "@/components/AdBanner";
-import { getRanking, getStatsData } from "@/db/safe-queries";
+import { getRanking, getStatsData, getIndustries } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
 export const revalidate = 86400;
@@ -12,34 +11,25 @@ export const revalidate = 86400;
 export default function Home() {
   const ranking = getRanking(100);
   const stats = getStatsData();
+  const industries = getIndustries();
 
-  const top15 = ranking.slice(0, 15).map((r) => ({
-    rank: r.rank,
-    code: r.code,
-    name: r.name,
-    industry: r.industry ?? "",
-    salary: r.salary,
-    employees: r.employees ?? 0,
-    change: 0,
-  }));
-
-  // 業界別ハイライト（上位3業界）
-  const industryMap = new Map<string, { total: number; count: number }>();
-  for (const r of ranking) {
-    if (!r.industry) continue;
-    const e = industryMap.get(r.industry) ?? { total: 0, count: 0 };
-    e.total += r.salary;
-    e.count += 1;
-    industryMap.set(r.industry, e);
-  }
-  const topIndustries = [...industryMap.entries()]
-    .map(([name, d]) => ({ name, avg: Math.round(d.total / d.count), count: d.count }))
-    .sort((a, b) => b.avg - a.avg)
+  // 業界別ハイライト（全社集計データから上位4業界）
+  const topIndustries = industries
+    .filter((i) => i.industry && i.companies >= 3)
     .slice(0, 4);
 
   // 高年収・若手に人気の企業（平均年齢が低くて年収が高い）
   const youngHighPay = ranking
     .filter((r) => r.avgAge > 0 && r.avgAge < 38 && r.salary > 600)
+    .slice(0, 4);
+
+  // ランキングTOP5（コンパクトプレビュー）
+  const top5 = ranking.slice(0, 5);
+
+  // 勤続年数が長い企業TOP4（年収だけじゃない切り口）
+  const longTenure = [...ranking]
+    .filter((r) => r.avgTenure > 0 && r.salary > 500)
+    .sort((a, b) => b.avgTenure - a.avgTenure)
     .slice(0, 4);
 
   const jsonLd = {
@@ -127,13 +117,13 @@ export default function Home() {
           {/* 広告 */}
           <AdBanner slot="7121378512" format="auto" />
 
-          {/* 業界別ハイライト */}
+          {/* 業界別ハイライト（全社集計ベース） */}
           {topIndustries.length > 0 && (
             <section>
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h2 className="text-xl font-bold text-[var(--color-text-primary)]">業界別 平均年収</h2>
-                  <p className="text-sm text-[var(--color-text-muted)]">ランキング上位の業界</p>
+                  <p className="text-sm text-[var(--color-text-muted)]">全{stats.totalCompanies.toLocaleString()}社の集計</p>
                 </div>
                 <Link href="/industries" className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1">
                   もっと見る
@@ -145,8 +135,8 @@ export default function Home() {
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {topIndustries.map((ind, i) => (
                   <Link
-                    key={ind.name}
-                    href="/industries"
+                    key={ind.industry}
+                    href={`/industries/${ind.industry}`}
                     className="glass rounded-xl p-4 glass-hover block"
                   >
                     <div className="flex items-center gap-2 mb-2">
@@ -155,15 +145,56 @@ export default function Home() {
                       }`}>
                         {i + 1}
                       </span>
-                      <span className="text-xs text-[var(--color-text-muted)]">{ind.count}社</span>
+                      <span className="text-xs text-[var(--color-text-muted)]">{ind.companies}社</span>
                     </div>
-                    <p className="text-sm font-bold text-[var(--color-text-primary)] mb-1">{ind.name || "その他"}</p>
-                    <p className="text-2xl font-extrabold text-gradient">{ind.avg.toLocaleString()}<span className="text-sm font-normal text-[var(--color-text-secondary)]"> 万円</span></p>
+                    <p className="text-sm font-bold text-[var(--color-text-primary)] mb-1">{ind.industry}</p>
+                    <p className="text-2xl font-extrabold text-gradient">{ind.avgSalary.toLocaleString()}<span className="text-sm font-normal text-[var(--color-text-secondary)]"> 万円</span></p>
                   </Link>
                 ))}
               </div>
             </section>
           )}
+
+          {/* 年収ランキング TOP5（コンパクト） */}
+          <section>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h2 className="text-xl font-bold text-[var(--color-text-primary)]">年収ランキング</h2>
+                <p className="text-sm text-[var(--color-text-muted)]">有価証券報告書ベース</p>
+              </div>
+              <Link href="/ranking" className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1">
+                全ランキングを見る
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+            <div className="space-y-2">
+              {top5.map((r, i) => (
+                <Link
+                  key={r.code}
+                  href={`/company/${r.code}`}
+                  className="glass rounded-xl px-5 py-4 glass-hover flex items-center gap-4"
+                >
+                  <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
+                    i === 0 ? "bg-yellow-400 text-white" :
+                    i === 1 ? "bg-gray-300 text-white" :
+                    i === 2 ? "bg-amber-600 text-white" :
+                    "bg-[var(--color-surface-secondary)] text-[var(--color-text-muted)]"
+                  }`}>
+                    {i + 1}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-[var(--color-text-primary)] truncate">{r.name}</p>
+                    <p className="text-xs text-[var(--color-text-muted)]">{r.industry || ""}</p>
+                  </div>
+                  <p className="text-xl font-extrabold text-gradient shrink-0">
+                    {r.salary.toLocaleString()}<span className="text-sm font-normal text-[var(--color-text-secondary)]"> 万円</span>
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
 
           {/* 若手向け高年収企業 */}
           {youngHighPay.length > 0 && (
@@ -187,7 +218,7 @@ export default function Home() {
                     href={`/company/${r.code}`}
                     className="glass rounded-xl p-5 glass-hover block"
                   >
-                    <p className="text-xs text-[var(--color-text-muted)] mb-1">{r.industry || "−"}</p>
+                    <p className="text-xs text-[var(--color-text-muted)] mb-1">{r.industry || ""}</p>
                     <p className="text-sm font-bold text-[var(--color-text-primary)] mb-3">{r.name}</p>
                     <p className="text-2xl font-extrabold text-gradient">{r.salary.toLocaleString()}<span className="text-sm font-normal text-[var(--color-text-secondary)]"> 万円</span></p>
                     <p className="text-xs text-[var(--color-text-muted)] mt-1">平均 {r.avgAge}歳</p>
@@ -197,22 +228,31 @@ export default function Home() {
             </section>
           )}
 
-          {/* ランキングTOP15 */}
-          <section>
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h2 className="text-xl font-bold text-[var(--color-text-primary)]">年収ランキング TOP15</h2>
-                <p className="text-sm text-[var(--color-text-muted)]">有価証券報告書ベース</p>
+          {/* 長く働ける高年収企業 */}
+          {longTenure.length > 0 && (
+            <section>
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-xl font-bold text-[var(--color-text-primary)]">長く働ける高年収企業</h2>
+                  <p className="text-sm text-[var(--color-text-muted)]">平均勤続年数が長い × 年収500万円以上</p>
+                </div>
               </div>
-              <Link href="/ranking" className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1">
-                全ランキングを見る
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
-            <SalaryRanking data={top15} />
-          </section>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {longTenure.map((r) => (
+                  <Link
+                    key={r.code}
+                    href={`/company/${r.code}`}
+                    className="glass rounded-xl p-5 glass-hover block"
+                  >
+                    <p className="text-xs text-[var(--color-text-muted)] mb-1">{r.industry || ""}</p>
+                    <p className="text-sm font-bold text-[var(--color-text-primary)] mb-3">{r.name}</p>
+                    <p className="text-2xl font-extrabold text-gradient">{r.salary.toLocaleString()}<span className="text-sm font-normal text-[var(--color-text-secondary)]"> 万円</span></p>
+                    <p className="text-xs text-[var(--color-text-muted)] mt-1">平均勤続 {r.avgTenure}年</p>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
         </div>
       </main>
 
