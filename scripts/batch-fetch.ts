@@ -36,18 +36,22 @@ const TAGS = {
   genderWageGapPart: "jpcrp_cor:RatioOfAnnualWagesBetweenMaleAndFemalePartTimeWorkers",
   maleParentalLeave: "jpcrp_cor:RateOfMaleEmployeesWhoTookChildcareLeave",
   femaleManager:     "jpcrp_cor:RatioOfWomenInManagerialPositions",
+  // discover-tagsで確認済み: 女性役員比率（0〜1の小数）
+  femaleDirRatio:    "jpcrp_cor:RatioOfFemaleDirectorsAndOtherOfficers",
 
-  // 役員報酬
-  execCompTotal: "jpcrp_cor:TotalAmountOfRemunerationEtcOfDirectors",
-  execCompCount: "jpcrp_cor:NumberOfDirectors",
+  // 役員報酬（discover-tagsで確認済みの正しいタグ名）
+  execCompTotal: "jpcrp_cor:TotalAmountOfRemunerationEtcRemunerationEtcByCategoryOfDirectorsAndOtherOfficers",
+  execCompCount: "jpcrp_cor:NumberOfDirectorsAndOtherOfficersRemunerationEtcByCategoryOfDirectorsAndOtherOfficers",
 
-  // 財務諸表（売上高・営業利益）※複数タグ候補を一括チェック
-  netSalesNonConsolidated: "jpcrp_cor:NetSales",
-  netSalesConsolidated:    "jpcrp_cor:ConsolidatedNetSales",
-  operatingIncomeNonCon:   "jpcrp_cor:OperatingIncome",
-  operatingIncomeConCon:   "jpcrp_cor:ConsolidatedOperatingIncome",
-  ordinaryIncomeNonCon:    "jpcrp_cor:OrdinaryIncome",
-  netIncomeNonCon:         "jpcrp_cor:ProfitLoss",
+  // 財務諸表（discover-tagsで確認済み: jppfs_cor名前空間）
+  netSales:        "jppfs_cor:NetSales",
+  operatingIncome: "jppfs_cor:OperatingIncome",
+  ordinaryIncome:  "jppfs_cor:OrdinaryIncome",
+  netIncome:       "jppfs_cor:ProfitLoss",
+  // jpcrp_corのサマリーテーブル（フォールバック用）
+  netSalesSummary:        "jpcrp_cor:NetSalesSummaryOfBusinessResults",
+  ordinaryIncomeSummary:  "jpcrp_cor:OrdinaryIncomeLossSummaryOfBusinessResults",
+  netIncomeSummary:       "jpcrp_cor:ProfitLossAttributableToOwnersOfParentSummaryOfBusinessResults",
 };
 
 // ---- ユーティリティ ----
@@ -219,42 +223,48 @@ async function downloadAndParse(docId: string, apiKey: string): Promise<ParsedDa
       // DEI: 男性育休取得率（0〜100%)
       if (tagId === TAGS.maleParentalLeave) { const n = parseFloat(value); if (n >= 0 && n <= 100) result.maleParentalLeaveRate = n; }
 
-      // DEI: 女性管理職比率（0〜100%)
+      // DEI: 女性管理職比率（0〜100%）
       if (tagId === TAGS.femaleManager) { const n = parseFloat(value); if (n >= 0 && n <= 100) result.femaleManagerRate = n; }
 
-      // 役員報酬総額（1万円〜1000億円の範囲）
-      if (tagId === TAGS.execCompTotal) {
-        const n = parseInt(value, 10);
-        if (n > 0 && n <= 100_000_000_000) result.execCompTotal = n;
-      }
-      if (tagId === TAGS.execCompCount) { const n = parseInt(value, 10); if (n > 0) result.execCompCount = n; }
-
-      // 財務諸表: 売上高
-      if (tagId === TAGS.netSalesConsolidated && context.includes("CurrentYear")) {
-        const n = parseInt(value, 10);
-        if (n > 0) { result.netSales = n; result.financialsConsolidated = true; }
-      }
-      if (tagId === TAGS.netSalesNonConsolidated && context.includes("CurrentYear") && result.netSales === null) {
-        const n = parseInt(value, 10);
-        if (n > 0) result.netSales = n;
+      // DEI: 女性役員比率（0〜1の小数 → %）※femaleManagerRateのフォールバック
+      if (tagId === TAGS.femaleDirRatio && result.femaleManagerRate === null) {
+        const n = parseFloat(value);
+        if (n >= 0 && n <= 1) result.femaleManagerRate = Math.round(n * 1000) / 10;
       }
 
-      // 財務諸表: 営業利益
-      if (tagId === TAGS.operatingIncomeConCon && context.includes("CurrentYear")) {
+      // 役員報酬総額（役員区分ごとのレコードを合算、CurrentYearDurationのみ）
+      if (tagId === TAGS.execCompTotal && context.includes("CurrentYear")) {
         const n = parseInt(value, 10);
-        if (n !== 0 && result.operatingIncome === null) result.operatingIncome = n;
+        if (n > 0 && n <= 100_000_000_000) result.execCompTotal = (result.execCompTotal ?? 0) + n;
       }
-      if (tagId === TAGS.operatingIncomeNonCon && context.includes("CurrentYear") && result.operatingIncome === null) {
+      if (tagId === TAGS.execCompCount && context.includes("CurrentYear")) {
         const n = parseInt(value, 10);
-        if (n !== 0) result.operatingIncome = n;
+        if (n > 0) result.execCompCount = (result.execCompCount ?? 0) + n;
       }
 
-      // 財務諸表: 経常利益・純利益
-      if (tagId === TAGS.ordinaryIncomeNonCon && context.includes("CurrentYear")) {
-        const n = parseInt(value, 10); if (n !== 0) result.ordinaryIncome = n;
+      // 財務諸表（jppfs_cor名前空間）: CurrentYearDurationのみ
+      if (tagId === TAGS.netSales && context.includes("CurrentYear") && result.netSales === null) {
+        const n = parseInt(value, 10); if (n > 0) result.netSales = n;
       }
-      if (tagId === TAGS.netIncomeNonCon && context.includes("CurrentYear")) {
-        const n = parseInt(value, 10); if (n !== 0) result.netIncome = n;
+      if (tagId === TAGS.operatingIncome && context.includes("CurrentYear") && result.operatingIncome === null) {
+        const n = parseInt(value, 10); if (!isNaN(n)) result.operatingIncome = n;
+      }
+      if (tagId === TAGS.ordinaryIncome && context.includes("CurrentYear") && result.ordinaryIncome === null) {
+        const n = parseInt(value, 10); if (!isNaN(n)) result.ordinaryIncome = n;
+      }
+      if (tagId === TAGS.netIncome && context.includes("CurrentYear") && result.netIncome === null) {
+        const n = parseInt(value, 10); if (!isNaN(n)) result.netIncome = n;
+      }
+
+      // 財務サマリー（jpcrp_cor）: jppfs_corで取れなかった場合のフォールバック
+      if (tagId === TAGS.netSalesSummary && context.includes("CurrentYear") && result.netSales === null) {
+        const n = parseInt(value, 10); if (n > 0) result.netSales = n;
+      }
+      if (tagId === TAGS.ordinaryIncomeSummary && context.includes("CurrentYear") && result.ordinaryIncome === null) {
+        const n = parseInt(value, 10); if (!isNaN(n)) result.ordinaryIncome = n;
+      }
+      if (tagId === TAGS.netIncomeSummary && context.includes("CurrentYear") && result.netIncome === null) {
+        const n = parseInt(value, 10); if (!isNaN(n)) result.netIncome = n;
       }
     }
   }
