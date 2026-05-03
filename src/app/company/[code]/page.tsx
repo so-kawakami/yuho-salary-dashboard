@@ -144,6 +144,7 @@ export default async function CompanyPage({
           company={data.company}
           salaryHistory={data.salaryHistory}
           peers={peers}
+          financialsHistory={data.financialsHistory ?? []}
         />
       </main>
 

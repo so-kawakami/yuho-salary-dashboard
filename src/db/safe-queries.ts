@@ -134,7 +134,15 @@ export function getCompany(code: string) {
         employees: mock.employees,
         avgAge: mock.avgAge,
         avgTenure: mock.avgTenure,
+        genderWageGapAll: null,
+        genderWageGapFull: null,
+        genderWageGapPart: null,
+        maleParentalLeaveRate: null,
+        femaleManagerRate: null,
+        execCompTotal: null,
+        execCompCount: null,
       },
     ],
+    financialsHistory: [],
   };
 }

@@ -5,12 +5,15 @@ import { AdBanner } from "@/components/AdBanner";
 import {
   LineChart,
   Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
   ReferenceLine,
+  Legend,
   Dot,
 } from "recharts";
 import { calcSalaryPercentile } from "@/data/mock";
@@ -28,6 +31,22 @@ interface SalaryRecord {
   employees: number | null;
   avgAge: number | null;
   avgTenure: number | null;
+  genderWageGapAll: number | null;
+  genderWageGapFull: number | null;
+  genderWageGapPart: number | null;
+  maleParentalLeaveRate: number | null;
+  femaleManagerRate: number | null;
+  execCompTotal: number | null;
+  execCompCount: number | null;
+}
+
+interface FinancialsRecord {
+  fiscalYear: string;
+  netSales: number | null;
+  operatingIncome: number | null;
+  ordinaryIncome: number | null;
+  netIncome: number | null;
+  isConsolidated: boolean;
 }
 
 interface Peer {
@@ -41,10 +60,12 @@ export function CompanyDetailFromDb({
   company,
   salaryHistory,
   peers = [],
+  financialsHistory = [],
 }: {
   company: Company;
   salaryHistory: SalaryRecord[];
   peers?: Peer[];
+  financialsHistory?: FinancialsRecord[];
 }) {
   const latest = salaryHistory[salaryHistory.length - 1];
   const prev = salaryHistory[salaryHistory.length - 2];
@@ -329,6 +350,26 @@ export function CompanyDetailFromDb({
         </div>
       </div>
 
+      {/* DEI指標 */}
+      {(latest?.genderWageGapAll != null || latest?.maleParentalLeaveRate != null || latest?.femaleManagerRate != null) && (
+        <DeiSection latest={latest} />
+      )}
+
+      {/* 財務データ（売上高・営業利益推移） */}
+      {financialsHistory.length > 0 && (
+        <FinancialsSection financialsHistory={financialsHistory} companyName={company.name} />
+      )}
+
+      {/* 役員報酬 */}
+      {latest?.execCompTotal != null && latest.execCompTotal > 0 && (
+        <ExecCompSection
+          execCompTotal={latest.execCompTotal}
+          execCompCount={latest.execCompCount}
+          employees={latest.employees}
+          fiscalYear={latest.fiscalYear}
+        />
+      )}
+
       {/* 他社と比較 */}
       {peers.length > 0 && (
         <div className="glass rounded-2xl p-6">
@@ -436,6 +477,212 @@ function rankLabel(deviation: number): string {
   if (deviation >= 45) return "平均的";
   if (deviation >= 40) return "やや低い";
   return "低め";
+}
+
+function DeiSection({ latest }: { latest: SalaryRecord }) {
+  const items = [
+    {
+      label: "男女賃金格差（全労働者）",
+      value: latest.genderWageGapAll,
+      desc: "女性の賃金 ÷ 男性の賃金",
+      good: 90,
+    },
+    {
+      label: "男女賃金格差（正規）",
+      value: latest.genderWageGapFull,
+      desc: "正規労働者の男女比率",
+      good: 85,
+    },
+    {
+      label: "男女賃金格差（非正規）",
+      value: latest.genderWageGapPart,
+      desc: "非正規労働者の男女比率",
+      good: 80,
+    },
+    {
+      label: "男性育休取得率",
+      value: latest.maleParentalLeaveRate,
+      desc: "男性従業員の育休取得率",
+      good: 50,
+    },
+    {
+      label: "女性管理職比率",
+      value: latest.femaleManagerRate,
+      desc: "管理職に占める女性の割合",
+      good: 15,
+    },
+  ].filter((item) => item.value != null);
+
+  if (items.length === 0) return null;
+
+  return (
+    <div className="glass rounded-2xl p-6">
+      <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
+        DEI・男女格差データ
+      </h2>
+      <p className="text-xs text-[var(--color-text-muted)] mb-4">
+        有価証券報告書ベース（2023年度以降開示義務化）
+      </p>
+      <div className="space-y-4">
+        {items.map((item) => {
+          const pct = item.value!;
+          const isGood = pct >= item.good;
+          const barColor = isGood ? "bg-[var(--color-success)]" : pct >= item.good * 0.7 ? "bg-yellow-400" : "bg-[var(--color-danger)]";
+          return (
+            <div key={item.label}>
+              <div className="flex justify-between items-center mb-1">
+                <span className="text-sm text-[var(--color-text-secondary)]">{item.label}</span>
+                <span className={`text-sm font-bold ${isGood ? "text-[var(--color-success)]" : "text-[var(--color-text-primary)]"}`}>
+                  {pct.toFixed(1)}%
+                </span>
+              </div>
+              <div className="h-2 rounded-full bg-[var(--color-surface-secondary)] overflow-hidden">
+                <div
+                  className={`h-full rounded-full transition-all duration-700 ${barColor}`}
+                  style={{ width: `${Math.min(pct, 100)}%` }}
+                />
+              </div>
+              <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{item.desc}</p>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function FinancialsSection({
+  financialsHistory,
+  companyName,
+}: {
+  financialsHistory: FinancialsRecord[];
+  companyName: string;
+}) {
+  const trendData = financialsHistory
+    .filter((f) => f.netSales || f.operatingIncome)
+    .map((f) => ({
+      year: f.fiscalYear,
+      売上高: f.netSales ? Math.round(f.netSales / 100_000_000) : null,      // 億円
+      営業利益: f.operatingIncome ? Math.round(f.operatingIncome / 100_000_000) : null,
+    }));
+
+  if (trendData.length === 0) return null;
+
+  const latest = financialsHistory[financialsHistory.length - 1];
+  const isConsolidated = latest?.isConsolidated;
+
+  const allValues = trendData.flatMap((d) => [d.売上高, d.営業利益]).filter((v): v is number => v != null);
+  const maxVal = allValues.length > 0 ? Math.ceil(Math.max(...allValues) * 1.15 / 100) * 100 : 1000;
+
+  return (
+    <div className="glass rounded-2xl p-6">
+      <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
+        業績推移
+      </h2>
+      <p className="text-xs text-[var(--color-text-muted)] mb-4">
+        {isConsolidated ? "連結" : "単体"}・億円ベース（有価証券報告書より）
+      </p>
+
+      {/* 最新KPI */}
+      {latest && (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+          {[
+            { label: "売上高", value: latest.netSales },
+            { label: "営業利益", value: latest.operatingIncome },
+            { label: "経常利益", value: latest.ordinaryIncome },
+            { label: "純利益", value: latest.netIncome },
+          ].map(({ label, value }) => (
+            <div key={label} className="rounded-xl bg-[var(--color-surface-secondary)] p-3">
+              <p className="text-xs text-[var(--color-text-muted)] mb-1">{label}</p>
+              <p className="text-base font-bold text-[var(--color-text-primary)]">
+                {value != null
+                  ? value >= 100_000_000
+                    ? `${Math.round(value / 100_000_000).toLocaleString()}億円`
+                    : `${Math.round(value / 10_000).toLocaleString()}万円`
+                  : "-"}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 推移グラフ */}
+      {trendData.length >= 2 && (
+        <div className="h-[240px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={trendData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+              <XAxis dataKey="year" tick={{ fontSize: 11 }} />
+              <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `${v}億`} domain={[0, maxVal]} />
+              <Tooltip
+                contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              formatter={(v: any) => [`${Number(v).toLocaleString()}億円`]}
+              />
+              <Legend />
+              <Bar dataKey="売上高" fill="#1a56db" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="営業利益" fill="#7c3aed" radius={[4, 4, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ExecCompSection({
+  execCompTotal,
+  execCompCount,
+  employees,
+  fiscalYear,
+}: {
+  execCompTotal: number;
+  execCompCount: number | null;
+  employees: number | null;
+  fiscalYear: string;
+}) {
+  const totalOkuMan = Math.round(execCompTotal / 100_000_000 * 10) / 10; // 億円（小数1桁）
+  const perPerson = execCompCount && execCompCount > 0
+    ? Math.round(execCompTotal / execCompCount / 10_000)
+    : null;
+  const vsAvgEmployee = employees && employees > 0 && perPerson
+    ? null // 年収は万円単位なので比較しない（違う指標）
+    : null;
+
+  return (
+    <div className="glass rounded-2xl p-6">
+      <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
+        役員報酬
+      </h2>
+      <p className="text-xs text-[var(--color-text-muted)] mb-4">
+        {fiscalYear}期・有価証券報告書より
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="rounded-xl bg-[var(--color-surface-secondary)] p-4">
+          <p className="text-xs text-[var(--color-text-muted)] mb-1">役員報酬総額</p>
+          <p className="text-xl font-bold text-[var(--color-text-primary)]">
+            {totalOkuMan >= 1
+              ? `${totalOkuMan}億円`
+              : `${Math.round(execCompTotal / 10_000).toLocaleString()}万円`}
+          </p>
+        </div>
+        {execCompCount != null && (
+          <div className="rounded-xl bg-[var(--color-surface-secondary)] p-4">
+            <p className="text-xs text-[var(--color-text-muted)] mb-1">対象役員数</p>
+            <p className="text-xl font-bold text-[var(--color-text-primary)]">{execCompCount}名</p>
+          </div>
+        )}
+        {perPerson != null && (
+          <div className="rounded-xl bg-[var(--color-surface-secondary)] p-4">
+            <p className="text-xs text-[var(--color-text-muted)] mb-1">役員1人あたり平均</p>
+            <p className="text-xl font-bold text-[var(--color-text-primary)]">
+              {perPerson.toLocaleString()}万円
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 }
 
 function CompanyAnalysis({

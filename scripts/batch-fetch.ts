@@ -23,11 +23,31 @@ const RATE_LIMIT_MS = 500; // API呼び出し間隔
 
 // XBRLタグ名
 const TAGS = {
+  // 既存: 年収・従業員情報
   salary: "jpcrp_cor:AverageAnnualSalaryInformationAboutReportingCompanyInformationAboutEmployees",
   employees: "jpcrp_cor:NumberOfEmployees",
   avgAge: "jpcrp_cor:AverageAgeYearsInformationAboutReportingCompanyInformationAboutEmployees",
   avgTenure: "jpcrp_cor:AverageLengthOfServiceYearsInformationAboutReportingCompanyInformationAboutEmployees",
   tempWorkers: "jpcrp_cor:AverageNumberOfTemporaryWorkers",
+
+  // DEI指標（2023年度以降の開示義務化）
+  genderWageGapAll:  "jpcrp_cor:RatioOfAnnualWagesBetweenMaleAndFemaleAllWorkers",
+  genderWageGapFull: "jpcrp_cor:RatioOfAnnualWagesBetweenMaleAndFemaleFullTimeWorkers",
+  genderWageGapPart: "jpcrp_cor:RatioOfAnnualWagesBetweenMaleAndFemalePartTimeWorkers",
+  maleParentalLeave: "jpcrp_cor:RateOfMaleEmployeesWhoTookChildcareLeave",
+  femaleManager:     "jpcrp_cor:RatioOfWomenInManagerialPositions",
+
+  // 役員報酬
+  execCompTotal: "jpcrp_cor:TotalAmountOfRemunerationEtcOfDirectors",
+  execCompCount: "jpcrp_cor:NumberOfDirectors",
+
+  // 財務諸表（売上高・営業利益）※複数タグ候補を一括チェック
+  netSalesNonConsolidated: "jpcrp_cor:NetSales",
+  netSalesConsolidated:    "jpcrp_cor:ConsolidatedNetSales",
+  operatingIncomeNonCon:   "jpcrp_cor:OperatingIncome",
+  operatingIncomeConCon:   "jpcrp_cor:ConsolidatedOperatingIncome",
+  ordinaryIncomeNonCon:    "jpcrp_cor:OrdinaryIncome",
+  netIncomeNonCon:         "jpcrp_cor:ProfitLoss",
 };
 
 // ---- ユーティリティ ----
@@ -111,6 +131,21 @@ interface ParsedData {
   avgAge: number | null;
   avgTenure: number | null;
   tempWorkers: number | null;
+  // DEI指標
+  genderWageGapAll: number | null;
+  genderWageGapFull: number | null;
+  genderWageGapPart: number | null;
+  maleParentalLeaveRate: number | null;
+  femaleManagerRate: number | null;
+  // 役員報酬
+  execCompTotal: number | null;
+  execCompCount: number | null;
+  // 財務諸表
+  netSales: number | null;
+  operatingIncome: number | null;
+  ordinaryIncome: number | null;
+  netIncome: number | null;
+  financialsConsolidated: boolean;
 }
 
 async function downloadAndParse(docId: string, apiKey: string): Promise<ParsedData | null> {
@@ -127,54 +162,100 @@ async function downloadAndParse(docId: string, apiKey: string): Promise<ParsedDa
     return null;
   }
 
-  const mainCsv = zip.getEntries().find((e) => e.entryName.includes("jpcrp030000"));
+  const entries = zip.getEntries();
+  const mainCsv = entries.find((e) => e.entryName.includes("jpcrp030000"));
   if (!mainCsv) return null;
 
-  const content = decodeBuffer(mainCsv.getData());
-  const lines = content.split("\n");
-
   const result: ParsedData = {
-    salary: null,
-    employees: null,
-    avgAge: null,
-    avgTenure: null,
-    tempWorkers: null,
+    salary: null, employees: null, avgAge: null, avgTenure: null, tempWorkers: null,
+    genderWageGapAll: null, genderWageGapFull: null, genderWageGapPart: null,
+    maleParentalLeaveRate: null, femaleManagerRate: null,
+    execCompTotal: null, execCompCount: null,
+    netSales: null, operatingIncome: null, ordinaryIncome: null, netIncome: null,
+    financialsConsolidated: false,
   };
 
-  for (const line of lines) {
-    const cols = line.split("\t").map((c) => c.replace(/"/g, "").trim());
-    const tagId = cols[0];
-    const context = cols[2] ?? "";
-    const value = cols[8];
+  // すべてのCSVを走査してタグ値を抽出（財務データが別ファイルに含まれる場合に対応）
+  const csvEntries = entries.filter((e) => e.entryName.endsWith(".csv") || e.entryName.includes("jpcrp"));
 
-    if (!value || !tagId) continue;
+  for (const entry of csvEntries) {
+    const content = decodeBuffer(entry.getData());
+    const lines = content.split("\n");
 
-    if (tagId === TAGS.salary) {
-      const n = parseInt(value, 10);
-      // 100万〜1億円の範囲のみ（異常値除外）
-      if (n >= 1000000 && n <= 100000000) result.salary = n;
-    }
+    for (const line of lines) {
+      const cols = line.split("\t").map((c) => c.replace(/"/g, "").trim());
+      const tagId = cols[0];
+      const context = cols[2] ?? "";
+      const value = cols[8];
 
-    if (tagId === TAGS.employees && context.includes("CurrentYear")) {
-      const n = parseInt(value, 10);
-      if (n > 0 && (result.employees === null || !context.includes("Consolidated"))) {
-        result.employees = n;
+      if (!value || !tagId) continue;
+
+      // 年収（100万〜1億円の異常値除外）
+      if (tagId === TAGS.salary) {
+        const n = parseInt(value, 10);
+        if (n >= 1000000 && n <= 100000000) result.salary = n;
       }
-    }
 
-    if (tagId === TAGS.avgAge) {
-      const n = parseFloat(value);
-      if (n > 0) result.avgAge = n;
-    }
+      // 従業員数
+      if (tagId === TAGS.employees && context.includes("CurrentYear")) {
+        const n = parseInt(value, 10);
+        if (n > 0 && (result.employees === null || !context.includes("Consolidated"))) {
+          result.employees = n;
+        }
+      }
 
-    if (tagId === TAGS.avgTenure) {
-      const n = parseFloat(value);
-      if (n > 0) result.avgTenure = n;
-    }
+      // 平均年齢・勤続年数・臨時従業員
+      if (tagId === TAGS.avgAge) { const n = parseFloat(value); if (n > 0) result.avgAge = n; }
+      if (tagId === TAGS.avgTenure) { const n = parseFloat(value); if (n > 0) result.avgTenure = n; }
+      if (tagId === TAGS.tempWorkers && context.includes("CurrentYear")) {
+        const n = parseInt(value, 10); if (n >= 0) result.tempWorkers = n;
+      }
 
-    if (tagId === TAGS.tempWorkers && context.includes("CurrentYear")) {
-      const n = parseInt(value, 10);
-      if (n >= 0) result.tempWorkers = n;
+      // DEI: 男女賃金格差（0より大きく200以下の数値 = %)
+      if (tagId === TAGS.genderWageGapAll)  { const n = parseFloat(value); if (n > 0 && n <= 200) result.genderWageGapAll = n; }
+      if (tagId === TAGS.genderWageGapFull) { const n = parseFloat(value); if (n > 0 && n <= 200) result.genderWageGapFull = n; }
+      if (tagId === TAGS.genderWageGapPart) { const n = parseFloat(value); if (n > 0 && n <= 200) result.genderWageGapPart = n; }
+
+      // DEI: 男性育休取得率（0〜100%)
+      if (tagId === TAGS.maleParentalLeave) { const n = parseFloat(value); if (n >= 0 && n <= 100) result.maleParentalLeaveRate = n; }
+
+      // DEI: 女性管理職比率（0〜100%)
+      if (tagId === TAGS.femaleManager) { const n = parseFloat(value); if (n >= 0 && n <= 100) result.femaleManagerRate = n; }
+
+      // 役員報酬総額（1万円〜1000億円の範囲）
+      if (tagId === TAGS.execCompTotal) {
+        const n = parseInt(value, 10);
+        if (n > 0 && n <= 100_000_000_000) result.execCompTotal = n;
+      }
+      if (tagId === TAGS.execCompCount) { const n = parseInt(value, 10); if (n > 0) result.execCompCount = n; }
+
+      // 財務諸表: 売上高
+      if (tagId === TAGS.netSalesConsolidated && context.includes("CurrentYear")) {
+        const n = parseInt(value, 10);
+        if (n > 0) { result.netSales = n; result.financialsConsolidated = true; }
+      }
+      if (tagId === TAGS.netSalesNonConsolidated && context.includes("CurrentYear") && result.netSales === null) {
+        const n = parseInt(value, 10);
+        if (n > 0) result.netSales = n;
+      }
+
+      // 財務諸表: 営業利益
+      if (tagId === TAGS.operatingIncomeConCon && context.includes("CurrentYear")) {
+        const n = parseInt(value, 10);
+        if (n !== 0 && result.operatingIncome === null) result.operatingIncome = n;
+      }
+      if (tagId === TAGS.operatingIncomeNonCon && context.includes("CurrentYear") && result.operatingIncome === null) {
+        const n = parseInt(value, 10);
+        if (n !== 0) result.operatingIncome = n;
+      }
+
+      // 財務諸表: 経常利益・純利益
+      if (tagId === TAGS.ordinaryIncomeNonCon && context.includes("CurrentYear")) {
+        const n = parseInt(value, 10); if (n !== 0) result.ordinaryIncome = n;
+      }
+      if (tagId === TAGS.netIncomeNonCon && context.includes("CurrentYear")) {
+        const n = parseInt(value, 10); if (n !== 0) result.netIncome = n;
+      }
     }
   }
 
@@ -281,7 +362,7 @@ async function main() {
       const parsed = await downloadAndParse(doc.docID, apiKey);
       if (!parsed) continue;
 
-      // DBに保存
+      // salary_data に保存
       database
         .insert(schema.salaryData)
         .values({
@@ -293,9 +374,42 @@ async function main() {
           avgAge: parsed.avgAge,
           avgTenure: parsed.avgTenure,
           tempWorkers: parsed.tempWorkers,
+          genderWageGapAll: parsed.genderWageGapAll,
+          genderWageGapFull: parsed.genderWageGapFull,
+          genderWageGapPart: parsed.genderWageGapPart,
+          maleParentalLeaveRate: parsed.maleParentalLeaveRate,
+          femaleManagerRate: parsed.femaleManagerRate,
+          execCompTotal: parsed.execCompTotal,
+          execCompCount: parsed.execCompCount,
           docId: doc.docID,
         })
         .run();
+
+      // financials に保存（財務データがある場合のみ）
+      if (parsed.netSales || parsed.operatingIncome) {
+        database
+          .insert(schema.financials)
+          .values({
+            companyId,
+            fiscalYear,
+            netSales: parsed.netSales,
+            operatingIncome: parsed.operatingIncome,
+            ordinaryIncome: parsed.ordinaryIncome,
+            netIncome: parsed.netIncome,
+            isConsolidated: parsed.financialsConsolidated,
+          })
+          .onConflictDoUpdate({
+            target: [schema.financials.companyId, schema.financials.fiscalYear],
+            set: {
+              netSales: parsed.netSales,
+              operatingIncome: parsed.operatingIncome,
+              ordinaryIncome: parsed.ordinaryIncome,
+              netIncome: parsed.netIncome,
+              isConsolidated: parsed.financialsConsolidated,
+            },
+          })
+          .run();
+      }
 
       daySaved++;
       totalSaved++;

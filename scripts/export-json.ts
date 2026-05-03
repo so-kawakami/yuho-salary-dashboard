@@ -131,14 +131,41 @@ const allCompanies = db
 const companyDetails: Record<string, any> = {};
 const companyCodes: string[] = []; // 静的ページ生成用のコード一覧
 
+// financialsテーブルが存在するか確認
+const hasFinancials = db
+  .prepare(`SELECT name FROM sqlite_master WHERE type='table' AND name='financials'`)
+  .get();
+
 for (const company of allCompanies) {
   const history = db
     .prepare(
       `SELECT fiscal_year as fiscalYear, avg_salary as avgSalary,
-              employees, avg_age as avgAge, avg_tenure as avgTenure
+              employees, avg_age as avgAge, avg_tenure as avgTenure,
+              gender_wage_gap_all as genderWageGapAll,
+              gender_wage_gap_full as genderWageGapFull,
+              gender_wage_gap_part as genderWageGapPart,
+              male_parental_leave_rate as maleParentalLeaveRate,
+              female_manager_rate as femaleManagerRate,
+              exec_comp_total as execCompTotal,
+              exec_comp_count as execCompCount
        FROM salary_data WHERE company_id = ? ORDER BY fiscal_year`
     )
     .all(company.id) as any[];
+
+  // 財務データ（存在する場合のみ）
+  const financialsHistory = hasFinancials
+    ? db
+        .prepare(
+          `SELECT fiscal_year as fiscalYear,
+                  net_sales as netSales,
+                  operating_income as operatingIncome,
+                  ordinary_income as ordinaryIncome,
+                  net_income as netIncome,
+                  is_consolidated as isConsolidated
+           FROM financials WHERE company_id = ? ORDER BY fiscal_year`
+        )
+        .all(company.id) as any[]
+    : [];
 
   const code = company.secCode ?? company.edinetCode;
   companyCodes.push(code);
@@ -151,6 +178,7 @@ for (const company of allCompanies) {
       industry: company.industry,
     },
     salaryHistory: history,
+    financialsHistory,
   };
 }
 
