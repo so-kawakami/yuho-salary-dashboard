@@ -120,7 +120,7 @@ export default async function CompanyPage({
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
-      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
+      <main className="mx-auto w-full max-w-[1600px] flex-1 px-3 py-4 sm:px-5">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)] mb-6">
           <Link
             href="/"

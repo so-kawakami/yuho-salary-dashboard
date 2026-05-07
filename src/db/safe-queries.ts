@@ -67,7 +67,11 @@ export function getStatsData() {
 export function getPeers(industry: string, excludeCode: string, limit = 5) {
   if (!industry || rankingJson.length === 0) return [];
   return rankingJson
-    .filter((r: any) => r.industry === industry && r.code !== excludeCode)
+    .filter((r: any) =>
+      r.industry === industry &&
+      r.code !== excludeCode &&
+      (r.employees ?? 0) >= 1000
+    )
     .slice(0, limit)
     .map((r: any) => ({
       code: r.code ?? "",
