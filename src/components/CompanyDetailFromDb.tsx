@@ -143,7 +143,7 @@ export function CompanyDetailFromDb({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* 企業ヘッダー */}
       <div className="glass rounded-2xl p-6 sm:p-8">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -230,39 +230,18 @@ export function CompanyDetailFromDb({
         ))}
       </div>
 
-      {/* 自動生成分析テキスト */}
-      {salaryMan > 0 && (
-        <CompanyAnalysis
-          companyName={company.name}
-          industry={company.industry}
-          salaryMan={salaryMan}
-          change={change}
-          percentile={percentile}
-          industryAvg={industryAvg}
-          employees={latest?.employees ?? null}
-          avgAge={latest?.avgAge ?? null}
-          avgTenure={latest?.avgTenure ?? null}
-          trendYears={trend.length}
-          fiscalYear={latest?.fiscalYear ?? null}
-          peers={peers}
-        />
-      )}
-
-      {/* 広告 */}
-      <AdBanner slot="9555970163" format="horizontal" className="my-2" />
-
-      {/* 年収推移グラフ + 同業他社比較 */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* 推移グラフ */}
-        <div className="glass rounded-2xl p-6 lg:col-span-2">
-          <h2 className="text-lg font-bold text-[var(--color-text-primary)] mb-1">
+      {/* ── Row 3: グラフ行1（年収推移 / 組織推移 / 同業他社） ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* 年収推移グラフ */}
+        <div className="glass rounded-2xl p-4">
+          <h2 className="text-sm font-bold text-[var(--color-text-primary)] mb-0.5">
             平均年収の推移
           </h2>
-          <p className="text-sm text-[var(--color-text-muted)] mb-4">万円</p>
+          <p className="text-xs text-[var(--color-text-muted)] mb-2">万円</p>
           {trend.length > 0 ? (
-            <div className="h-[200px] sm:h-[260px]">
+            <div className="h-[180px]">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={trend} margin={{ top: 5, right: 30, bottom: 5, left: 0 }}>
+                <LineChart data={trend} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                   <defs>
                     <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
                       <stop offset="0%" stopColor="#1a56db" />
@@ -270,83 +249,85 @@ export function CompanyDetailFromDb({
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="year" tick={{ fontSize: 11 }} tickFormatter={(v) => formatFiscalYear(v)} />
+                  <XAxis dataKey="year" tick={{ fontSize: 10 }} tickFormatter={(v) => formatFiscalYear(v)} />
                   <YAxis
                     domain={[
                       Math.floor((Math.min(...trend.map((t) => t.salary)) * 0.88) / 100) * 100,
                       Math.ceil((Math.max(...trend.map((t) => t.salary)) * 1.06) / 100) * 100,
                     ]}
-                    tick={{ fontSize: 11 }}
+                    tick={{ fontSize: 10 }}
                     tickFormatter={(v) => `${v}万`}
+                    width={45}
                   />
                   <Tooltip
                     labelFormatter={(label) => formatFiscalYear(label)}
                     formatter={(value) => [`${value}万円`, "平均年収"]}
-                    contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
+                    contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: 12 }}
                   />
                   {industryAvg && (
                     <ReferenceLine
                       y={industryAvg}
                       stroke="#9ca3af"
                       strokeDasharray="4 4"
-                      label={{ value: "業界平均", position: "right", fontSize: 10, fill: "#9ca3af" }}
+                      label={{ value: "業界平均", position: "right", fontSize: 9, fill: "#9ca3af" }}
                     />
                   )}
                   <Line
                     type="monotone"
                     dataKey="salary"
                     stroke="url(#lineGrad)"
-                    strokeWidth={3}
-                    dot={{ fill: "#1a56db", r: 5, strokeWidth: 2, stroke: "#fff" }}
-                    activeDot={{ r: 7, fill: "#7c3aed" }}
+                    strokeWidth={2.5}
+                    dot={{ fill: "#1a56db", r: 4, strokeWidth: 2, stroke: "#fff" }}
+                    activeDot={{ r: 6, fill: "#7c3aed" }}
                   />
                 </LineChart>
               </ResponsiveContainer>
             </div>
           ) : (
-            <p className="text-[var(--color-text-muted)] text-sm py-12 text-center">
+            <p className="text-[var(--color-text-muted)] text-sm py-8 text-center">
               推移データがありません
             </p>
           )}
         </div>
 
+        {/* 組織データ推移グラフ */}
+        <OrganizationTrendSection salaryHistory={salaryHistory} compact />
+
         {/* 同業他社比較 */}
-        <div className="glass rounded-2xl p-6">
-          <h2 className="text-lg font-bold text-[var(--color-text-primary)] mb-1">
+        <div className="glass rounded-2xl p-4">
+          <h2 className="text-sm font-bold text-[var(--color-text-primary)] mb-0.5">
             同業他社と比較
           </h2>
-          <p className="text-sm text-[var(--color-text-muted)] mb-4">
+          <p className="text-xs text-[var(--color-text-muted)] mb-2">
             {company.industry || "同業界"} の年収ランキング
           </p>
           {peers.length > 0 ? (
-            <div className="space-y-3">
-              {/* 自社 */}
-              <div className="rounded-xl bg-[var(--color-primary-light)] border border-[var(--color-primary)]/20 p-3">
+            <div className="space-y-2">
+              <div className="rounded-xl bg-[var(--color-primary-light)] border border-[var(--color-primary)]/20 p-2.5">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm font-bold text-[var(--color-primary)] truncate mr-2">
+                  <span className="text-xs font-bold text-[var(--color-primary)] truncate mr-2">
                     {company.name}
                   </span>
-                  <span className="text-sm font-bold text-[var(--color-primary)] shrink-0">
+                  <span className="text-xs font-bold text-[var(--color-primary)] shrink-0">
                     {salaryMan}万円
                   </span>
                 </div>
               </div>
-              {/* 競合各社 */}
               {peers.map((peer) => (
                 <Link
                   key={peer.code}
                   href={`/company/${peer.code}`}
-                  className="block rounded-xl bg-[var(--color-surface-secondary)] hover:bg-[var(--color-primary-light)] p-3 transition-colors"
+                  className="block rounded-xl bg-[var(--color-surface-secondary)] hover:bg-[var(--color-primary-light)] p-2.5 transition-colors"
                 >
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-[var(--color-text-primary)] truncate mr-2">
+                    <span className="text-xs text-[var(--color-text-primary)] truncate mr-2">
                       {peer.name}
                     </span>
-                    <span className="text-sm font-medium text-[var(--color-text-primary)] shrink-0">
+                    <span className="text-xs font-medium text-[var(--color-text-primary)] shrink-0">
                       {peer.salary}万円
                     </span>
                   </div>
-                  <div className="mt-1.5 h-1.5 rounded-full bg-white/60 overflow-hidden">
+                  <div className="mt-1 h-1 rounded-full bg-white/60 overflow-hidden">
                     <div
                       className="h-full rounded-full bg-[var(--color-text-muted)]"
                       style={{ width: `${Math.min((peer.salary / salaryMan) * 100, 100)}%` }}
@@ -356,139 +337,116 @@ export function CompanyDetailFromDb({
               ))}
             </div>
           ) : (
-            <p className="text-sm text-[var(--color-text-muted)] py-8 text-center">
+            <p className="text-xs text-[var(--color-text-muted)] py-8 text-center">
               同業他社データがありません
             </p>
           )}
         </div>
       </div>
 
-      {/* 組織データ推移グラフ */}
-      {salaryHistory.length >= 2 && (
-        <OrganizationTrendSection salaryHistory={salaryHistory} />
-      )}
+      {/* ── Row 4: グラフ行2（DEI / 財務 / 役員報酬） ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* DEI */}
+        {(latest?.genderWageGapAll != null || latest?.maleParentalLeaveRate != null || latest?.femaleManagerRate != null) ? (
+          <DeiSection latest={latest} industryDei={industryDei} />
+        ) : (
+          <div className="glass rounded-2xl p-4 flex items-center justify-center">
+            <p className="text-xs text-[var(--color-text-muted)] text-center">
+              DEIデータなし<br />（2023年度以降開示義務化）
+            </p>
+          </div>
+        )}
 
-      {/* DEI指標 */}
-      {(latest?.genderWageGapAll != null || latest?.maleParentalLeaveRate != null || latest?.femaleManagerRate != null) && (
-        <DeiSection latest={latest} industryDei={industryDei} />
-      )}
+        {/* 財務グラフ */}
+        {financialsHistory.length > 0 ? (
+          <FinancialsSection financialsHistory={financialsHistory} companyName={company.name} compact />
+        ) : (
+          <div className="glass rounded-2xl p-4 flex items-center justify-center">
+            <p className="text-xs text-[var(--color-text-muted)] text-center">財務データなし</p>
+          </div>
+        )}
 
-      {/* 財務データ（売上高・営業利益推移） */}
-      {financialsHistory.length > 0 && (
-        <FinancialsSection financialsHistory={financialsHistory} companyName={company.name} />
-      )}
+        {/* 役員報酬 or 効率指標 */}
+        {latest?.execCompTotal != null && latest.execCompTotal > 0 ? (
+          <ExecCompSection
+            execCompTotal={latest.execCompTotal}
+            execCompCount={latest.execCompCount}
+            employees={latest.employees}
+            fiscalYear={latest.fiscalYear}
+            avgSalary={salaryMan}
+          />
+        ) : financialsHistory.length > 0 ? (
+          <EfficiencySection salaryHistory={salaryHistory} financialsHistory={financialsHistory} />
+        ) : (
+          <div className="glass rounded-2xl p-4 flex items-center justify-center">
+            <p className="text-xs text-[var(--color-text-muted)] text-center">役員報酬データなし</p>
+          </div>
+        )}
+      </div>
 
-      {/* 従業員1人あたり効率指標 */}
-      {financialsHistory.length > 0 && salaryHistory.length > 0 && (
+      {/* ── Row 5: 効率指標（役員報酬と両方ある場合のみ表示） ── */}
+      {latest?.execCompTotal != null && latest.execCompTotal > 0 && financialsHistory.length > 0 && (
         <EfficiencySection salaryHistory={salaryHistory} financialsHistory={financialsHistory} />
       )}
 
-      {/* 役員報酬 */}
-      {latest?.execCompTotal != null && latest.execCompTotal > 0 && (
-        <ExecCompSection
-          execCompTotal={latest.execCompTotal}
-          execCompCount={latest.execCompCount}
-          employees={latest.employees}
-          fiscalYear={latest.fiscalYear}
-          avgSalary={salaryMan}
-        />
-      )}
-
-      {/* 他社と比較 */}
-      {peers.length > 0 && (
-        <div className="glass rounded-2xl p-6">
-          <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
-            他社と年収を比較
+      {/* ── Row 6: 下部アクション（転職リンク / シェア / データ注釈） ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        {/* 転職・求人リンク */}
+        <div className="glass rounded-2xl p-4">
+          <h2 className="text-sm font-bold text-[var(--color-text-primary)] mb-1">
+            {company.name}の求人を探す
           </h2>
-          <p className="text-xs text-[var(--color-text-muted)] mb-4">
-            {company.name}と同業他社の年収をサイドバイサイドで比較
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {peers.map((peer) => (
-              <Link
-                key={peer.code}
-                href={`/compare/${company.secCode ?? ""}-vs-${peer.code}`}
-                className="text-xs px-4 py-2 rounded-full glass text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary-light)] transition-colors"
-              >
-                vs {peer.name}
-              </Link>
+          <div className="flex flex-col gap-2 mt-3">
+            {[
+              { name: "doda", color: "from-orange-500 to-orange-600", url: `https://doda.jp/DodaFront/View/JobSearchResult/j_ks__searchkeyword-${encodeURIComponent(company.name)}/` },
+              { name: "リクナビNEXT", color: "from-blue-500 to-blue-600", url: `https://next.rikunabi.com/tag/KEYWORD_${encodeURIComponent(company.name)}/` },
+              { name: "ビズリーチ", color: "from-red-500 to-red-600", url: `https://www.bizreach.jp/job-list/?free_word=${encodeURIComponent(company.name)}` },
+            ].map((site) => (
+              <a key={site.name} href={site.url} target="_blank" rel="noopener noreferrer"
+                className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gradient-to-r ${site.color} text-white text-xs font-bold hover:opacity-90 transition-opacity`}>
+                {site.name}で求人を探す
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
             ))}
           </div>
         </div>
-      )}
 
-      {/* 転職・求人リンク */}
-      <div className="glass rounded-2xl p-6">
-        <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
-          {company.name}の求人を探す
-        </h2>
-        <p className="text-xs text-[var(--color-text-muted)] mb-4">
-          主要転職サイトで{company.name}の求人情報を確認できます
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {[
-            {
-              name: "doda",
-              color: "from-orange-500 to-orange-600",
-              url: `https://doda.jp/DodaFront/View/JobSearchResult/j_ks__searchkeyword-${encodeURIComponent(company.name)}/`,
-            },
-            {
-              name: "リクナビNEXT",
-              color: "from-blue-500 to-blue-600",
-              url: `https://next.rikunabi.com/tag/KEYWORD_${encodeURIComponent(company.name)}/`,
-            },
-            {
-              name: "ビズリーチ",
-              color: "from-red-500 to-red-600",
-              url: `https://www.bizreach.jp/job-list/?free_word=${encodeURIComponent(company.name)}`,
-            },
-          ].map((site) => (
-            <a
-              key={site.name}
-              href={site.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r ${site.color} text-white text-sm font-bold hover:opacity-90 transition-opacity`}
-            >
-              {site.name}で求人を探す
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-          ))}
+        {/* SNSシェア + 他社比較リンク */}
+        <div className="glass rounded-2xl p-4">
+          <h2 className="text-sm font-bold text-[var(--color-text-primary)] mb-1">
+            シェア・比較
+          </h2>
+          <div className="mt-3 space-y-3">
+            <ShareButtons companyName={company.name} salary={salaryMan} code={company.secCode ?? ""} />
+            {peers.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                {peers.map((peer) => (
+                  <Link key={peer.code} href={`/compare/${company.secCode ?? ""}-vs-${peer.code}`}
+                    className="text-xs px-3 py-1.5 rounded-full glass text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary-light)] transition-colors">
+                    vs {peer.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* SNSシェア */}
-      <div className="glass rounded-2xl p-6">
-        <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
-          この企業の年収をシェア
-        </h2>
-        <p className="text-xs text-[var(--color-text-muted)] mb-4">
-          {company.name}の年収データを友達や同僚に共有
-        </p>
-        <ShareButtons companyName={company.name} salary={salaryMan} code={company.secCode ?? ""} />
-      </div>
-
-      {/* データ注釈 */}
-      <div className="glass rounded-2xl p-5">
-        <h2 className="text-sm font-bold text-[var(--color-text-primary)] mb-1">
-          データについて
-        </h2>
-        <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
-          このページのデータは{company.name}が金融庁EDINETに提出した有価証券報告書に基づいています。
-          「平均年間給与」は提出会社単体の正社員の平均値であり、グループ全体や契約社員を含まない場合があります。
-          詳細は
-          <a
-            href="https://disclosure.edinet-fsa.go.jp/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[var(--color-primary)] hover:underline mx-1"
-          >
-            EDINET
-          </a>
-          でご確認ください。
-        </p>
+        {/* 広告 + データ注釈 */}
+        <div className="glass rounded-2xl p-4 space-y-3">
+          <AdBanner slot="9555970163" format="horizontal" className="" />
+          <div>
+            <h2 className="text-xs font-bold text-[var(--color-text-primary)] mb-1">
+              データについて
+            </h2>
+            <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
+              有価証券報告書（EDINET）に基づくデータです。平均年収は単体・正社員の値です。
+              <a href="https://disclosure.edinet-fsa.go.jp/" target="_blank" rel="noopener noreferrer"
+                className="text-[var(--color-primary)] hover:underline ml-1">EDINET</a>でご確認ください。
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -509,7 +467,7 @@ function rankLabel(deviation: number): string {
   return "低め";
 }
 
-function OrganizationTrendSection({ salaryHistory }: { salaryHistory: SalaryRecord[] }) {
+function OrganizationTrendSection({ salaryHistory, compact = false }: { salaryHistory: SalaryRecord[]; compact?: boolean }) {
   const hasEmployees = salaryHistory.some((s) => s.employees);
   const hasAge = salaryHistory.some((s) => s.avgAge);
   const hasTenure = salaryHistory.some((s) => s.avgTenure);
@@ -526,22 +484,22 @@ function OrganizationTrendSection({ salaryHistory }: { salaryHistory: SalaryReco
   const maxEmployees = Math.max(...trendData.map((d) => d.従業員数 ?? 0));
 
   return (
-    <div className="glass rounded-2xl p-6">
-      <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
+    <div className="glass rounded-2xl p-4">
+      <h2 className="text-sm font-bold text-[var(--color-text-primary)] mb-0.5">
         組織データの推移
       </h2>
-      <p className="text-xs text-[var(--color-text-muted)] mb-4">
-        従業員数（左軸）・平均年齢・平均勤続年数（右軸）の推移
+      <p className="text-xs text-[var(--color-text-muted)] mb-2">
+        従業員数（左軸）・年齢・勤続年数（右軸）
       </p>
-      <div className="h-[200px] sm:h-[260px]">
+      <div className={compact ? "h-[180px]" : "h-[200px] sm:h-[260px]"}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={trendData} margin={{ top: 5, right: 40, bottom: 5, left: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-            <XAxis dataKey="year" tick={{ fontSize: 11 }} tickFormatter={(v) => formatFiscalYear(v)} />
+            <XAxis dataKey="year" tick={{ fontSize: 10 }} tickFormatter={(v) => formatFiscalYear(v)} />
             {hasEmployees && (
               <YAxis
                 yAxisId="left"
-                tick={{ fontSize: 11 }}
+                tick={{ fontSize: 10 }}
                 tickFormatter={(v) => `${v.toLocaleString()}名`}
                 domain={[0, Math.ceil(maxEmployees * 1.2 / 1000) * 1000]}
                 width={60}
@@ -551,7 +509,7 @@ function OrganizationTrendSection({ salaryHistory }: { salaryHistory: SalaryReco
               <YAxis
                 yAxisId="right"
                 orientation="right"
-                tick={{ fontSize: 11 }}
+                tick={{ fontSize: 10 }}
                 tickFormatter={(v) => `${v}`}
                 domain={[0, 60]}
                 width={30}
@@ -812,9 +770,11 @@ function DeiSection({
 function FinancialsSection({
   financialsHistory,
   companyName,
+  compact = false,
 }: {
   financialsHistory: FinancialsRecord[];
   companyName: string;
+  compact?: boolean;
 }) {
   const trendData = financialsHistory
     .filter((f) => f.netSales || f.operatingIncome)
@@ -833,16 +793,16 @@ function FinancialsSection({
   const maxVal = allValues.length > 0 ? Math.ceil(Math.max(...allValues) * 1.15 / 100) * 100 : 1000;
 
   return (
-    <div className="glass rounded-2xl p-6">
-      <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
+    <div className="glass rounded-2xl p-4">
+      <h2 className="text-sm font-bold text-[var(--color-text-primary)] mb-0.5">
         業績推移
       </h2>
-      <p className="text-xs text-[var(--color-text-muted)] mb-4">
-        {isConsolidated ? "連結" : "単体"}・億円ベース（有価証券報告書より）
+      <p className="text-xs text-[var(--color-text-muted)] mb-2">
+        {isConsolidated ? "連結" : "単体"}・億円ベース
       </p>
 
-      {/* 最新KPI */}
-      {latest && (
+      {/* 最新KPI（compactでない場合のみ） */}
+      {latest && !compact && (
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
           {[
             { label: "売上高", value: latest.netSales },
@@ -866,12 +826,12 @@ function FinancialsSection({
 
       {/* 推移グラフ */}
       {trendData.length >= 2 && (
-        <div className="h-[180px] sm:h-[240px]">
+        <div className={compact ? "h-[160px]" : "h-[180px] sm:h-[240px]"}>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={trendData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+            <BarChart data={trendData} margin={{ top: 5, right: 10, bottom: 5, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis dataKey="year" tick={{ fontSize: 11 }} tickFormatter={(v) => formatFiscalYear(v)} />
-              <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `${v}億`} domain={[0, maxVal]} />
+              <XAxis dataKey="year" tick={{ fontSize: 10 }} tickFormatter={(v) => formatFiscalYear(v)} />
+              <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `${v}億`} domain={[0, maxVal]} width={40} />
               <Tooltip
                 labelFormatter={(label) => formatFiscalYear(label)}
                 contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
