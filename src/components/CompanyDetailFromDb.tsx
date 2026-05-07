@@ -31,6 +31,7 @@ interface SalaryRecord {
   employees: number | null;
   avgAge: number | null;
   avgTenure: number | null;
+  tempWorkers: number | null;
   genderWageGapAll: number | null;
   genderWageGapFull: number | null;
   genderWageGapPart: number | null;
@@ -350,6 +351,11 @@ export function CompanyDetailFromDb({
         </div>
       </div>
 
+      {/* 組織データ推移グラフ */}
+      {salaryHistory.length >= 2 && (
+        <OrganizationTrendSection salaryHistory={salaryHistory} />
+      )}
+
       {/* DEI指標 */}
       {(latest?.genderWageGapAll != null || latest?.maleParentalLeaveRate != null || latest?.femaleManagerRate != null) && (
         <DeiSection latest={latest} />
@@ -358,6 +364,11 @@ export function CompanyDetailFromDb({
       {/* 財務データ（売上高・営業利益推移） */}
       {financialsHistory.length > 0 && (
         <FinancialsSection financialsHistory={financialsHistory} companyName={company.name} />
+      )}
+
+      {/* 従業員1人あたり効率指標 */}
+      {financialsHistory.length > 0 && salaryHistory.length > 0 && (
+        <EfficiencySection salaryHistory={salaryHistory} financialsHistory={financialsHistory} />
       )}
 
       {/* 役員報酬 */}
@@ -477,6 +488,165 @@ function rankLabel(deviation: number): string {
   if (deviation >= 45) return "平均的";
   if (deviation >= 40) return "やや低い";
   return "低め";
+}
+
+function OrganizationTrendSection({ salaryHistory }: { salaryHistory: SalaryRecord[] }) {
+  const hasEmployees = salaryHistory.some((s) => s.employees);
+  const hasAge = salaryHistory.some((s) => s.avgAge);
+  const hasTenure = salaryHistory.some((s) => s.avgTenure);
+
+  if (!hasEmployees && !hasAge && !hasTenure) return null;
+
+  const trendData = salaryHistory.map((s) => ({
+    year: s.fiscalYear,
+    従業員数: s.employees ?? null,
+    平均年齢: s.avgAge ?? null,
+    平均勤続年数: s.avgTenure ?? null,
+  }));
+
+  const maxEmployees = Math.max(...trendData.map((d) => d.従業員数 ?? 0));
+
+  return (
+    <div className="glass rounded-2xl p-6">
+      <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
+        組織データの推移
+      </h2>
+      <p className="text-xs text-[var(--color-text-muted)] mb-4">
+        従業員数（左軸）・平均年齢・平均勤続年数（右軸）の推移
+      </p>
+      <div className="h-[260px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={trendData} margin={{ top: 5, right: 40, bottom: 5, left: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+            <XAxis dataKey="year" tick={{ fontSize: 11 }} />
+            {hasEmployees && (
+              <YAxis
+                yAxisId="left"
+                tick={{ fontSize: 11 }}
+                tickFormatter={(v) => `${v.toLocaleString()}名`}
+                domain={[0, Math.ceil(maxEmployees * 1.2 / 1000) * 1000]}
+                width={60}
+              />
+            )}
+            {(hasAge || hasTenure) && (
+              <YAxis
+                yAxisId="right"
+                orientation="right"
+                tick={{ fontSize: 11 }}
+                tickFormatter={(v) => `${v}`}
+                domain={[0, 60]}
+                width={30}
+              />
+            )}
+            <Tooltip
+              contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
+              formatter={(value, name) => {
+                const v = Number(value);
+                if (name === "従業員数") return [`${v.toLocaleString()}名`, name as string];
+                return [`${v}`, name as string];
+              }}
+            />
+            <Legend />
+            {hasEmployees && (
+              <Line
+                yAxisId="left"
+                type="monotone"
+                dataKey="従業員数"
+                stroke="#1a56db"
+                strokeWidth={2}
+                dot={{ r: 4, fill: "#1a56db" }}
+                connectNulls
+              />
+            )}
+            {hasAge && (
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="平均年齢"
+                stroke="#7c3aed"
+                strokeWidth={2}
+                dot={{ r: 4, fill: "#7c3aed" }}
+                connectNulls
+              />
+            )}
+            {hasTenure && (
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="平均勤続年数"
+                stroke="#10b981"
+                strokeWidth={2}
+                dot={{ r: 4, fill: "#10b981" }}
+                connectNulls
+              />
+            )}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
+function EfficiencySection({
+  salaryHistory,
+  financialsHistory,
+}: {
+  salaryHistory: SalaryRecord[];
+  financialsHistory: FinancialsRecord[];
+}) {
+  // 年度をキーに従業員数マップを作成
+  const employeesByYear: Record<string, number> = {};
+  for (const s of salaryHistory) {
+    if (s.employees) employeesByYear[s.fiscalYear] = s.employees;
+  }
+
+  const trendData = financialsHistory
+    .filter((f) => f.netSales && employeesByYear[f.fiscalYear])
+    .map((f) => {
+      const employees = employeesByYear[f.fiscalYear];
+      const salesPerEmployee = Math.round(f.netSales! / employees / 10_000); // 万円/人
+      return {
+        year: f.fiscalYear,
+        "1人あたり売上（万円）": salesPerEmployee,
+      };
+    });
+
+  if (trendData.length < 2) return null;
+
+  return (
+    <div className="glass rounded-2xl p-6">
+      <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
+        従業員1人あたりの売上高
+      </h2>
+      <p className="text-xs text-[var(--color-text-muted)] mb-4">
+        売上高 ÷ 従業員数（企業の効率性指標・万円/人）
+      </p>
+      <div className="h-[220px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={trendData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+            <XAxis dataKey="year" tick={{ fontSize: 11 }} />
+            <YAxis
+              tick={{ fontSize: 11 }}
+              tickFormatter={(v) => `${v.toLocaleString()}万`}
+            />
+            <Tooltip
+              contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
+              formatter={(v) => [`${Number(v).toLocaleString()}万円/人`, "1人あたり売上"]}
+            />
+            <Line
+              type="monotone"
+              dataKey="1人あたり売上（万円）"
+              stroke="#f59e0b"
+              strokeWidth={2.5}
+              dot={{ r: 4, fill: "#f59e0b" }}
+              connectNulls
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
 }
 
 function DeiSection({ latest }: { latest: SalaryRecord }) {

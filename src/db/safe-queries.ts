@@ -134,6 +134,7 @@ export function getCompany(code: string) {
         employees: mock.employees,
         avgAge: mock.avgAge,
         avgTenure: mock.avgTenure,
+        tempWorkers: null,
         genderWageGapAll: null,
         genderWageGapFull: null,
         genderWageGapPart: null,
@@ -144,5 +145,68 @@ export function getCompany(code: string) {
       },
     ],
     financialsHistory: [],
+  };
+}
+
+// 業界の DEI 平均データを取得（業界比較グラフ用）
+export function getIndustryDeiAverage(industry: string) {
+  if (!industry || Object.keys(companiesJson).length === 0) {
+    return null;
+  }
+
+  const companiesInIndustry = Object.values(companiesJson).filter(
+    (company: any) => company.company?.industry === industry
+  );
+
+  if (companiesInIndustry.length === 0) {
+    return null;
+  }
+
+  // 各企業の最新年度データを取得
+  const latestDeiData = companiesInIndustry
+    .map((company: any) => {
+      const latest = company.salaryHistory?.[company.salaryHistory.length - 1];
+      return {
+        genderWageGapAll: latest?.genderWageGapAll,
+        genderWageGapFull: latest?.genderWageGapFull,
+        genderWageGapPart: latest?.genderWageGapPart,
+        maleParentalLeaveRate: latest?.maleParentalLeaveRate,
+        femaleManagerRate: latest?.femaleManagerRate,
+      };
+    })
+    .filter(
+      (data) =>
+        data.genderWageGapAll !== null ||
+        data.maleParentalLeaveRate !== null ||
+        data.femaleManagerRate !== null
+    );
+
+  if (latestDeiData.length === 0) {
+    return null;
+  }
+
+  // 平均値を計算
+  const avg = (values: (number | null)[]) => {
+    const filtered = values.filter((v) => v !== null) as number[];
+    return filtered.length > 0
+      ? Math.round((filtered.reduce((a, b) => a + b, 0) / filtered.length) * 10) / 10
+      : null;
+  };
+
+  return {
+    genderWageGapAll: avg(
+      latestDeiData.map((d) => d.genderWageGapAll)
+    ),
+    genderWageGapFull: avg(
+      latestDeiData.map((d) => d.genderWageGapFull)
+    ),
+    genderWageGapPart: avg(
+      latestDeiData.map((d) => d.genderWageGapPart)
+    ),
+    maleParentalLeaveRate: avg(
+      latestDeiData.map((d) => d.maleParentalLeaveRate)
+    ),
+    femaleManagerRate: avg(latestDeiData.map((d) => d.femaleManagerRate)),
+    companyCount: companiesInIndustry.length,
   };
 }
