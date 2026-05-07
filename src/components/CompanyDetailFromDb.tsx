@@ -57,16 +57,27 @@ interface Peer {
   employees: number;
 }
 
+interface IndustryDei {
+  genderWageGapAll: number | null;
+  genderWageGapFull: number | null;
+  genderWageGapPart: number | null;
+  maleParentalLeaveRate: number | null;
+  femaleManagerRate: number | null;
+  companyCount: number;
+}
+
 export function CompanyDetailFromDb({
   company,
   salaryHistory,
   peers = [],
   financialsHistory = [],
+  industryDei = null,
 }: {
   company: Company;
   salaryHistory: SalaryRecord[];
   peers?: Peer[];
   financialsHistory?: FinancialsRecord[];
+  industryDei?: IndustryDei | null;
 }) {
   const latest = salaryHistory[salaryHistory.length - 1];
   const prev = salaryHistory[salaryHistory.length - 2];
@@ -358,7 +369,7 @@ export function CompanyDetailFromDb({
 
       {/* DEI指標 */}
       {(latest?.genderWageGapAll != null || latest?.maleParentalLeaveRate != null || latest?.femaleManagerRate != null) && (
-        <DeiSection latest={latest} />
+        <DeiSection latest={latest} industryDei={industryDei} />
       )}
 
       {/* 財務データ（売上高・営業利益推移） */}
@@ -378,6 +389,7 @@ export function CompanyDetailFromDb({
           execCompCount={latest.execCompCount}
           employees={latest.employees}
           fiscalYear={latest.fiscalYear}
+          avgSalary={salaryMan}
         />
       )}
 
@@ -649,35 +661,46 @@ function EfficiencySection({
   );
 }
 
-function DeiSection({ latest }: { latest: SalaryRecord }) {
+function DeiSection({
+  latest,
+  industryDei,
+}: {
+  latest: SalaryRecord;
+  industryDei: IndustryDei | null;
+}) {
   const items = [
     {
       label: "男女賃金格差（全労働者）",
       value: latest.genderWageGapAll,
+      industryAvg: industryDei?.genderWageGapAll ?? null,
       desc: "女性の賃金 ÷ 男性の賃金",
       good: 90,
     },
     {
       label: "男女賃金格差（正規）",
       value: latest.genderWageGapFull,
+      industryAvg: industryDei?.genderWageGapFull ?? null,
       desc: "正規労働者の男女比率",
       good: 85,
     },
     {
       label: "男女賃金格差（非正規）",
       value: latest.genderWageGapPart,
+      industryAvg: industryDei?.genderWageGapPart ?? null,
       desc: "非正規労働者の男女比率",
       good: 80,
     },
     {
       label: "男性育休取得率",
       value: latest.maleParentalLeaveRate,
+      industryAvg: industryDei?.maleParentalLeaveRate ?? null,
       desc: "前年度取得者を含むため100%超の場合あり",
       good: 50,
     },
     {
       label: "女性管理職比率",
       value: latest.femaleManagerRate,
+      industryAvg: industryDei?.femaleManagerRate ?? null,
       desc: "管理職に占める女性の割合",
       good: 15,
     },
@@ -687,32 +710,86 @@ function DeiSection({ latest }: { latest: SalaryRecord }) {
 
   return (
     <div className="glass rounded-2xl p-6">
-      <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
-        DEI・男女格差データ
-      </h2>
+      <div className="flex items-start justify-between mb-1">
+        <h2 className="text-base font-bold text-[var(--color-text-primary)]">
+          DEI・男女格差データ
+        </h2>
+        {industryDei && (
+          <span className="text-xs text-[var(--color-text-muted)] shrink-0 ml-2">
+            業界平均 ({industryDei.companyCount}社)
+          </span>
+        )}
+      </div>
       <p className="text-xs text-[var(--color-text-muted)] mb-4">
         有価証券報告書ベース（2023年度以降開示義務化）
       </p>
-      <div className="space-y-4">
+      <div className="space-y-5">
         {items.map((item) => {
           const pct = item.value!;
           const isGood = pct >= item.good;
-          const barColor = isGood ? "bg-[var(--color-success)]" : pct >= item.good * 0.7 ? "bg-yellow-400" : "bg-[var(--color-danger)]";
+          const barColor = isGood
+            ? "bg-[var(--color-success)]"
+            : pct >= item.good * 0.7
+            ? "bg-yellow-400"
+            : "bg-[var(--color-danger)]";
+          const industryPct = item.industryAvg;
+          const vsIndustry =
+            industryPct != null ? pct - industryPct : null;
+
           return (
             <div key={item.label}>
               <div className="flex justify-between items-center mb-1">
-                <span className="text-sm text-[var(--color-text-secondary)]">{item.label}</span>
-                <span className={`text-sm font-bold ${isGood ? "text-[var(--color-success)]" : "text-[var(--color-text-primary)]"}`}>
-                  {pct.toFixed(1)}%
+                <span className="text-sm text-[var(--color-text-secondary)]">
+                  {item.label}
                 </span>
+                <div className="flex items-center gap-2">
+                  {vsIndustry !== null && (
+                    <span
+                      className={`text-xs font-medium ${
+                        vsIndustry >= 0
+                          ? "text-[var(--color-success)]"
+                          : "text-[var(--color-danger)]"
+                      }`}
+                    >
+                      業界比 {vsIndustry >= 0 ? "+" : ""}
+                      {vsIndustry.toFixed(1)}%
+                    </span>
+                  )}
+                  <span
+                    className={`text-sm font-bold ${
+                      isGood
+                        ? "text-[var(--color-success)]"
+                        : "text-[var(--color-text-primary)]"
+                    }`}
+                  >
+                    {pct.toFixed(1)}%
+                  </span>
+                </div>
               </div>
-              <div className="h-2 rounded-full bg-[var(--color-surface-secondary)] overflow-hidden">
+              {/* この企業のバー */}
+              <div className="h-2 rounded-full bg-[var(--color-surface-secondary)] overflow-hidden mb-1">
                 <div
                   className={`h-full rounded-full transition-all duration-700 ${barColor}`}
                   style={{ width: `${Math.min(pct, 100)}%` }}
                 />
               </div>
-              <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{item.desc}</p>
+              {/* 業界平均のバー */}
+              {industryPct != null && (
+                <div className="h-1.5 rounded-full bg-[var(--color-surface-secondary)] overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gray-400 transition-all duration-700"
+                    style={{ width: `${Math.min(industryPct, 100)}%` }}
+                  />
+                </div>
+              )}
+              <div className="flex justify-between mt-0.5">
+                <p className="text-xs text-[var(--color-text-muted)]">{item.desc}</p>
+                {industryPct != null && (
+                  <p className="text-xs text-[var(--color-text-muted)]">
+                    業界平均 {industryPct.toFixed(1)}%
+                  </p>
+                )}
+              </div>
             </div>
           );
         })}
@@ -805,19 +882,23 @@ function ExecCompSection({
   execCompCount,
   employees,
   fiscalYear,
+  avgSalary,
 }: {
   execCompTotal: number;
   execCompCount: number | null;
   employees: number | null;
   fiscalYear: string;
+  avgSalary: number;
 }) {
-  const totalOkuMan = Math.round(execCompTotal / 100_000_000 * 10) / 10; // 億円（小数1桁）
-  const perPerson = execCompCount && execCompCount > 0
-    ? Math.round(execCompTotal / execCompCount / 10_000)
-    : null;
-  const vsAvgEmployee = employees && employees > 0 && perPerson
-    ? null // 年収は万円単位なので比較しない（違う指標）
-    : null;
+  const totalOkuMan = Math.round((execCompTotal / 100_000_000) * 10) / 10;
+  const perPerson =
+    execCompCount && execCompCount > 0
+      ? Math.round(execCompTotal / execCompCount / 10_000)
+      : null;
+  const ratio =
+    perPerson && avgSalary > 0
+      ? Math.round((perPerson / avgSalary) * 10) / 10
+      : null;
 
   return (
     <div className="glass rounded-2xl p-6">
@@ -827,7 +908,7 @@ function ExecCompSection({
       <p className="text-xs text-[var(--color-text-muted)] mb-4">
         {fiscalYear}期・有価証券報告書より
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="rounded-xl bg-[var(--color-surface-secondary)] p-4">
           <p className="text-xs text-[var(--color-text-muted)] mb-1">役員報酬総額</p>
           <p className="text-xl font-bold text-[var(--color-text-primary)]">
@@ -839,7 +920,9 @@ function ExecCompSection({
         {execCompCount != null && (
           <div className="rounded-xl bg-[var(--color-surface-secondary)] p-4">
             <p className="text-xs text-[var(--color-text-muted)] mb-1">対象役員数</p>
-            <p className="text-xl font-bold text-[var(--color-text-primary)]">{execCompCount}名</p>
+            <p className="text-xl font-bold text-[var(--color-text-primary)]">
+              {execCompCount}名
+            </p>
           </div>
         )}
         {perPerson != null && (
@@ -847,6 +930,17 @@ function ExecCompSection({
             <p className="text-xs text-[var(--color-text-muted)] mb-1">役員1人あたり平均</p>
             <p className="text-xl font-bold text-[var(--color-text-primary)]">
               {perPerson.toLocaleString()}万円
+            </p>
+          </div>
+        )}
+        {ratio != null && (
+          <div className="rounded-xl bg-[var(--color-surface-secondary)] p-4">
+            <p className="text-xs text-[var(--color-text-muted)] mb-1">一般社員との格差</p>
+            <p className="text-xl font-bold text-[var(--color-text-primary)]">
+              {ratio}倍
+            </p>
+            <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+              役員 {perPerson?.toLocaleString()}万円 vs 社員 {avgSalary.toLocaleString()}万円
             </p>
           </div>
         )}
