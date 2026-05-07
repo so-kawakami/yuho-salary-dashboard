@@ -260,7 +260,7 @@ export function CompanyDetailFromDb({
           </h2>
           <p className="text-sm text-[var(--color-text-muted)] mb-4">万円</p>
           {trend.length > 0 ? (
-            <div className="h-[260px]">
+            <div className="h-[200px] sm:h-[260px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={trend} margin={{ top: 5, right: 30, bottom: 5, left: 0 }}>
                   <defs>
@@ -270,7 +270,7 @@ export function CompanyDetailFromDb({
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="year" tick={{ fontSize: 11 }} />
+                  <XAxis dataKey="year" tick={{ fontSize: 11 }} tickFormatter={(v) => formatFiscalYear(v)} />
                   <YAxis
                     domain={[
                       Math.floor((Math.min(...trend.map((t) => t.salary)) * 0.88) / 100) * 100,
@@ -280,6 +280,7 @@ export function CompanyDetailFromDb({
                     tickFormatter={(v) => `${v}万`}
                   />
                   <Tooltip
+                    labelFormatter={(label) => formatFiscalYear(label)}
                     formatter={(value) => [`${value}万円`, "平均年収"]}
                     contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
                   />
@@ -493,6 +494,12 @@ export function CompanyDetailFromDb({
   );
 }
 
+// "2024-03" → "2024年3月期"
+function formatFiscalYear(fy: string): string {
+  const [year, month] = fy.split("-");
+  return `${year}年${parseInt(month)}月期`;
+}
+
 function rankLabel(deviation: number): string {
   if (deviation >= 70) return "トップクラス";
   if (deviation >= 60) return "かなり高い";
@@ -526,11 +533,11 @@ function OrganizationTrendSection({ salaryHistory }: { salaryHistory: SalaryReco
       <p className="text-xs text-[var(--color-text-muted)] mb-4">
         従業員数（左軸）・平均年齢・平均勤続年数（右軸）の推移
       </p>
-      <div className="h-[260px]">
+      <div className="h-[200px] sm:h-[260px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={trendData} margin={{ top: 5, right: 40, bottom: 5, left: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-            <XAxis dataKey="year" tick={{ fontSize: 11 }} />
+            <XAxis dataKey="year" tick={{ fontSize: 11 }} tickFormatter={(v) => formatFiscalYear(v)} />
             {hasEmployees && (
               <YAxis
                 yAxisId="left"
@@ -551,10 +558,13 @@ function OrganizationTrendSection({ salaryHistory }: { salaryHistory: SalaryReco
               />
             )}
             <Tooltip
+              labelFormatter={(label) => formatFiscalYear(label)}
               contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
               formatter={(value, name) => {
                 const v = Number(value);
                 if (name === "従業員数") return [`${v.toLocaleString()}名`, name as string];
+                if (name === "平均年齢") return [`${v}歳`, name as string];
+                if (name === "平均勤続年数") return [`${v}年`, name as string];
                 return [`${v}`, name as string];
               }}
             />
@@ -633,16 +643,17 @@ function EfficiencySection({
       <p className="text-xs text-[var(--color-text-muted)] mb-4">
         売上高 ÷ 従業員数（企業の効率性指標・万円/人）
       </p>
-      <div className="h-[220px]">
+      <div className="h-[180px] sm:h-[220px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={trendData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-            <XAxis dataKey="year" tick={{ fontSize: 11 }} />
+            <XAxis dataKey="year" tick={{ fontSize: 11 }} tickFormatter={(v) => formatFiscalYear(v)} />
             <YAxis
               tick={{ fontSize: 11 }}
               tickFormatter={(v) => `${v.toLocaleString()}万`}
             />
             <Tooltip
+              labelFormatter={(label) => formatFiscalYear(label)}
               contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
               formatter={(v) => [`${Number(v).toLocaleString()}万円/人`, "1人あたり売上"]}
             />
@@ -855,13 +866,14 @@ function FinancialsSection({
 
       {/* 推移グラフ */}
       {trendData.length >= 2 && (
-        <div className="h-[240px]">
+        <div className="h-[180px] sm:h-[240px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={trendData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis dataKey="year" tick={{ fontSize: 11 }} />
+              <XAxis dataKey="year" tick={{ fontSize: 11 }} tickFormatter={(v) => formatFiscalYear(v)} />
               <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `${v}億`} domain={[0, maxVal]} />
               <Tooltip
+                labelFormatter={(label) => formatFiscalYear(label)}
                 contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
               formatter={(v: any) => [`${Number(v).toLocaleString()}億円`]}
