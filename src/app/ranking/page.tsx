@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { RankingWithFilter } from "@/components/RankingWithFilter";
-import { getRanking } from "@/db/safe-queries";
+import { getAllCompanies } from "@/db/safe-queries";
 
 export const metadata: Metadata = {
   title: "年収ランキング | 上場企業の平均年収",
@@ -12,9 +12,12 @@ export const metadata: Metadata = {
 export const dynamic = "force-static";
 
 export default function RankingPage() {
-  const ranking = getRanking(200);
-  const data = ranking.map((r) => ({
-    rank: r.rank,
+  const all = getAllCompanies()
+    .filter((r) => r.salary > 0)
+    .sort((a, b) => b.salary - a.salary);
+
+  const data = all.map((r, i) => ({
+    rank: i + 1,
     code: r.code,
     name: r.name,
     industry: r.industry ?? "",
@@ -33,7 +36,7 @@ export default function RankingPage() {
             年収ランキング
           </h2>
           <p className="text-sm text-[var(--color-text-muted)]">
-            有価証券報告書ベース・上位200社・業界や規模でフィルタリング可能
+            有価証券報告書ベース・全{data.length.toLocaleString()}社・業界や規模でフィルタリング可能
           </p>
         </div>
         <RankingWithFilter data={data} />
