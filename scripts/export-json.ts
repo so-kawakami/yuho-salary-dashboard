@@ -141,6 +141,7 @@ for (const company of allCompanies) {
     .prepare(
       `SELECT fiscal_year as fiscalYear, avg_salary as avgSalary,
               employees, avg_age as avgAge, avg_tenure as avgTenure,
+              temp_workers as tempWorkers,
               gender_wage_gap_all as genderWageGapAll,
               gender_wage_gap_full as genderWageGapFull,
               gender_wage_gap_part as genderWageGapPart,

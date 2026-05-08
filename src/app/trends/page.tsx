@@ -7,12 +7,12 @@ export const metadata: Metadata = {
     "上場企業の平均年収の推移グラフと年収帯別分布を掲載。全国平均との比較や高年収企業の特徴（平均年齢・勤続年数）もチェックできます。",
 };
 import { TrendChart } from "@/components/TrendChart";
-import { getRanking } from "@/db/safe-queries";
+import { getAllCompanies } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
 
 export default function TrendsPage() {
-  const ranking = getRanking(100);
+  const ranking = getAllCompanies().filter((r) => r.salary > 0);
 
   // 年収帯ごとの分布
   const bands = [
@@ -54,7 +54,7 @@ export default function TrendsPage() {
               年収帯の分布
             </h3>
             <p className="text-sm text-[var(--color-text-muted)] mb-4">
-              TOP100企業の年収帯別分布
+              上場企業 {ranking.length.toLocaleString()}社の年収帯別分布
             </p>
             <div className="space-y-3">
               {distribution.map((d) => (

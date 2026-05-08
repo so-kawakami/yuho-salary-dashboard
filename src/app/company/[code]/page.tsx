@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { CompanyDetailFromDb } from "@/components/CompanyDetailFromDb";
-import { getCompany, getPeers } from "@/db/safe-queries";
+import { getCompany, getPeers, getIndustryDeiAverage } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
 
@@ -62,6 +62,7 @@ export default async function CompanyPage({
   const { code } = await params;
   const data = getCompany(code);
   const peers = data ? getPeers(data.company.industry ?? "", code) : [];
+  const industryDei = data ? getIndustryDeiAverage(data.company.industry ?? "") : null;
 
   if (!data) {
     return (
@@ -119,7 +120,7 @@ export default async function CompanyPage({
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
-      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
+      <main className="mx-auto w-full max-w-[1600px] flex-1 px-3 py-4 sm:px-5">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)] mb-6">
           <Link
             href="/"
@@ -145,6 +146,7 @@ export default async function CompanyPage({
           salaryHistory={data.salaryHistory}
           peers={peers}
           financialsHistory={data.financialsHistory ?? []}
+          industryDei={industryDei}
         />
       </main>
 

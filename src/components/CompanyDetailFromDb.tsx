@@ -31,6 +31,7 @@ interface SalaryRecord {
   employees: number | null;
   avgAge: number | null;
   avgTenure: number | null;
+  tempWorkers: number | null;
   genderWageGapAll: number | null;
   genderWageGapFull: number | null;
   genderWageGapPart: number | null;
@@ -56,16 +57,27 @@ interface Peer {
   employees: number;
 }
 
+interface IndustryDei {
+  genderWageGapAll: number | null;
+  genderWageGapFull: number | null;
+  genderWageGapPart: number | null;
+  maleParentalLeaveRate: number | null;
+  femaleManagerRate: number | null;
+  companyCount: number;
+}
+
 export function CompanyDetailFromDb({
   company,
   salaryHistory,
   peers = [],
   financialsHistory = [],
+  industryDei = null,
 }: {
   company: Company;
   salaryHistory: SalaryRecord[];
   peers?: Peer[];
   financialsHistory?: FinancialsRecord[];
+  industryDei?: IndustryDei | null;
 }) {
   const latest = salaryHistory[salaryHistory.length - 1];
   const prev = salaryHistory[salaryHistory.length - 2];
@@ -130,127 +142,90 @@ export function CompanyDetailFromDb({
     danger: "text-[var(--color-danger)] font-semibold",
   };
 
+  // 同業他社バー用の最大値（自社を含む）
+  const maxPeerSalary = peers.length > 0
+    ? Math.max(salaryMan, ...peers.map((p) => p.salary))
+    : salaryMan;
+
   return (
-    <div className="space-y-6">
-      {/* 企業ヘッダー */}
-      <div className="glass rounded-2xl p-6 sm:p-8">
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-          <div>
-            <div className="flex flex-wrap items-center gap-2 mb-3">
-              {company.industry && (
-                <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--color-primary-light)] text-[var(--color-primary)] font-medium">
-                  {company.industry}
-                </span>
-              )}
-              {company.secCode && (
-                <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--color-surface-secondary)] text-[var(--color-text-muted)]">
-                  証券コード: {company.secCode}
-                </span>
-              )}
-              {latest?.fiscalYear && (
-                <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--color-surface-secondary)] text-[var(--color-text-muted)]">
-                  {latest.fiscalYear}期
-                </span>
-              )}
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[var(--color-text-primary)]">
-              {company.name}
-            </h1>
-          </div>
+    <div className="space-y-3">
 
-          {salaryMan > 0 && (
-            <div className="text-right">
-              <p className="text-xs text-[var(--color-text-muted)] mb-1">平均年収</p>
-              <div className="flex items-baseline gap-1 justify-end">
-                <span className="text-4xl sm:text-5xl font-extrabold text-gradient">
-                  {salaryMan.toLocaleString()}
+      {/* ── ヘッダー（コンパクト1行） ── */}
+      <div className="glass rounded-2xl px-5 py-3 flex flex-wrap items-center gap-2">
+        <h1 className="text-xl sm:text-2xl font-extrabold text-[var(--color-text-primary)] mr-1">
+          {company.name}
+        </h1>
+        {company.industry && (
+          <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--color-primary-light)] text-[var(--color-primary)] font-medium">
+            {company.industry}
+          </span>
+        )}
+        {company.secCode && (
+          <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--color-surface-secondary)] text-[var(--color-text-muted)]">
+            {company.secCode}
+          </span>
+        )}
+        {latest?.fiscalYear && (
+          <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--color-surface-secondary)] text-[var(--color-text-muted)]">
+            {formatFiscalYear(latest.fiscalYear)}
+          </span>
+        )}
+      </div>
+
+      {/* ── メイン：左 年収ヒーロー+グラフ(8列) / 右 KPI縦(4列) ── */}
+      <div className="grid grid-cols-12 gap-3">
+
+        {/* 左：年収大表示 + 推移グラフ */}
+        <div className="col-span-12 lg:col-span-8 glass rounded-2xl p-6">
+          <div className="flex items-start justify-between mb-5">
+            <div>
+              <p className="text-xs font-medium text-[var(--color-text-muted)] uppercase tracking-widest mb-2">
+                平均年収
+              </p>
+              <div className="flex items-baseline gap-2">
+                <span className="text-6xl sm:text-7xl font-black text-gradient leading-none">
+                  {salaryMan > 0 ? salaryMan.toLocaleString() : "—"}
                 </span>
-                <span className="text-lg text-[var(--color-text-secondary)]">万円</span>
+                {salaryMan > 0 && (
+                  <span className="text-2xl font-bold text-[var(--color-text-secondary)]">万円</span>
+                )}
               </div>
-              {change !== null && (
-                <p className={`text-sm mt-1 ${change >= 0 ? "text-[var(--color-success)]" : "text-[var(--color-danger)]"}`}>
-                  前年比 {change >= 0 ? "+" : ""}{change}万円
-                </p>
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* 上場企業内ポジション */}
-        {salaryMan > 0 && (
-          <div className="mt-5 rounded-xl bg-[var(--color-surface-secondary)] p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-[var(--color-text-secondary)]">
-                上場企業 {rankLabel(percentile.deviation)} の年収水準
-              </span>
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3 mt-2">
+                {change !== null && (
+                  <span className={`text-sm font-semibold ${change >= 0 ? "text-[var(--color-success)]" : "text-[var(--color-danger)]"}`}>
+                    前年比 {change >= 0 ? "▲" : "▼"} {Math.abs(change)}万円
+                  </span>
+                )}
                 {industryAvg && (
                   <span className="text-xs text-[var(--color-text-muted)]">
                     業界平均 {industryAvg}万円
                   </span>
                 )}
-                <span className="text-sm font-bold text-[var(--color-primary)]">
-                  上位 {100 - percentile.percentile}% / 偏差値 {percentile.deviation}
-                </span>
               </div>
             </div>
-            <div className="h-3 rounded-full bg-white/50 overflow-hidden">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] transition-all duration-700"
-                style={{ width: `${percentile.percentile}%` }}
-              />
-            </div>
+            {salaryMan > 0 && (
+              <div className="hidden sm:flex flex-col items-end gap-2 shrink-0 ml-4">
+                <span className="text-sm font-bold text-white bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] px-3 py-1.5 rounded-full whitespace-nowrap">
+                  上位 {100 - percentile.percentile}%
+                </span>
+                <span className="text-xs text-[var(--color-text-muted)]">
+                  偏差値 {percentile.deviation} · {rankLabel(percentile.deviation)}
+                </span>
+                <div className="w-36 h-2 rounded-full bg-white/50 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)]"
+                    style={{ width: `${percentile.percentile}%` }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
 
-      {/* KPI カード */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {kpis.map((kpi) => (
-          <div key={kpi.label} className="glass rounded-xl p-4 glass-hover">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xl">{kpi.icon}</span>
-              <p className="text-xs text-[var(--color-text-secondary)]">{kpi.label}</p>
-            </div>
-            <p className="text-xl font-bold text-[var(--color-text-primary)]">{kpi.value}</p>
-            <p className={`text-xs mt-1 ${subColorClass[kpi.subColor]}`}>{kpi.sub}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* 自動生成分析テキスト */}
-      {salaryMan > 0 && (
-        <CompanyAnalysis
-          companyName={company.name}
-          industry={company.industry}
-          salaryMan={salaryMan}
-          change={change}
-          percentile={percentile}
-          industryAvg={industryAvg}
-          employees={latest?.employees ?? null}
-          avgAge={latest?.avgAge ?? null}
-          avgTenure={latest?.avgTenure ?? null}
-          trendYears={trend.length}
-          fiscalYear={latest?.fiscalYear ?? null}
-          peers={peers}
-        />
-      )}
-
-      {/* 広告 */}
-      <AdBanner slot="9555970163" format="horizontal" className="my-2" />
-
-      {/* 年収推移グラフ + 同業他社比較 */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* 推移グラフ */}
-        <div className="glass rounded-2xl p-6 lg:col-span-2">
-          <h2 className="text-lg font-bold text-[var(--color-text-primary)] mb-1">
-            平均年収の推移
-          </h2>
-          <p className="text-sm text-[var(--color-text-muted)] mb-4">万円</p>
+          {/* 年収推移グラフ */}
           {trend.length > 0 ? (
-            <div className="h-[260px]">
+            <div className="h-[220px]">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={trend} margin={{ top: 5, right: 30, bottom: 5, left: 0 }}>
+                <LineChart data={trend} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
                   <defs>
                     <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
                       <stop offset="0%" stopColor="#1a56db" />
@@ -258,7 +233,7 @@ export function CompanyDetailFromDb({
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                  <XAxis dataKey="year" tick={{ fontSize: 11 }} />
+                  <XAxis dataKey="year" tick={{ fontSize: 11 }} tickFormatter={(v) => formatFiscalYear(v)} />
                   <YAxis
                     domain={[
                       Math.floor((Math.min(...trend.map((t) => t.salary)) * 0.88) / 100) * 100,
@@ -266,10 +241,12 @@ export function CompanyDetailFromDb({
                     ]}
                     tick={{ fontSize: 11 }}
                     tickFormatter={(v) => `${v}万`}
+                    width={50}
                   />
                   <Tooltip
+                    labelFormatter={(label) => formatFiscalYear(label)}
                     formatter={(value) => [`${value}万円`, "平均年収"]}
-                    contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
+                    contentStyle={{ borderRadius: "10px", border: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.12)", fontSize: 13 }}
                   />
                   {industryAvg && (
                     <ReferenceLine
@@ -297,19 +274,53 @@ export function CompanyDetailFromDb({
           )}
         </div>
 
+        {/* 右：KPIカード4枚縦並び */}
+        <div className="col-span-12 lg:col-span-4 grid grid-rows-4 gap-3">
+          {[
+            { ...kpis[0], border: "border-[var(--color-primary)]" },
+            { ...kpis[1], border: "border-[var(--color-accent)]" },
+            { ...kpis[2], border: "border-[var(--color-success)]" },
+            { ...kpis[3], border: "border-[var(--color-warning)]" },
+          ].map((kpi) => (
+            <div key={kpi.label} className={`glass rounded-xl px-5 py-4 border-l-4 ${kpi.border} flex flex-col justify-center`}>
+              <p className="text-xs font-medium text-[var(--color-text-muted)] uppercase tracking-wider mb-1.5">
+                {kpi.label}
+              </p>
+              <p className="text-2xl sm:text-3xl font-extrabold text-[var(--color-text-primary)] leading-none mb-1">
+                {kpi.value}
+              </p>
+              <p className={`text-xs ${subColorClass[kpi.subColor]}`}>{kpi.sub}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── セカンダリ：DEI(3列) + 組織推移(5列) + 同業他社(4列) ── */}
+      <div className="grid grid-cols-12 gap-3">
+
+        {/* DEI：2指標を数字どーん */}
+        <div className="col-span-12 lg:col-span-3">
+          <DeiCompactSection latest={latest} industryDei={industryDei} />
+        </div>
+
+        {/* 組織データ推移 */}
+        <div className="col-span-12 lg:col-span-5">
+          <OrganizationTrendSection salaryHistory={salaryHistory} />
+        </div>
+
         {/* 同業他社比較 */}
-        <div className="glass rounded-2xl p-6">
-          <h2 className="text-lg font-bold text-[var(--color-text-primary)] mb-1">
+        <div className="col-span-12 lg:col-span-4 glass rounded-2xl p-5">
+          <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">
             同業他社と比較
           </h2>
-          <p className="text-sm text-[var(--color-text-muted)] mb-4">
-            {company.industry || "同業界"} の年収ランキング
+          <p className="text-xs text-[var(--color-text-muted)] mb-3">
+            {company.industry || "同業界"} · 従業員1,000名以上
           </p>
           {peers.length > 0 ? (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {/* 自社 */}
-              <div className="rounded-xl bg-[var(--color-primary-light)] border border-[var(--color-primary)]/20 p-3">
-                <div className="flex justify-between items-center">
+              <div className="rounded-xl bg-[var(--color-primary-light)] border border-[var(--color-primary)]/30 p-3">
+                <div className="flex justify-between items-center mb-2">
                   <span className="text-sm font-bold text-[var(--color-primary)] truncate mr-2">
                     {company.name}
                   </span>
@@ -317,26 +328,30 @@ export function CompanyDetailFromDb({
                     {salaryMan}万円
                   </span>
                 </div>
+                <div className="h-2 rounded-full bg-[var(--color-primary)]/20 overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)]"
+                    style={{ width: `${(salaryMan / maxPeerSalary) * 100}%` }}
+                  />
+                </div>
               </div>
               {/* 競合各社 */}
               {peers.map((peer) => (
                 <Link
                   key={peer.code}
                   href={`/company/${peer.code}`}
-                  className="block rounded-xl bg-[var(--color-surface-secondary)] hover:bg-[var(--color-primary-light)] p-3 transition-colors"
+                  className="block rounded-xl bg-[var(--color-surface-secondary)] hover:bg-[var(--color-primary-light)] p-3 transition-colors group"
                 >
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-[var(--color-text-primary)] truncate mr-2">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-sm text-[var(--color-text-primary)] group-hover:text-[var(--color-primary)] truncate mr-2 transition-colors">
                       {peer.name}
                     </span>
-                    <span className="text-sm font-medium text-[var(--color-text-primary)] shrink-0">
-                      {peer.salary}万円
-                    </span>
+                    <span className="text-sm font-semibold shrink-0">{peer.salary}万円</span>
                   </div>
-                  <div className="mt-1.5 h-1.5 rounded-full bg-white/60 overflow-hidden">
+                  <div className="h-2 rounded-full bg-white/60 overflow-hidden">
                     <div
-                      className="h-full rounded-full bg-[var(--color-text-muted)]"
-                      style={{ width: `${Math.min((peer.salary / salaryMan) * 100, 100)}%` }}
+                      className="h-full rounded-full bg-[var(--color-text-muted)] transition-all duration-500"
+                      style={{ width: `${(peer.salary / maxPeerSalary) * 100}%` }}
                     />
                   </div>
                 </Link>
@@ -350,124 +365,88 @@ export function CompanyDetailFromDb({
         </div>
       </div>
 
-      {/* DEI指標 */}
-      {(latest?.genderWageGapAll != null || latest?.maleParentalLeaveRate != null || latest?.femaleManagerRate != null) && (
-        <DeiSection latest={latest} />
-      )}
-
-      {/* 財務データ（売上高・営業利益推移） */}
+      {/* ── 財務 + 役員報酬/効率指標 ── */}
       {financialsHistory.length > 0 && (
-        <FinancialsSection financialsHistory={financialsHistory} companyName={company.name} />
-      )}
-
-      {/* 役員報酬 */}
-      {latest?.execCompTotal != null && latest.execCompTotal > 0 && (
-        <ExecCompSection
-          execCompTotal={latest.execCompTotal}
-          execCompCount={latest.execCompCount}
-          employees={latest.employees}
-          fiscalYear={latest.fiscalYear}
-        />
-      )}
-
-      {/* 他社と比較 */}
-      {peers.length > 0 && (
-        <div className="glass rounded-2xl p-6">
-          <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
-            他社と年収を比較
-          </h2>
-          <p className="text-xs text-[var(--color-text-muted)] mb-4">
-            {company.name}と同業他社の年収をサイドバイサイドで比較
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {peers.map((peer) => (
-              <Link
-                key={peer.code}
-                href={`/compare/${company.secCode ?? ""}-vs-${peer.code}`}
-                className="text-xs px-4 py-2 rounded-full glass text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary-light)] transition-colors"
-              >
-                vs {peer.name}
-              </Link>
-            ))}
+        <div className="grid grid-cols-12 gap-3">
+          <div className="col-span-12 lg:col-span-7">
+            <FinancialsSection financialsHistory={financialsHistory} companyName={company.name} />
+          </div>
+          <div className="col-span-12 lg:col-span-5 space-y-3">
+            {latest?.execCompTotal != null && latest.execCompTotal > 0 && (
+              <ExecCompSection
+                execCompTotal={latest.execCompTotal}
+                execCompCount={latest.execCompCount}
+                employees={latest.employees}
+                fiscalYear={latest.fiscalYear}
+                avgSalary={salaryMan}
+              />
+            )}
+            <EfficiencySection salaryHistory={salaryHistory} financialsHistory={financialsHistory} />
           </div>
         </div>
       )}
 
-      {/* 転職・求人リンク */}
-      <div className="glass rounded-2xl p-6">
-        <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
-          {company.name}の求人を探す
-        </h2>
-        <p className="text-xs text-[var(--color-text-muted)] mb-4">
-          主要転職サイトで{company.name}の求人情報を確認できます
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {[
-            {
-              name: "doda",
-              color: "from-orange-500 to-orange-600",
-              url: `https://doda.jp/DodaFront/View/JobSearchResult/j_ks__searchkeyword-${encodeURIComponent(company.name)}/`,
-            },
-            {
-              name: "リクナビNEXT",
-              color: "from-blue-500 to-blue-600",
-              url: `https://next.rikunabi.com/tag/KEYWORD_${encodeURIComponent(company.name)}/`,
-            },
-            {
-              name: "ビズリーチ",
-              color: "from-red-500 to-red-600",
-              url: `https://www.bizreach.jp/job-list/?free_word=${encodeURIComponent(company.name)}`,
-            },
-          ].map((site) => (
-            <a
-              key={site.name}
-              href={site.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r ${site.color} text-white text-sm font-bold hover:opacity-90 transition-opacity`}
-            >
-              {site.name}で求人を探す
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-          ))}
+      {/* ── 下部アクション ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
+        {/* 転職リンク */}
+        <div className="glass rounded-2xl p-5">
+          <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">
+            {company.name}の求人を探す
+          </h2>
+          <div className="flex flex-col gap-2">
+            {[
+              { name: "doda", color: "from-orange-500 to-orange-600", url: `https://doda.jp/DodaFront/View/JobSearchResult/j_ks__searchkeyword-${encodeURIComponent(company.name)}/` },
+              { name: "リクナビNEXT", color: "from-blue-500 to-blue-600", url: `https://next.rikunabi.com/tag/KEYWORD_${encodeURIComponent(company.name)}/` },
+              { name: "ビズリーチ", color: "from-red-500 to-red-600", url: `https://www.bizreach.jp/job-list/?free_word=${encodeURIComponent(company.name)}` },
+            ].map((site) => (
+              <a key={site.name} href={site.url} target="_blank" rel="noopener noreferrer"
+                className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gradient-to-r ${site.color} text-white text-xs font-bold hover:opacity-90 transition-opacity`}>
+                {site.name}で求人を探す
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
-
-      {/* SNSシェア */}
-      <div className="glass rounded-2xl p-6">
-        <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
-          この企業の年収をシェア
-        </h2>
-        <p className="text-xs text-[var(--color-text-muted)] mb-4">
-          {company.name}の年収データを友達や同僚に共有
-        </p>
-        <ShareButtons companyName={company.name} salary={salaryMan} code={company.secCode ?? ""} />
-      </div>
-
-      {/* データ注釈 */}
-      <div className="glass rounded-2xl p-5">
-        <h2 className="text-sm font-bold text-[var(--color-text-primary)] mb-1">
-          データについて
-        </h2>
-        <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
-          このページのデータは{company.name}が金融庁EDINETに提出した有価証券報告書に基づいています。
-          「平均年間給与」は提出会社単体の正社員の平均値であり、グループ全体や契約社員を含まない場合があります。
-          詳細は
-          <a
-            href="https://disclosure.edinet-fsa.go.jp/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[var(--color-primary)] hover:underline mx-1"
-          >
-            EDINET
-          </a>
-          でご確認ください。
-        </p>
+        {/* シェア・比較 */}
+        <div className="glass rounded-2xl p-5">
+          <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">シェア・比較</h2>
+          <div className="space-y-3">
+            <ShareButtons companyName={company.name} salary={salaryMan} code={company.secCode ?? ""} />
+            {peers.length > 0 && (
+              <div className="flex flex-wrap gap-1.5">
+                {peers.map((peer) => (
+                  <Link key={peer.code} href={`/compare/${company.secCode ?? ""}-vs-${peer.code}`}
+                    className="text-xs px-3 py-1.5 rounded-full glass text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-primary-light)] transition-colors">
+                    vs {peer.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+        {/* 広告 + データ注釈 */}
+        <div className="glass rounded-2xl p-5 space-y-3">
+          <AdBanner slot="9555970163" format="horizontal" className="" />
+          <div>
+            <h2 className="text-xs font-semibold text-[var(--color-text-primary)] mb-1">データについて</h2>
+            <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
+              有価証券報告書（EDINET）に基づくデータです。平均年収は単体・正社員の値です。
+              <a href="https://disclosure.edinet-fsa.go.jp/" target="_blank" rel="noopener noreferrer"
+                className="text-[var(--color-primary)] hover:underline ml-1">EDINET</a>でご確認ください。
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
+}
+
+// "2024-03" → "2024年3月期"
+function formatFiscalYear(fy: string): string {
+  const [year, month] = fy.split("-");
+  return `${year}年${parseInt(month)}月期`;
 }
 
 function rankLabel(deviation: number): string {
@@ -479,35 +458,279 @@ function rankLabel(deviation: number): string {
   return "低め";
 }
 
-function DeiSection({ latest }: { latest: SalaryRecord }) {
+function OrganizationTrendSection({ salaryHistory, compact = false }: { salaryHistory: SalaryRecord[]; compact?: boolean }) {
+  const hasEmployees = salaryHistory.some((s) => s.employees);
+  const hasAge = salaryHistory.some((s) => s.avgAge);
+  const hasTenure = salaryHistory.some((s) => s.avgTenure);
+
+  if (!hasEmployees && !hasAge && !hasTenure) return null;
+
+  const trendData = salaryHistory.map((s) => ({
+    year: s.fiscalYear,
+    従業員数: s.employees ?? null,
+    平均年齢: s.avgAge ?? null,
+    平均勤続年数: s.avgTenure ?? null,
+  }));
+
+  const maxEmployees = Math.max(...trendData.map((d) => d.従業員数 ?? 0));
+
+  return (
+    <div className="glass rounded-2xl p-5">
+      <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">
+        組織データの推移
+      </h2>
+      <p className="text-xs text-[var(--color-text-muted)] mb-3">
+        従業員数（左軸）・平均年齢・勤続年数（右軸）
+      </p>
+      <div className={compact ? "h-[200px]" : "h-[220px] sm:h-[280px]"}>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={trendData} margin={{ top: 5, right: 40, bottom: 5, left: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+            <XAxis dataKey="year" tick={{ fontSize: 10 }} tickFormatter={(v) => formatFiscalYear(v)} />
+            {hasEmployees && (
+              <YAxis
+                yAxisId="left"
+                tick={{ fontSize: 10 }}
+                tickFormatter={(v) => `${v.toLocaleString()}名`}
+                domain={[0, Math.ceil(maxEmployees * 1.2 / 1000) * 1000]}
+                width={60}
+              />
+            )}
+            {(hasAge || hasTenure) && (
+              <YAxis
+                yAxisId="right"
+                orientation="right"
+                tick={{ fontSize: 10 }}
+                tickFormatter={(v) => `${v}`}
+                domain={[0, 60]}
+                width={30}
+              />
+            )}
+            <Tooltip
+              labelFormatter={(label) => formatFiscalYear(label)}
+              contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
+              formatter={(value, name) => {
+                const v = Number(value);
+                if (name === "従業員数") return [`${v.toLocaleString()}名`, name as string];
+                if (name === "平均年齢") return [`${v}歳`, name as string];
+                if (name === "平均勤続年数") return [`${v}年`, name as string];
+                return [`${v}`, name as string];
+              }}
+            />
+            <Legend />
+            {hasEmployees && (
+              <Line
+                yAxisId="left"
+                type="monotone"
+                dataKey="従業員数"
+                stroke="#1a56db"
+                strokeWidth={2}
+                dot={{ r: 4, fill: "#1a56db" }}
+                connectNulls
+              />
+            )}
+            {hasAge && (
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="平均年齢"
+                stroke="#7c3aed"
+                strokeWidth={2}
+                dot={{ r: 4, fill: "#7c3aed" }}
+                connectNulls
+              />
+            )}
+            {hasTenure && (
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="平均勤続年数"
+                stroke="#10b981"
+                strokeWidth={2}
+                dot={{ r: 4, fill: "#10b981" }}
+                connectNulls
+              />
+            )}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
+function EfficiencySection({
+  salaryHistory,
+  financialsHistory,
+}: {
+  salaryHistory: SalaryRecord[];
+  financialsHistory: FinancialsRecord[];
+}) {
+  // 年度をキーに従業員数マップを作成
+  const employeesByYear: Record<string, number> = {};
+  for (const s of salaryHistory) {
+    if (s.employees) employeesByYear[s.fiscalYear] = s.employees;
+  }
+
+  const trendData = financialsHistory
+    .filter((f) => f.netSales && employeesByYear[f.fiscalYear])
+    .map((f) => {
+      const employees = employeesByYear[f.fiscalYear];
+      const salesPerEmployee = Math.round(f.netSales! / employees / 10_000); // 万円/人
+      return {
+        year: f.fiscalYear,
+        "1人あたり売上（万円）": salesPerEmployee,
+      };
+    });
+
+  if (trendData.length < 2) return null;
+
+  return (
+    <div className="glass rounded-2xl p-5">
+      <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">
+        従業員1人あたりの売上高
+      </h2>
+      <p className="text-xs text-[var(--color-text-muted)] mb-3">
+        売上高 ÷ 従業員数（企業の効率性指標・万円/人）
+      </p>
+      <div className="h-[200px] sm:h-[240px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={trendData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+            <XAxis dataKey="year" tick={{ fontSize: 11 }} tickFormatter={(v) => formatFiscalYear(v)} />
+            <YAxis
+              tick={{ fontSize: 11 }}
+              tickFormatter={(v) => `${v.toLocaleString()}万`}
+            />
+            <Tooltip
+              labelFormatter={(label) => formatFiscalYear(label)}
+              contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
+              formatter={(v) => [`${Number(v).toLocaleString()}万円/人`, "1人あたり売上"]}
+            />
+            <Line
+              type="monotone"
+              dataKey="1人あたり売上（万円）"
+              stroke="#f59e0b"
+              strokeWidth={2.5}
+              dot={{ r: 4, fill: "#f59e0b" }}
+              connectNulls
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
+function DeiCompactSection({
+  latest,
+  industryDei,
+}: {
+  latest: SalaryRecord;
+  industryDei: IndustryDei | null;
+}) {
+  const wageGap = latest.genderWageGapAll;
+  const femaleManager = latest.femaleManagerRate;
+
+  if (wageGap == null && femaleManager == null) {
+    return (
+      <div className="glass rounded-2xl p-5 h-full flex items-center justify-center">
+        <p className="text-sm text-[var(--color-text-muted)] text-center">DEIデータなし</p>
+      </div>
+    );
+  }
+
+  const wageVsIndustry = wageGap != null && industryDei?.genderWageGapAll != null
+    ? wageGap - industryDei.genderWageGapAll
+    : null;
+  const femaleVsIndustry = femaleManager != null && industryDei?.femaleManagerRate != null
+    ? femaleManager - industryDei.femaleManagerRate
+    : null;
+
+  return (
+    <div className="glass rounded-2xl p-5 h-full flex flex-col justify-between">
+      <h2 className="text-sm font-semibold text-[var(--color-text-muted)] mb-4">DEI指標</h2>
+      <div className="space-y-5 flex-1">
+        {wageGap != null && (
+          <div>
+            <p className="text-xs text-[var(--color-text-muted)] mb-1">男女賃金格差</p>
+            <div className="flex items-end gap-2">
+              <span className="text-5xl font-black text-[var(--color-primary)] leading-none">
+                {wageGap.toFixed(1)}
+              </span>
+              <span className="text-lg font-bold text-[var(--color-primary)] mb-0.5">%</span>
+            </div>
+            <p className="text-xs text-[var(--color-text-muted)] mt-1">女性÷男性賃金</p>
+            {wageVsIndustry != null && (
+              <span className={`inline-block text-xs font-semibold mt-1 px-2 py-0.5 rounded-full ${wageVsIndustry >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
+                業界比 {wageVsIndustry >= 0 ? "+" : ""}{wageVsIndustry.toFixed(1)}pt
+              </span>
+            )}
+          </div>
+        )}
+        {femaleManager != null && (
+          <div>
+            <p className="text-xs text-[var(--color-text-muted)] mb-1">女性管理職比率</p>
+            <div className="flex items-end gap-2">
+              <span className="text-5xl font-black text-[var(--color-accent)] leading-none">
+                {femaleManager.toFixed(1)}
+              </span>
+              <span className="text-lg font-bold text-[var(--color-accent)] mb-0.5">%</span>
+            </div>
+            {femaleVsIndustry != null && (
+              <span className={`inline-block text-xs font-semibold mt-1 px-2 py-0.5 rounded-full ${femaleVsIndustry >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-600"}`}>
+                業界比 {femaleVsIndustry >= 0 ? "+" : ""}{femaleVsIndustry.toFixed(1)}pt
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+      {industryDei && (
+        <p className="text-xs text-[var(--color-text-muted)] mt-3">業界{industryDei.companyCount}社平均との比較</p>
+      )}
+    </div>
+  );
+}
+
+function DeiSection({
+  latest,
+  industryDei,
+}: {
+  latest: SalaryRecord;
+  industryDei: IndustryDei | null;
+}) {
   const items = [
     {
       label: "男女賃金格差（全労働者）",
       value: latest.genderWageGapAll,
+      industryAvg: industryDei?.genderWageGapAll ?? null,
       desc: "女性の賃金 ÷ 男性の賃金",
       good: 90,
     },
     {
       label: "男女賃金格差（正規）",
       value: latest.genderWageGapFull,
+      industryAvg: industryDei?.genderWageGapFull ?? null,
       desc: "正規労働者の男女比率",
       good: 85,
     },
     {
       label: "男女賃金格差（非正規）",
       value: latest.genderWageGapPart,
+      industryAvg: industryDei?.genderWageGapPart ?? null,
       desc: "非正規労働者の男女比率",
       good: 80,
     },
     {
       label: "男性育休取得率",
       value: latest.maleParentalLeaveRate,
+      industryAvg: industryDei?.maleParentalLeaveRate ?? null,
       desc: "前年度取得者を含むため100%超の場合あり",
       good: 50,
     },
     {
       label: "女性管理職比率",
       value: latest.femaleManagerRate,
+      industryAvg: industryDei?.femaleManagerRate ?? null,
       desc: "管理職に占める女性の割合",
       good: 15,
     },
@@ -516,10 +739,17 @@ function DeiSection({ latest }: { latest: SalaryRecord }) {
   if (items.length === 0) return null;
 
   return (
-    <div className="glass rounded-2xl p-6">
-      <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
-        DEI・男女格差データ
-      </h2>
+    <div className="glass rounded-2xl p-5">
+      <div className="flex items-start justify-between mb-0.5">
+        <h2 className="text-base font-semibold text-[var(--color-text-primary)]">
+          DEI・男女格差データ
+        </h2>
+        {industryDei && (
+          <span className="text-xs text-[var(--color-text-muted)] shrink-0 ml-2 mt-0.5">
+            業界{industryDei.companyCount}社平均比較
+          </span>
+        )}
+      </div>
       <p className="text-xs text-[var(--color-text-muted)] mb-4">
         有価証券報告書ベース（2023年度以降開示義務化）
       </p>
@@ -527,22 +757,55 @@ function DeiSection({ latest }: { latest: SalaryRecord }) {
         {items.map((item) => {
           const pct = item.value!;
           const isGood = pct >= item.good;
-          const barColor = isGood ? "bg-[var(--color-success)]" : pct >= item.good * 0.7 ? "bg-yellow-400" : "bg-[var(--color-danger)]";
+          const barColor = isGood
+            ? "bg-[var(--color-success)]"
+            : pct >= item.good * 0.7
+            ? "bg-yellow-400"
+            : "bg-[var(--color-danger)]";
+          const industryPct = item.industryAvg;
+          const vsIndustry = industryPct != null ? pct - industryPct : null;
+
           return (
             <div key={item.label}>
-              <div className="flex justify-between items-center mb-1">
+              <div className="flex justify-between items-baseline mb-1.5">
                 <span className="text-sm text-[var(--color-text-secondary)]">{item.label}</span>
-                <span className={`text-sm font-bold ${isGood ? "text-[var(--color-success)]" : "text-[var(--color-text-primary)]"}`}>
-                  {pct.toFixed(1)}%
-                </span>
+                <div className="flex items-center gap-2 shrink-0 ml-2">
+                  {vsIndustry !== null && (
+                    <span className={`text-xs font-medium px-1.5 py-0.5 rounded ${
+                      vsIndustry >= 0
+                        ? "bg-[var(--color-success-light)] text-[var(--color-success)]"
+                        : "bg-red-50 text-[var(--color-danger)]"
+                    }`}>
+                      {vsIndustry >= 0 ? "+" : ""}{vsIndustry.toFixed(1)}%
+                    </span>
+                  )}
+                  <span className={`text-base font-bold ${isGood ? "text-[var(--color-success)]" : "text-[var(--color-text-primary)]"}`}>
+                    {pct.toFixed(1)}%
+                  </span>
+                </div>
               </div>
-              <div className="h-2 rounded-full bg-[var(--color-surface-secondary)] overflow-hidden">
+              {/* この企業のバー */}
+              <div className="h-2.5 rounded-full bg-[var(--color-surface-secondary)] overflow-hidden mb-1">
                 <div
                   className={`h-full rounded-full transition-all duration-700 ${barColor}`}
                   style={{ width: `${Math.min(pct, 100)}%` }}
                 />
               </div>
-              <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{item.desc}</p>
+              {/* 業界平均のバー */}
+              {industryPct != null && (
+                <div className="h-1.5 rounded-full bg-[var(--color-surface-secondary)] overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-gray-300 transition-all duration-700"
+                    style={{ width: `${Math.min(industryPct, 100)}%` }}
+                  />
+                </div>
+              )}
+              <div className="flex justify-between mt-1">
+                <p className="text-xs text-[var(--color-text-muted)]">{item.desc}</p>
+                {industryPct != null && (
+                  <p className="text-xs text-[var(--color-text-muted)]">業界平均 {industryPct.toFixed(1)}%</p>
+                )}
+              </div>
             </div>
           );
         })}
@@ -554,9 +817,11 @@ function DeiSection({ latest }: { latest: SalaryRecord }) {
 function FinancialsSection({
   financialsHistory,
   companyName,
+  compact = false,
 }: {
   financialsHistory: FinancialsRecord[];
   companyName: string;
+  compact?: boolean;
 }) {
   const trendData = financialsHistory
     .filter((f) => f.netSales || f.operatingIncome)
@@ -575,17 +840,17 @@ function FinancialsSection({
   const maxVal = allValues.length > 0 ? Math.ceil(Math.max(...allValues) * 1.15 / 100) * 100 : 1000;
 
   return (
-    <div className="glass rounded-2xl p-6">
-      <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
+    <div className="glass rounded-2xl p-5">
+      <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">
         業績推移
       </h2>
-      <p className="text-xs text-[var(--color-text-muted)] mb-4">
-        {isConsolidated ? "連結" : "単体"}・億円ベース（有価証券報告書より）
+      <p className="text-xs text-[var(--color-text-muted)] mb-3">
+        {isConsolidated ? "連結" : "単体"}・億円ベース
       </p>
 
-      {/* 最新KPI */}
-      {latest && (
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+      {/* 最新KPI（compactでない場合のみ） */}
+      {latest && !compact && (
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
           {[
             { label: "売上高", value: latest.netSales },
             { label: "営業利益", value: latest.operatingIncome },
@@ -594,7 +859,7 @@ function FinancialsSection({
           ].map(({ label, value }) => (
             <div key={label} className="rounded-xl bg-[var(--color-surface-secondary)] p-3">
               <p className="text-xs text-[var(--color-text-muted)] mb-1">{label}</p>
-              <p className="text-base font-bold text-[var(--color-text-primary)]">
+              <p className="text-sm font-bold text-[var(--color-text-primary)]">
                 {value != null
                   ? value >= 100_000_000
                     ? `${Math.round(value / 100_000_000).toLocaleString()}億円`
@@ -608,13 +873,14 @@ function FinancialsSection({
 
       {/* 推移グラフ */}
       {trendData.length >= 2 && (
-        <div className="h-[240px]">
+        <div className={compact ? "h-[185px]" : "h-[200px] sm:h-[240px]"}>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={trendData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+            <BarChart data={trendData} margin={{ top: 5, right: 10, bottom: 5, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis dataKey="year" tick={{ fontSize: 11 }} />
-              <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `${v}億`} domain={[0, maxVal]} />
+              <XAxis dataKey="year" tick={{ fontSize: 10 }} tickFormatter={(v) => formatFiscalYear(v)} />
+              <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `${v}億`} domain={[0, maxVal]} width={40} />
               <Tooltip
+                labelFormatter={(label) => formatFiscalYear(label)}
                 contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
               formatter={(v: any) => [`${Number(v).toLocaleString()}億円`]}
@@ -635,32 +901,36 @@ function ExecCompSection({
   execCompCount,
   employees,
   fiscalYear,
+  avgSalary,
 }: {
   execCompTotal: number;
   execCompCount: number | null;
   employees: number | null;
   fiscalYear: string;
+  avgSalary: number;
 }) {
-  const totalOkuMan = Math.round(execCompTotal / 100_000_000 * 10) / 10; // 億円（小数1桁）
-  const perPerson = execCompCount && execCompCount > 0
-    ? Math.round(execCompTotal / execCompCount / 10_000)
-    : null;
-  const vsAvgEmployee = employees && employees > 0 && perPerson
-    ? null // 年収は万円単位なので比較しない（違う指標）
-    : null;
+  const totalOkuMan = Math.round((execCompTotal / 100_000_000) * 10) / 10;
+  const perPerson =
+    execCompCount && execCompCount > 0
+      ? Math.round(execCompTotal / execCompCount / 10_000)
+      : null;
+  const ratio =
+    perPerson && avgSalary > 0
+      ? Math.round((perPerson / avgSalary) * 10) / 10
+      : null;
 
   return (
-    <div className="glass rounded-2xl p-6">
-      <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
+    <div className="glass rounded-2xl p-5">
+      <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">
         役員報酬
       </h2>
       <p className="text-xs text-[var(--color-text-muted)] mb-4">
-        {fiscalYear}期・有価証券報告書より
+        {formatFiscalYear(fiscalYear)}・有価証券報告書より
       </p>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         <div className="rounded-xl bg-[var(--color-surface-secondary)] p-4">
-          <p className="text-xs text-[var(--color-text-muted)] mb-1">役員報酬総額</p>
-          <p className="text-xl font-bold text-[var(--color-text-primary)]">
+          <p className="text-xs text-[var(--color-text-muted)] mb-1.5">役員報酬総額</p>
+          <p className="text-xl font-extrabold text-[var(--color-text-primary)]">
             {totalOkuMan >= 1
               ? `${totalOkuMan}億円`
               : `${Math.round(execCompTotal / 10_000).toLocaleString()}万円`}
@@ -668,15 +938,24 @@ function ExecCompSection({
         </div>
         {execCompCount != null && (
           <div className="rounded-xl bg-[var(--color-surface-secondary)] p-4">
-            <p className="text-xs text-[var(--color-text-muted)] mb-1">対象役員数</p>
-            <p className="text-xl font-bold text-[var(--color-text-primary)]">{execCompCount}名</p>
+            <p className="text-xs text-[var(--color-text-muted)] mb-1.5">対象役員数</p>
+            <p className="text-xl font-extrabold text-[var(--color-text-primary)]">{execCompCount}名</p>
           </div>
         )}
         {perPerson != null && (
           <div className="rounded-xl bg-[var(--color-surface-secondary)] p-4">
-            <p className="text-xs text-[var(--color-text-muted)] mb-1">役員1人あたり平均</p>
-            <p className="text-xl font-bold text-[var(--color-text-primary)]">
+            <p className="text-xs text-[var(--color-text-muted)] mb-1.5">役員1人あたり</p>
+            <p className="text-xl font-extrabold text-[var(--color-text-primary)]">
               {perPerson.toLocaleString()}万円
+            </p>
+          </div>
+        )}
+        {ratio != null && (
+          <div className="rounded-xl bg-[var(--color-surface-secondary)] p-4">
+            <p className="text-xs text-[var(--color-text-muted)] mb-1.5">一般社員との格差</p>
+            <p className="text-xl font-extrabold text-[var(--color-danger)]">{ratio}倍</p>
+            <p className="text-xs text-[var(--color-text-muted)] mt-1">
+              社員 {avgSalary.toLocaleString()}万円比
             </p>
           </div>
         )}
