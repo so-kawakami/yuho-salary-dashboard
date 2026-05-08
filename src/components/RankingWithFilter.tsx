@@ -34,17 +34,20 @@ export function RankingWithFilter({ data }: { data: RankingRow[] }) {
     return ["すべて", ...Array.from(set).sort()];
   }, [data]);
 
-  const filtered = useMemo(() => {
+  const { displayed, totalFiltered } = useMemo(() => {
     const size = SIZE_OPTIONS[sizeFilter];
-    return data
+    const afterFilter = data
       .filter((r) => {
         if (industryFilter !== "すべて" && r.industry !== industryFilter) return false;
         if (r.employees > 0 && (r.employees < size.min || r.employees > size.max)) return false;
         if (query && !r.name.includes(query) && !r.industry.includes(query)) return false;
         return true;
       })
-      .sort((a, b) => (b[sortKey] ?? 0) - (a[sortKey] ?? 0))
-      .map((r, i) => ({ ...r, displayRank: i + 1 }));
+      .sort((a, b) => (b[sortKey] ?? 0) - (a[sortKey] ?? 0));
+    return {
+      totalFiltered: afterFilter.length,
+      displayed: afterFilter.slice(0, 200).map((r, i) => ({ ...r, displayRank: i + 1 })),
+    };
   }, [data, industryFilter, sizeFilter, sortKey, query]);
 
   const sortCols: { key: SortKey; label: string }[] = [
@@ -112,7 +115,9 @@ export function RankingWithFilter({ data }: { data: RankingRow[] }) {
         </div>
 
         <span className="text-sm text-[var(--color-text-muted)] ml-auto">
-          {filtered.length}社
+          {totalFiltered > 200
+            ? `${totalFiltered.toLocaleString()}社中 上位200社`
+            : `${totalFiltered}社`}
         </span>
       </div>
 
@@ -132,7 +137,7 @@ export function RankingWithFilter({ data }: { data: RankingRow[] }) {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((company) => (
+              {displayed.map((company) => (
                 <tr
                   key={company.code}
                   className="border-t border-[var(--color-border)] hover:bg-[var(--color-primary-light)] transition-colors"
@@ -167,7 +172,7 @@ export function RankingWithFilter({ data }: { data: RankingRow[] }) {
                   </td>
                 </tr>
               ))}
-              {filtered.length === 0 && (
+              {displayed.length === 0 && (
                 <tr>
                   <td colSpan={7} className="px-4 py-12 text-center text-[var(--color-text-muted)]">
                     条件に一致する企業がありません
