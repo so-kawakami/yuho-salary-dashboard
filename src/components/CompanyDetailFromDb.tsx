@@ -7,6 +7,8 @@ import {
   Line,
   BarChart,
   Bar,
+  ComposedChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -57,6 +59,13 @@ interface Peer {
   employees: number;
 }
 
+interface SimilarCompany {
+  code: string;
+  name: string;
+  industry: string;
+  salary: number;
+}
+
 interface IndustryDei {
   genderWageGapAll: number | null;
   genderWageGapFull: number | null;
@@ -72,12 +81,14 @@ export function CompanyDetailFromDb({
   peers = [],
   financialsHistory = [],
   industryDei = null,
+  similarCompanies = [],
 }: {
   company: Company;
   salaryHistory: SalaryRecord[];
   peers?: Peer[];
   financialsHistory?: FinancialsRecord[];
   industryDei?: IndustryDei | null;
+  similarCompanies?: SimilarCompany[];
 }) {
   const latest = salaryHistory[salaryHistory.length - 1];
   const prev = salaryHistory[salaryHistory.length - 2];
@@ -365,6 +376,18 @@ export function CompanyDetailFromDb({
         </div>
       </div>
 
+      {/* ── DEI詳細 + DEI推移 ── */}
+      {latest && (
+        <div className="grid grid-cols-12 gap-3">
+          <div className="col-span-12 lg:col-span-5">
+            <DeiSection latest={latest} industryDei={industryDei} />
+          </div>
+          <div className="col-span-12 lg:col-span-7">
+            <DeiTrendSection salaryHistory={salaryHistory} />
+          </div>
+        </div>
+      )}
+
       {/* ── 財務 + 役員報酬/効率指標 ── */}
       {financialsHistory.length > 0 && (
         <div className="grid grid-cols-12 gap-3">
@@ -386,22 +409,61 @@ export function CompanyDetailFromDb({
         </div>
       )}
 
+      {/* ── 年収が近い企業 ── */}
+      {similarCompanies.length > 0 && (
+        <div className="glass rounded-2xl p-5">
+          <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-1">
+            年収が近い企業
+          </h2>
+          <p className="text-xs text-[var(--color-text-muted)] mb-3">
+            同業界・近い年収帯の企業と比較してみよう
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            {similarCompanies.map((c) => (
+              <Link
+                key={c.code}
+                href={`/company/${c.code}`}
+                className="flex flex-col gap-0.5 p-3 rounded-xl glass glass-hover hover:border-[var(--color-primary)] transition-colors"
+              >
+                <span className="text-xs font-semibold text-[var(--color-text-primary)] line-clamp-1">
+                  {c.name}
+                </span>
+                <span className="text-lg font-bold text-gradient">
+                  {c.salary.toLocaleString()}万円
+                </span>
+                <span className="text-[10px] text-[var(--color-text-muted)] line-clamp-1">
+                  {c.industry}
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* ── 下部アクション ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3">
         {/* 転職リンク */}
         <div className="glass rounded-2xl p-5">
-          <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-3">
-            {company.name}の求人を探す
-          </h2>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">
+              {salaryMan > 0 ? `年収${salaryMan.toLocaleString()}万円以上の求人` : `${company.name}の求人を探す`}
+            </h2>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--color-surface-secondary)] text-[var(--color-text-muted)]">PR</span>
+          </div>
+          {salaryMan > 0 && (
+            <p className="text-xs text-[var(--color-text-muted)] mb-3">
+              {company.name}と同等以上の年収求人をチェック
+            </p>
+          )}
           <div className="flex flex-col gap-2">
             {[
               { name: "doda", color: "from-orange-500 to-orange-600", url: `https://doda.jp/DodaFront/View/JobSearchResult/j_ks__searchkeyword-${encodeURIComponent(company.name)}/` },
               { name: "リクナビNEXT", color: "from-blue-500 to-blue-600", url: `https://next.rikunabi.com/tag/KEYWORD_${encodeURIComponent(company.name)}/` },
               { name: "ビズリーチ", color: "from-red-500 to-red-600", url: `https://www.bizreach.jp/job-list/?free_word=${encodeURIComponent(company.name)}` },
             ].map((site) => (
-              <a key={site.name} href={site.url} target="_blank" rel="noopener noreferrer"
+              <a key={site.name} href={site.url} target="_blank" rel="sponsored nofollow noopener noreferrer"
                 className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gradient-to-r ${site.color} text-white text-xs font-bold hover:opacity-90 transition-opacity`}>
-                {site.name}で求人を探す
+                {site.name}で求人を見る
                 <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
@@ -814,6 +876,89 @@ function DeiSection({
   );
 }
 
+function DeiTrendSection({ salaryHistory }: { salaryHistory: SalaryRecord[] }) {
+  const trendData = salaryHistory
+    .map((s) => ({
+      year: s.fiscalYear,
+      男女賃金格差: s.genderWageGapAll ?? null,
+      女性管理職比率: s.femaleManagerRate ?? null,
+      男性育休取得率: s.maleParentalLeaveRate ?? null,
+    }))
+    .filter(
+      (d) =>
+        d.男女賃金格差 != null ||
+        d.女性管理職比率 != null ||
+        d.男性育休取得率 != null
+    );
+
+  if (trendData.length < 2) return null;
+
+  const hasWageGap = trendData.some((d) => d.男女賃金格差 != null);
+  const hasFemaleManager = trendData.some((d) => d.女性管理職比率 != null);
+  const hasMaleLeave = trendData.some((d) => d.男性育休取得率 != null);
+
+  return (
+    <div className="glass rounded-2xl p-5">
+      <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">
+        DEI指標の推移
+      </h2>
+      <p className="text-xs text-[var(--color-text-muted)] mb-3">
+        男女賃金格差・女性管理職比率・男性育休取得率の年度推移
+      </p>
+      <div className="h-[220px] sm:h-[260px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={trendData} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+            <XAxis dataKey="year" tick={{ fontSize: 10 }} tickFormatter={(v) => formatFiscalYear(v)} />
+            <YAxis
+              tick={{ fontSize: 10 }}
+              tickFormatter={(v) => `${v}%`}
+              domain={[0, 110]}
+              width={40}
+            />
+            <Tooltip
+              labelFormatter={(label) => formatFiscalYear(label)}
+              contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: 12 }}
+              formatter={(value, name) => [`${Number(value).toFixed(1)}%`, name as string]}
+            />
+            <Legend wrapperStyle={{ fontSize: 11 }} />
+            {hasWageGap && (
+              <Line
+                type="monotone"
+                dataKey="男女賃金格差"
+                stroke="#1a56db"
+                strokeWidth={2.5}
+                dot={{ r: 4, fill: "#1a56db" }}
+                connectNulls
+              />
+            )}
+            {hasFemaleManager && (
+              <Line
+                type="monotone"
+                dataKey="女性管理職比率"
+                stroke="#7c3aed"
+                strokeWidth={2.5}
+                dot={{ r: 4, fill: "#7c3aed" }}
+                connectNulls
+              />
+            )}
+            {hasMaleLeave && (
+              <Line
+                type="monotone"
+                dataKey="男性育休取得率"
+                stroke="#10b981"
+                strokeWidth={2.5}
+                dot={{ r: 4, fill: "#10b981" }}
+                connectNulls
+              />
+            )}
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+  );
+}
+
 function FinancialsSection({
   financialsHistory,
   companyName,
@@ -829,6 +974,10 @@ function FinancialsSection({
       year: f.fiscalYear,
       売上高: f.netSales ? Math.round(f.netSales / 100_000_000) : null,      // 億円
       営業利益: f.operatingIncome ? Math.round(f.operatingIncome / 100_000_000) : null,
+      営業利益率:
+        f.netSales && f.operatingIncome && f.netSales > 0
+          ? Math.round((f.operatingIncome / f.netSales) * 1000) / 10
+          : null,
     }));
 
   if (trendData.length === 0) return null;
@@ -873,22 +1022,48 @@ function FinancialsSection({
 
       {/* 推移グラフ */}
       {trendData.length >= 2 && (
-        <div className={compact ? "h-[185px]" : "h-[200px] sm:h-[240px]"}>
+        <div className={compact ? "h-[185px]" : "h-[200px] sm:h-[260px]"}>
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={trendData} margin={{ top: 5, right: 10, bottom: 5, left: 0 }}>
+            <ComposedChart data={trendData} margin={{ top: 5, right: 40, bottom: 5, left: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
               <XAxis dataKey="year" tick={{ fontSize: 10 }} tickFormatter={(v) => formatFiscalYear(v)} />
-              <YAxis tick={{ fontSize: 10 }} tickFormatter={(v) => `${v}億`} domain={[0, maxVal]} width={40} />
+              <YAxis
+                yAxisId="left"
+                tick={{ fontSize: 10 }}
+                tickFormatter={(v) => `${v}億`}
+                domain={[0, maxVal]}
+                width={45}
+              />
+              <YAxis
+                yAxisId="right"
+                orientation="right"
+                tick={{ fontSize: 10 }}
+                tickFormatter={(v) => `${v}%`}
+                domain={[-20, 60]}
+                width={35}
+              />
               <Tooltip
                 labelFormatter={(label) => formatFiscalYear(label)}
-                contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb" }}
+                contentStyle={{ borderRadius: "8px", border: "1px solid #e5e7eb", fontSize: 12 }}
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              formatter={(v: any) => [`${Number(v).toLocaleString()}億円`]}
+                formatter={(v: any, name: any) => {
+                  if (name === "営業利益率") return [`${Number(v).toFixed(1)}%`, name];
+                  return [`${Number(v).toLocaleString()}億円`, name];
+                }}
               />
-              <Legend />
-              <Bar dataKey="売上高" fill="#1a56db" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="営業利益" fill="#7c3aed" radius={[4, 4, 0, 0]} />
-            </BarChart>
+              <Legend wrapperStyle={{ fontSize: 11 }} />
+              <Bar yAxisId="left" dataKey="売上高" fill="#1a56db" radius={[4, 4, 0, 0]} />
+              <Bar yAxisId="left" dataKey="営業利益" fill="#7c3aed" radius={[4, 4, 0, 0]} />
+              <Line
+                yAxisId="right"
+                type="monotone"
+                dataKey="営業利益率"
+                stroke="#f59e0b"
+                strokeWidth={2.5}
+                dot={{ r: 4, fill: "#f59e0b" }}
+                connectNulls
+              />
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
       )}
@@ -964,120 +1139,6 @@ function ExecCompSection({
   );
 }
 
-function CompanyAnalysis({
-  companyName,
-  industry,
-  salaryMan,
-  change,
-  percentile,
-  industryAvg,
-  employees,
-  avgAge,
-  avgTenure,
-  trendYears,
-  fiscalYear,
-  peers,
-}: {
-  companyName: string;
-  industry: string | null;
-  salaryMan: number;
-  change: number | null;
-  percentile: { percentile: number; deviation: number; label: string };
-  industryAvg: number | null;
-  employees: number | null;
-  avgAge: number | null;
-  avgTenure: number | null;
-  trendYears: number;
-  fiscalYear: string | null;
-  peers: Peer[];
-}) {
-  const paragraphs: string[] = [];
-
-  // 第1段落: 基本情報
-  let intro = `${companyName}の平均年収は${salaryMan.toLocaleString()}万円です`;
-  if (fiscalYear) intro += `（${fiscalYear}期・有価証券報告書より）`;
-  intro += "。";
-  if (percentile.percentile >= 80) {
-    intro += `上場企業の中で上位${100 - percentile.percentile}%に位置し、偏差値は${percentile.deviation}と非常に高い水準です。`;
-  } else if (percentile.percentile >= 60) {
-    intro += `上場企業の中で上位${100 - percentile.percentile}%に位置し、偏差値${percentile.deviation}とやや高めの水準です。`;
-  } else {
-    intro += `上場企業全体での偏差値は${percentile.deviation}で、${percentile.label}の水準です。`;
-  }
-  paragraphs.push(intro);
-
-  // 第2段落: 業界比較
-  if (industry && industryAvg && industryAvg > 0) {
-    const ratio = (salaryMan / industryAvg).toFixed(1);
-    const diff = salaryMan - industryAvg;
-    let industryText = `${industry}業界の平均年収${industryAvg.toLocaleString()}万円と比較すると、`;
-    if (diff > 100) {
-      industryText += `${diff.toLocaleString()}万円上回っており、業界平均の約${ratio}倍の水準です。`;
-    } else if (diff > 0) {
-      industryText += `${diff.toLocaleString()}万円上回っています。`;
-    } else if (diff < -100) {
-      industryText += `${Math.abs(diff).toLocaleString()}万円下回っています。`;
-    } else if (diff < 0) {
-      industryText += `やや下回る水準です。`;
-    } else {
-      industryText += `ほぼ同等の水準です。`;
-    }
-    if (peers.length > 0) {
-      const higher = peers.filter((p) => p.salary > salaryMan).length;
-      const lower = peers.filter((p) => p.salary <= salaryMan).length;
-      if (higher === 0) {
-        industryText += `同業他社${peers.length}社の中ではトップの年収です。`;
-      } else {
-        industryText += `同業他社${peers.length}社中、${higher}社が${companyName}より高い年収水準となっています。`;
-      }
-    }
-    paragraphs.push(industryText);
-  }
-
-  // 第3段落: 組織の特徴
-  const orgParts: string[] = [];
-  if (employees) {
-    orgParts.push(`従業員数は${employees.toLocaleString()}名`);
-  }
-  if (avgAge) {
-    const ageDesc = avgAge < 35 ? "若い組織" : avgAge < 40 ? "比較的若い組織" : avgAge < 45 ? "標準的な年齢構成" : "経験豊富な組織";
-    orgParts.push(`平均年齢は${avgAge}歳（${ageDesc}）`);
-  }
-  if (avgTenure) {
-    const tenureDesc = avgTenure < 8 ? "転職が活発" : avgTenure < 15 ? "標準的な定着率" : "長期的に働く社員が多い";
-    orgParts.push(`平均勤続年数は${avgTenure}年（${tenureDesc}）`);
-  }
-  if (orgParts.length > 0) {
-    paragraphs.push(orgParts.join("、") + "です。");
-  }
-
-  // 第4段落: 年収推移
-  if (change !== null && trendYears >= 2) {
-    let trendText = `前年と比較すると年収は${Math.abs(change)}万円${change >= 0 ? "増加" : "減少"}しています。`;
-    if (trendYears >= 3) {
-      trendText += `${trendYears}年分の推移データが確認できます。`;
-    }
-    paragraphs.push(trendText);
-  }
-
-  return (
-    <div className="glass rounded-2xl p-6">
-      <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
-        {companyName}の年収分析
-      </h2>
-      <p className="text-xs text-[var(--color-text-muted)] mb-4">
-        有価証券報告書データに基づく自動分析
-      </p>
-      <div className="space-y-3">
-        {paragraphs.map((p, i) => (
-          <p key={i} className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-            {p}
-          </p>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function ShareButtons({ companyName, salary, code }: { companyName: string; salary: number; code: string }) {
   const url = `https://yuho-salary-dashboard.vercel.app/company/${code}`;

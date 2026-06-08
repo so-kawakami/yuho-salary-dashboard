@@ -81,19 +81,145 @@ export function getPeers(industry: string, excludeCode: string, limit = 5) {
     }));
 }
 
-export function getCompaniesByIndustry(industry: string, limit = 100): CompanySalary[] {
+export function getCompaniesByIndustry(industry: string, limit?: number): CompanySalary[] {
   const all = getAllCompanies();
-  return all
+  const filtered = all
     .filter((c) => c.industry === industry && c.salary > 0)
-    .sort((a, b) => b.salary - a.salary)
-    .slice(0, limit);
+    .sort((a, b) => b.salary - a.salary);
+  return limit !== undefined ? filtered.slice(0, limit) : filtered;
 }
 
 export function getAllIndustrySlugs(): string[] {
   if (industriesJson.length > 0) {
-    return industriesJson.map((r: any) => r.industry).filter(Boolean);
+    return industriesJson
+      .map((r: any) => r.industry)
+      .filter((name: string) => name && name !== "-" && name.trim() !== "");
   }
   return [];
+}
+
+// 年収・規模が近い企業を取得（内部リンク強化用）
+export function getSimilarCompanies(
+  excludeCode: string,
+  salary: number,
+  employees: number,
+  industry: string,
+  limit = 6
+): CompanySalary[] {
+  const all = getAllCompanies().filter(
+    (c) => c.code !== excludeCode && c.salary > 0
+  );
+  // 年収が±150万円以内 & 同業界優先
+  const sameIndustry = all
+    .filter((c) => c.industry === industry && Math.abs(c.salary - salary) <= 150)
+    .sort((a, b) => Math.abs(a.salary - salary) - Math.abs(b.salary - salary))
+    .slice(0, limit);
+  if (sameIndustry.length >= limit) return sameIndustry;
+
+  // 不足分を他業界から補完
+  const others = all
+    .filter(
+      (c) =>
+        c.industry !== industry &&
+        Math.abs(c.salary - salary) <= 100 &&
+        !sameIndustry.find((s) => s.code === c.code)
+    )
+    .sort((a, b) => Math.abs(a.salary - salary) - Math.abs(b.salary - salary))
+    .slice(0, limit - sameIndustry.length);
+  return [...sameIndustry, ...others];
+}
+
+// 役員報酬ランキング
+export function getExecutivePayRanking(limit = 200) {
+  if (Object.keys(companiesJson).length === 0) return [];
+  return Object.entries(companiesJson)
+    .map(([code, data]: [string, any]) => {
+      const latest = data.salaryHistory?.[data.salaryHistory.length - 1];
+      if (!latest?.execCompTotal || !latest?.execCompCount) return null;
+      const perPerson = Math.round(latest.execCompTotal / latest.execCompCount / 10_000);
+      const ratio = latest.avgSalary
+        ? Math.round((perPerson / Math.round(latest.avgSalary / 10_000)) * 10) / 10
+        : null;
+      return {
+        code,
+        name: data.company?.name ?? "",
+        industry: data.company?.industry ?? "",
+        execCompTotal: latest.execCompTotal,
+        execCompCount: latest.execCompCount,
+        perPerson,
+        ratio,
+        avgSalary: latest.avgSalary ? Math.round(latest.avgSalary / 10_000) : 0,
+        fiscalYear: latest.fiscalYear ?? "",
+      };
+    })
+    .filter(Boolean)
+    .sort((a: any, b: any) => b.perPerson - a.perPerson)
+    .slice(0, limit) as any[];
+}
+
+// 従業員1人あたり売上高ランキング
+export function getSalesPerEmployeeRanking(limit = 200) {
+  if (Object.keys(companiesJson).length === 0) return [];
+  return Object.entries(companiesJson)
+    .map(([code, data]: [string, any]) => {
+      const latest = data.salaryHistory?.[data.salaryHistory.length - 1];
+      const latestFin = data.financialsHistory?.[data.financialsHistory?.length - 1];
+      if (!latestFin?.netSales || !latest?.employees || latest.employees === 0) return null;
+      const salesPerEmployee = Math.round(latestFin.netSales / latest.employees / 10_000);
+      return {
+        code,
+        name: data.company?.name ?? "",
+        industry: data.company?.industry ?? "",
+        salesPerEmployee,
+        netSales: latestFin.netSales,
+        employees: latest.employees,
+        avgSalary: latest.avgSalary ? Math.round(latest.avgSalary / 10_000) : 0,
+        fiscalYear: latest.fiscalYear ?? "",
+      };
+    })
+    .filter(Boolean)
+    .sort((a: any, b: any) => b.salesPerEmployee - a.salesPerEmployee)
+    .slice(0, limit) as any[];
+}
+
+// 女性管理職比率ランキング
+export function getFemaleManagerRanking(limit = 200) {
+  if (Object.keys(companiesJson).length === 0) return [];
+  return Object.entries(companiesJson)
+    .map(([code, data]: [string, any]) => {
+      const latest = data.salaryHistory?.[data.salaryHistory.length - 1];
+      if (latest?.femaleManagerRate == null) return null;
+      return {
+        code,
+        name: data.company?.name ?? "",
+        industry: data.company?.industry ?? "",
+        femaleManagerRate: latest.femaleManagerRate,
+        genderWageGapAll: latest.genderWageGapAll ?? null,
+        maleParentalLeaveRate: latest.maleParentalLeaveRate ?? null,
+        avgSalary: latest.avgSalary ? Math.round(latest.avgSalary / 10_000) : 0,
+        employees: latest.employees ?? 0,
+        fiscalYear: latest.fiscalYear ?? "",
+      };
+    })
+    .filter(Boolean)
+    .sort((a: any, b: any) => b.femaleManagerRate - a.femaleManagerRate)
+    .slice(0, limit) as any[];
+}
+
+// 勤続年数×高年収ランキング
+export function getLongTenureRanking(limit = 200) {
+  return getAllCompanies()
+    .filter((c) => c.avgTenure > 0 && c.salary >= 400)
+    .sort((a, b) => b.avgTenure - a.avgTenure || b.salary - a.salary)
+    .slice(0, limit);
+}
+
+// 若手×高年収ランキング
+export function getYoungHighIncomeRanking(limit = 200) {
+  return getAllCompanies()
+    .filter((c) => c.avgAge > 0 && c.avgAge < 40 && c.salary >= 500)
+    .sort((a, b) => b.salary - a.salary || a.avgAge - b.avgAge)
+    .slice(0, limit);
 }
 
 export function getAllCompanies(): CompanySalary[] {

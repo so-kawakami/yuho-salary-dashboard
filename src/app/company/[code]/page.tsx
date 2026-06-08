@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { CompanyDetailFromDb } from "@/components/CompanyDetailFromDb";
-import { getCompany, getPeers, getIndustryDeiAverage } from "@/db/safe-queries";
+import { getCompany, getPeers, getIndustryDeiAverage, getSimilarCompanies } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
 
@@ -21,13 +21,17 @@ export async function generateMetadata({
     ? Math.round(latest.avgSalary / 10000)
     : null;
 
+  const yearStr = latest?.fiscalYear
+    ? latest.fiscalYear.split("-")[0] + "年版"
+    : "最新版";
+
   const title = salaryMan
-    ? `${company.name}の平均年収は${salaryMan.toLocaleString()}万円【有価証券報告書】`
+    ? `${company.name}の平均年収は${salaryMan.toLocaleString()}万円【${yearStr}】業界順位・推移も解説`
     : `${company.name}の平均年収【有価証券報告書】`;
 
   const description = salaryMan
-    ? `${company.name}の平均年収は${salaryMan.toLocaleString()}万円（${latest?.fiscalYear ?? ""}期）。従業員数・平均年齢・勤続年数など有価証券報告書の詳細データを掲載。`
-    : `${company.name}の平均年収・従業員数・平均年齢など有価証券報告書のデータを掲載。`;
+    ? `${company.name}の平均年収は${salaryMan.toLocaleString()}万円（${latest?.fiscalYear ?? ""}期・有価証券報告書より）。年収推移グラフ・業界内ランキング・同業他社比較・DEI指標・財務データを掲載。転職・就職の企業研究に。`
+    : `${company.name}の平均年収・従業員数・平均年齢・勤続年数など有価証券報告書の詳細データ。業界内順位・同業他社比較も確認できます。`;
 
   return {
     title,
@@ -63,6 +67,13 @@ export default async function CompanyPage({
   const data = getCompany(code);
   const peers = data ? getPeers(data.company.industry ?? "", code) : [];
   const industryDei = data ? getIndustryDeiAverage(data.company.industry ?? "") : null;
+  const latestForSimilar = data?.salaryHistory[data.salaryHistory.length - 1];
+  const similarCompanies = data ? getSimilarCompanies(
+    code,
+    latestForSimilar?.avgSalary ? Math.round(latestForSimilar.avgSalary / 10000) : 0,
+    latestForSimilar?.employees ?? 0,
+    data.company.industry ?? ""
+  ) : [];
 
   if (!data) {
     return (
@@ -100,26 +111,10 @@ export default async function CompanyPage({
     ],
   };
 
-  const faqJsonLd = salaryMan ? {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: `${data.company.name}の平均年収はいくらですか？`,
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: `${data.company.name}の平均年収は${salaryMan.toLocaleString()}万円です（${latest?.fiscalYear ?? ""}期・有価証券報告書より）。`,
-        },
-      },
-    ],
-  } : null;
-
   return (
     <div className="flex flex-col min-h-full bg-mesh">
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
       <main className="mx-auto w-full max-w-[1600px] flex-1 px-3 py-4 sm:px-5">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)] mb-6">
           <Link
@@ -147,6 +142,7 @@ export default async function CompanyPage({
           peers={peers}
           financialsHistory={data.financialsHistory ?? []}
           industryDei={industryDei}
+          similarCompanies={similarCompanies}
         />
       </main>
 

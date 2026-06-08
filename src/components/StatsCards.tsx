@@ -14,7 +14,7 @@ export function StatsCards({ stats }: { stats: StatsData }) {
       label: "収録企業数",
       value: stats.totalCompanies.toLocaleString(),
       unit: "社",
-      sub: `うち上場 ${stats.listedCompanies.toLocaleString()}社`,
+      sub: "有価証券報告書提出企業",
       accent: "from-blue-600 to-blue-400",
       bg: "bg-blue-50",
     },

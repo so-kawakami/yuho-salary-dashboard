@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Header } from "@/components/Header";
 import { RankingWithFilter } from "@/components/RankingWithFilter";
 import { getAllCompanies } from "@/db/safe-queries";
@@ -39,6 +40,24 @@ export default function RankingPage() {
             有価証券報告書ベース・全{data.length.toLocaleString()}社・業界や規模でフィルタリング可能
           </p>
         </div>
+        {/* 独自指標ランキング */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+          {[
+            { href: "/ranking/executive-pay", label: "役員報酬", emoji: "👔", sub: "1人あたり報酬額" },
+            { href: "/ranking/sales-per-employee", label: "1人あたり売上高", emoji: "📈", sub: "労働生産性" },
+            { href: "/ranking/female-managers", label: "女性管理職比率", emoji: "⚖️", sub: "DEI指標" },
+            { href: "/ranking/long-tenure", label: "勤続年数×高年収", emoji: "🏆", sub: "定着率" },
+            { href: "/ranking/young-high-income", label: "若手×高年収", emoji: "🚀", sub: "平均年齢40歳未満" },
+          ].map((item) => (
+            <Link key={item.href} href={item.href}
+              className="glass rounded-2xl p-4 glass-hover flex flex-col gap-1 hover:border-[var(--color-primary)] transition-colors">
+              <span className="text-2xl">{item.emoji}</span>
+              <span className="text-xs font-bold text-[var(--color-text-primary)] leading-snug">{item.label}</span>
+              <span className="text-[10px] text-[var(--color-text-muted)]">{item.sub}</span>
+            </Link>
+          ))}
+        </div>
+
         <RankingWithFilter data={data} />
       </main>
     </div>
