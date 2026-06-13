@@ -10,6 +10,7 @@ const navItems = [
   { label: "業界別", href: "/industries" },
   { label: "企業を探す", href: "/search" },
   { label: "トレンド", href: "/trends" },
+  { label: "偏差値チェッカー", href: "/#checker" },
   { label: "このサイトについて", href: "/about" },
 ];
 

@@ -33,6 +33,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  // 年収偏差値チェッカー結果ページ（事前生成分）
+  const checkerPages: MetadataRoute.Sitemap = [];
+  for (let s = 100; s <= 2000; s += 50) {
+    checkerPages.push({
+      url: `${SITE_URL}/checker/${s}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    });
+  }
+
   // 業界別個別ページ
   const industrySlugs = getAllIndustrySlugs();
   const industryPages: MetadataRoute.Sitemap = industrySlugs.map((slug) => ({
@@ -50,5 +61,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...specialRankingPages, ...industryPages, ...companyPages];
+  return [...staticPages, ...specialRankingPages, ...checkerPages, ...industryPages, ...companyPages];
 }
