@@ -7,6 +7,7 @@
 import {
   mockCompanies,
   mockIndustries,
+  mockTrend,
   stats as mockStats,
   type CompanySalary,
   type IndustrySalary,
@@ -17,14 +18,48 @@ let rankingJson: any[] = [];
 let statsJson: any = null;
 let industriesJson: any[] = [];
 let companiesJson: Record<string, any> = {};
+let trendJson: any[] = [];
 
 try {
   rankingJson = require("@/data/generated/ranking.json");
   statsJson = require("@/data/generated/stats.json");
   industriesJson = require("@/data/generated/industries.json");
   companiesJson = require("@/data/generated/companies.json");
+  trendJson = require("@/data/generated/trend.json");
 } catch {
   // JSONがなければモックにフォールバック
+}
+
+// 全国平均（国税庁「民間給与実態統計調査」の平均給与・万円）
+const NATIONAL_AVERAGE: Record<string, number> = {
+  "2020": 433,
+  "2021": 443,
+  "2022": 458,
+  "2023": 460,
+  "2024": 478,
+};
+
+// 年度別の平均年収トレンド（実データ）
+export function getSalaryTrend(): {
+  year: string;
+  listed: number;
+  average: number | null;
+  companies: number;
+}[] {
+  if (trendJson.length === 0) {
+    return mockTrend.map((t) => ({
+      year: t.year,
+      listed: t.listed,
+      average: t.average,
+      companies: 0,
+    }));
+  }
+  return trendJson.map((t: any) => ({
+    year: t.year,
+    listed: t.avgSalary,
+    average: NATIONAL_AVERAGE[t.year] ?? null,
+    companies: t.companies ?? 0,
+  }));
 }
 
 export function getRanking(limit = 50): CompanySalary[] {
@@ -63,22 +98,32 @@ export function getStatsData() {
   return mockStats;
 }
 
-// 同業他社比較（同じ業界の企業をランキングから取得）
+// 同業他社比較（大手優先で取得し、足りなければ同業界の規模上位で補完）
 export function getPeers(industry: string, excludeCode: string, limit = 5) {
-  if (!industry || rankingJson.length === 0) return [];
-  return rankingJson
-    .filter((r: any) =>
-      r.industry === industry &&
-      r.code !== excludeCode &&
-      (r.employees ?? 0) >= 1000
-    )
-    .slice(0, limit)
-    .map((r: any) => ({
-      code: r.code ?? "",
-      name: r.name ?? "",
-      salary: r.salary ?? 0,
-      employees: r.employees ?? 0,
-    }));
+  if (!industry) return [];
+  const sameIndustry = getAllCompanies().filter(
+    (c) => c.industry === industry && c.code !== excludeCode && c.salary > 0
+  );
+  if (sameIndustry.length === 0) return [];
+
+  const large = sameIndustry
+    .filter((c) => c.employees >= 1000)
+    .sort((a, b) => b.salary - a.salary)
+    .slice(0, limit);
+  const rest =
+    large.length < limit
+      ? sameIndustry
+          .filter((c) => c.employees < 1000)
+          .sort((a, b) => b.employees - a.employees)
+          .slice(0, limit - large.length)
+      : [];
+
+  return [...large, ...rest].map((c) => ({
+    code: c.code,
+    name: c.name,
+    salary: c.salary,
+    employees: c.employees,
+  }));
 }
 
 export function getCompaniesByIndustry(industry: string, limit?: number): CompanySalary[] {

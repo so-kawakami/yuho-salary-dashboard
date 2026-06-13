@@ -1,23 +1,55 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { calcSalaryPercentile } from "@/data/mock";
 
-export function SalaryChecker() {
+interface CheckerStats {
+  totalCompanies: number;
+  salaryMean?: number;
+  salaryStddev?: number;
+}
+
+interface SampleCompany {
+  code: string;
+  name: string;
+  salary: number;
+}
+
+export function SalaryChecker({
+  stats,
+  sampleCompanies = [],
+}: {
+  stats?: CheckerStats;
+  sampleCompanies?: SampleCompany[];
+}) {
   const [input, setInput] = useState("");
   const [result, setResult] = useState<ReturnType<
     typeof calcSalaryPercentile
   > | null>(null);
+  const [checkedSalary, setCheckedSalary] = useState(0);
 
   const handleCheck = () => {
     const salary = parseInt(input, 10);
     if (isNaN(salary) || salary <= 0) return;
-    setResult(calcSalaryPercentile(salary));
+    setCheckedSalary(salary);
+    setResult(calcSalaryPercentile(salary, stats?.salaryMean, stats?.salaryStddev));
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") handleCheck();
   };
+
+  // 診断した年収に近い企業（±60万円 → 足りなければ±100万円）
+  const nearbyCompanies = (() => {
+    if (!result || checkedSalary <= 0 || sampleCompanies.length === 0) return [];
+    const within = (range: number) =>
+      sampleCompanies
+        .filter((c) => Math.abs(c.salary - checkedSalary) <= range)
+        .sort((a, b) => Math.abs(a.salary - checkedSalary) - Math.abs(b.salary - checkedSalary));
+    const near = within(60);
+    return (near.length >= 3 ? near : within(100)).slice(0, 6);
+  })();
 
   return (
     <div className="glass rounded-2xl p-6 sm:p-8 glass-hover">
@@ -25,7 +57,7 @@ export function SalaryChecker() {
         年収偏差値チェッカー
       </h2>
       <p className="text-sm text-[var(--color-text-muted)] mb-5">
-        あなたの年収は上場企業の中でどのくらい？
+        あなたの年収は上場企業{stats ? ` ${stats.totalCompanies.toLocaleString()}社` : ""}の中でどのくらい？
       </p>
 
       <div className="flex gap-3">
@@ -94,6 +126,27 @@ export function SalaryChecker() {
             <span>100%</span>
           </div>
 
+          {/* あなたと同じ年収帯の企業 */}
+          {nearbyCompanies.length > 0 && (
+            <div className="mt-4 pt-4 border-t border-white/30">
+              <p className="text-xs text-[var(--color-text-muted)] mb-2">
+                あなたと同じ年収帯の上場企業（平均年収）
+              </p>
+              <div className="flex gap-2 flex-wrap">
+                {nearbyCompanies.map((c) => (
+                  <Link
+                    key={c.code}
+                    href={`/company/${c.code}`}
+                    className="text-xs px-3 py-1.5 rounded-full bg-white/70 text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-white transition-colors"
+                  >
+                    {c.name}{" "}
+                    <span className="font-bold">{c.salary.toLocaleString()}万</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* シェアボタン */}
           <div className="mt-4 pt-4 border-t border-white/30">
             <p className="text-xs text-[var(--color-text-muted)] mb-2">結果をシェア</p>
@@ -120,12 +173,12 @@ export function SalaryChecker() {
                 </svg>
                 LINEで送る
               </a>
-              <a
+              <Link
                 href="/ranking"
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg glass text-[var(--color-primary)] text-xs font-bold hover:bg-[var(--color-primary-light)] transition-colors"
               >
                 年収ランキングを見る →
-              </a>
+              </Link>
             </div>
           </div>
         </div>

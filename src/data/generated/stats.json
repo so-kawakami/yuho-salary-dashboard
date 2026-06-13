@@ -1,7 +1,9 @@
 {
   "totalCompanies": 4069,
-  "listedCompanies": 4102,
-  "averageSalary": 658,
-  "medianSalary": 628,
+  "listedCompanies": 3731,
+  "averageSalary": 670,
+  "medianSalary": 640,
+  "salaryMean": 670,
+  "salaryStddev": 195,
   "dataYear": "2025年3月期"
 }

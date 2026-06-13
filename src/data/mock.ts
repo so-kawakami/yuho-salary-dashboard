@@ -90,18 +90,21 @@ export const stats = {
   dataYear: "2025年3月期",
 };
 
-// 年収偏差値の計算用（上場企業の年収分布を正規分布で近似）
+// 年収偏差値の計算用のフォールバック値（実データがあれば stats.json の値を渡す）
 export const salaryDistribution = {
-  mean: 678,    // 万円
-  stddev: 180,  // 標準偏差
+  mean: 670,    // 万円
+  stddev: 195,  // 標準偏差
 };
 
-export function calcSalaryPercentile(salary: number): {
+export function calcSalaryPercentile(
+  salary: number,
+  mean: number = salaryDistribution.mean,
+  stddev: number = salaryDistribution.stddev
+): {
   percentile: number;
   deviation: number;
   label: string;
 } {
-  const { mean, stddev } = salaryDistribution;
   const z = (salary - mean) / stddev;
   const deviation = Math.round(z * 10 + 50);
 

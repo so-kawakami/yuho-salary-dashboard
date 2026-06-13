@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
+import { RankingNav } from "@/components/RankingNav";
 import { getYoungHighIncomeRanking } from "@/db/safe-queries";
 
 export const metadata: Metadata = {
@@ -87,7 +89,10 @@ export default function YoungHighIncomePage() {
           <a href="https://disclosure.edinet-fsa.go.jp/" target="_blank" rel="noopener noreferrer"
             className="text-[var(--color-primary)] hover:underline ml-1">EDINETで原典を確認</a>
         </div>
+
+        <RankingNav current="/ranking/young-high-income" />
       </main>
+      <Footer />
     </div>
   );
 }

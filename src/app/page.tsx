@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { StatsCards } from "@/components/StatsCards";
 import { SalaryChecker } from "@/components/SalaryChecker";
 import { AdBanner } from "@/components/AdBanner";
-import { getRanking, getStatsData, getIndustries } from "@/db/safe-queries";
+import { getRanking, getStatsData, getIndustries, getAllCompanies } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
 export const revalidate = 86400;
@@ -12,6 +13,21 @@ export default function Home() {
   const ranking = getRanking(100);
   const stats = getStatsData();
   const industries = getIndustries();
+
+  // 偏差値チェッカー用：年収帯（100万円刻み）ごとに代表企業を最大6社サンプリング
+  const checkerSamples = (() => {
+    const byBand = new Map<number, { code: string; name: string; salary: number }[]>();
+    for (const c of getAllCompanies()) {
+      if (!c.salary || !c.code) continue;
+      const band = Math.floor(c.salary / 100);
+      const list = byBand.get(band) ?? [];
+      if (list.length < 6) {
+        list.push({ code: c.code, name: c.name, salary: c.salary });
+        byBand.set(band, list);
+      }
+    }
+    return Array.from(byBand.values()).flat();
+  })();
 
   // 業界別ハイライト（全社集計データから上位4業界）
   const topIndustries = industries
@@ -38,7 +54,7 @@ export default function Home() {
     name: "有報年収ダッシュボード",
     url: "https://yuho-salary-dashboard.vercel.app",
     description:
-      "金融庁EDINETの有価証券報告書をもとに、上場企業3,000社以上の平均年収を集計・公開。業界別ランキング・企業検索・年収偏差値チェッカーが使えます。",
+      "金融庁EDINETの有価証券報告書をもとに、上場企業を含む4,000社以上の平均年収を集計・公開。業界別ランキング・企業検索・年収偏差値チェッカーが使えます。",
     potentialAction: {
       "@type": "SearchAction",
       target: {
@@ -92,7 +108,7 @@ export default function Home() {
                 {["キーエンス", "トヨタ", "ソニー", "三菱商事", "任天堂"].map((name) => (
                   <Link
                     key={name}
-                    href="/search"
+                    href={`/search?q=${encodeURIComponent(name)}`}
                     className="text-xs px-3 py-1.5 rounded-full glass text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
                   >
                     {name}
@@ -110,8 +126,8 @@ export default function Home() {
           </section>
 
           {/* 年収偏差値チェッカー */}
-          <section>
-            <SalaryChecker />
+          <section id="checker" className="scroll-mt-20">
+            <SalaryChecker stats={stats} sampleCompanies={checkerSamples} />
           </section>
 
           {/* 広告 */}
@@ -123,7 +139,7 @@ export default function Home() {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h2 className="text-xl font-bold text-[var(--color-text-primary)]">業界別 平均年収</h2>
-                  <p className="text-sm text-[var(--color-text-muted)]">全{stats.totalCompanies.toLocaleString()}社の集計</p>
+                  <p className="text-sm text-[var(--color-text-muted)]">平均年収が高い業界トップ4</p>
                 </div>
                 <Link href="/industries" className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1">
                   もっと見る
@@ -256,31 +272,7 @@ export default function Home() {
         </div>
       </main>
 
-      <footer className="glass-header py-8">
-        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <p className="text-sm text-[var(--color-text-muted)]">
-            データ出典：
-            <a href="https://disclosure.edinet-fsa.go.jp/" className="text-[var(--color-primary)] hover:underline" target="_blank" rel="noopener noreferrer">
-              EDINET（金融庁）
-            </a>
-            の有価証券報告書より自動集計
-          </p>
-          <p className="mt-1 text-xs text-[var(--color-text-muted)]">
-            ※ 平均年収は各企業の有価証券報告書に記載された「平均年間給与」の値です
-          </p>
-          <div className="mt-4 flex justify-center gap-6">
-            <Link href="/about" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
-              このサイトについて
-            </Link>
-            <Link href="/privacy" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
-              プライバシーポリシー
-            </Link>
-            <Link href="/contact" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
-              お問い合わせ
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

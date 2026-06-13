@@ -1,0 +1,22 @@
+[
+  {
+    "year": "2022",
+    "avgSalary": 635,
+    "companies": 2626
+  },
+  {
+    "year": "2023",
+    "avgSalary": 652,
+    "companies": 2626
+  },
+  {
+    "year": "2024",
+    "avgSalary": 664,
+    "companies": 3636
+  },
+  {
+    "year": "2025",
+    "avgSalary": 678,
+    "companies": 2855
+  }
+]

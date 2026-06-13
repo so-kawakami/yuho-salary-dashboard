@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { CompanyComparison } from "@/components/CompanyComparison";
 import { getCompany, getPeers } from "@/db/safe-queries";
 
@@ -133,16 +134,7 @@ export default async function ComparePage({
         <CompanyComparison data1={data1} data2={data2} />
       </main>
 
-      <footer className="glass-header py-6">
-        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <p className="text-sm text-[var(--color-text-muted)]">
-            データ出典：
-            <a href="https://disclosure.edinet-fsa.go.jp/" className="text-[var(--color-primary)] hover:underline" target="_blank" rel="noopener noreferrer">
-              EDINET（金融庁）
-            </a>
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

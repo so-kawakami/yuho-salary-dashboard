@@ -5,6 +5,33 @@ import { calcSalaryPercentile } from "@/data/mock";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+// 描画テキストに必要なグリフだけのサブセットフォントを Google Fonts から取得する
+async function loadJapaneseFont(text: string): Promise<ArrayBuffer | null> {
+  try {
+    const cssRes = await fetch(
+      `https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&text=${encodeURIComponent(text)}`,
+      // UA次第でwoff2/ttfが返る。satoriはttf/otf/woffに対応（woff2非対応）
+      { headers: { "User-Agent": "Mozilla/5.0 (Windows NT 6.1; rv:40.0) Gecko/20100101 Firefox/40.0" } }
+    );
+    if (!cssRes.ok) return null;
+    const css = await cssRes.text();
+    const fontUrl = css.match(/src:\s*url\((.+?)\)/)?.[1];
+    if (!fontUrl) return null;
+    const fontRes = await fetch(fontUrl);
+    if (!fontRes.ok) return null;
+    const buf = await fontRes.arrayBuffer();
+    // フォントのマジックバイトを検証（HTMLエラーページ対策）
+    const sig = new Uint8Array(buf.slice(0, 4));
+    const sigStr = String.fromCharCode(...sig);
+    if (sigStr !== "wOFF" && sigStr !== "OTTO" && !(sig[0] === 0 && sig[1] === 1 && sig[2] === 0 && sig[3] === 0)) {
+      return null;
+    }
+    return buf;
+  } catch {
+    return null;
+  }
+}
+
 export default async function Image({
   params,
 }: {
@@ -13,17 +40,24 @@ export default async function Image({
   const { code } = await params;
   const data = getCompany(code);
 
-  // 日本語フォントを読み込む
-  const fontData = await fetch(
-    "https://fonts.gstatic.com/s/notosansjp/v53/-F6jfjtqLzI2JPCgQBnw7HFQaioq1H1hj-sNFQ.woff2"
-  ).then((res) => res.arrayBuffer()).catch(() => null);
-
   const latest = data?.salaryHistory[data.salaryHistory.length - 1];
   const salaryMan = latest?.avgSalary ? Math.round(latest.avgSalary / 10000) : null;
   const companyName = data?.company.name ?? "企業";
   const industry = data?.company.industry ?? "";
-  const fiscalYear = latest?.fiscalYear ?? "";
+  const fiscalYearRaw = latest?.fiscalYear ?? "";
+  // "2025-03" → "2025年3月期"
+  const fiscalYear = fiscalYearRaw
+    ? `${fiscalYearRaw.split("-")[0]}年${parseInt(fiscalYearRaw.split("-")[1] ?? "0")}月`
+    : "";
   const percentile = salaryMan ? calcSalaryPercentile(salaryMan) : null;
+
+  // 画像に登場する全テキスト分のグリフを取得
+  const allText =
+    `有報年収ダッシュボード¥万円データなし偏差値上位%期有価証券報告書（EDINET）よりyuho-salary-dashboard.vercel.app0123456789,.　` +
+    companyName +
+    industry +
+    fiscalYear;
+  const fontData = await loadJapaneseFont(allText);
 
   const options = fontData
     ? { fonts: [{ name: "NotoSansJP", data: fontData, weight: 700 as const }] }

@@ -23,11 +23,14 @@ const SIZE_OPTIONS = [
   { label: "中小 (300名未満)", min: 0, max: 299 },
 ];
 
+const PAGE_SIZE = 200;
+
 export function RankingWithFilter({ data }: { data: RankingRow[] }) {
   const [industryFilter, setIndustryFilter] = useState("すべて");
   const [sizeFilter, setSizeFilter] = useState(0);
   const [sortKey, setSortKey] = useState<SortKey>("salary");
   const [query, setQuery] = useState("");
+  const [limit, setLimit] = useState(PAGE_SIZE);
 
   const industries = useMemo(() => {
     const set = new Set(data.map((r) => r.industry).filter(Boolean));
@@ -46,9 +49,14 @@ export function RankingWithFilter({ data }: { data: RankingRow[] }) {
       .sort((a, b) => (b[sortKey] ?? 0) - (a[sortKey] ?? 0));
     return {
       totalFiltered: afterFilter.length,
-      displayed: afterFilter.slice(0, 200).map((r, i) => ({ ...r, displayRank: i + 1 })),
+      displayed: afterFilter.slice(0, limit).map((r, i) => ({ ...r, displayRank: i + 1 })),
     };
-  }, [data, industryFilter, sizeFilter, sortKey, query]);
+  }, [data, industryFilter, sizeFilter, sortKey, query, limit]);
+
+  const setFilterAndReset = (fn: () => void) => {
+    fn();
+    setLimit(PAGE_SIZE);
+  };
 
   const sortCols: { key: SortKey; label: string }[] = [
     { key: "salary", label: "年収" },
@@ -66,7 +74,7 @@ export function RankingWithFilter({ data }: { data: RankingRow[] }) {
           <input
             type="text"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={(e) => setFilterAndReset(() => setQuery(e.target.value))}
             placeholder="企業名・業種で絞り込み"
             className="w-full h-9 rounded-lg bg-white/60 border border-[var(--color-border)] px-3 pl-8 text-sm outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
           />
@@ -78,7 +86,7 @@ export function RankingWithFilter({ data }: { data: RankingRow[] }) {
         {/* 業界フィルター */}
         <select
           value={industryFilter}
-          onChange={(e) => setIndustryFilter(e.target.value)}
+          onChange={(e) => setFilterAndReset(() => setIndustryFilter(e.target.value))}
           className="h-9 rounded-lg bg-white/60 border border-[var(--color-border)] px-3 text-sm outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
         >
           {industries.map((ind) => (
@@ -89,7 +97,7 @@ export function RankingWithFilter({ data }: { data: RankingRow[] }) {
         {/* 規模フィルター */}
         <select
           value={sizeFilter}
-          onChange={(e) => setSizeFilter(Number(e.target.value))}
+          onChange={(e) => setFilterAndReset(() => setSizeFilter(Number(e.target.value)))}
           className="h-9 rounded-lg bg-white/60 border border-[var(--color-border)] px-3 text-sm outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition"
         >
           {SIZE_OPTIONS.map((opt, i) => (
@@ -115,9 +123,9 @@ export function RankingWithFilter({ data }: { data: RankingRow[] }) {
         </div>
 
         <span className="text-sm text-[var(--color-text-muted)] ml-auto">
-          {totalFiltered > 200
-            ? `${totalFiltered.toLocaleString()}社中 上位200社`
-            : `${totalFiltered}社`}
+          {totalFiltered > limit
+            ? `${totalFiltered.toLocaleString()}社中 上位${limit.toLocaleString()}社を表示`
+            : `${totalFiltered.toLocaleString()}社`}
         </span>
       </div>
 
@@ -183,6 +191,18 @@ export function RankingWithFilter({ data }: { data: RankingRow[] }) {
           </table>
         </div>
       </div>
+
+      {/* もっと見る */}
+      {totalFiltered > limit && (
+        <div className="text-center">
+          <button
+            onClick={() => setLimit((l) => l + PAGE_SIZE)}
+            className="px-8 py-3 rounded-xl glass text-sm font-bold text-[var(--color-primary)] hover:bg-[var(--color-primary-light)] transition-colors"
+          >
+            さらに{Math.min(PAGE_SIZE, totalFiltered - limit).toLocaleString()}社を表示（全{totalFiltered.toLocaleString()}社）
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -7,6 +7,7 @@ export const metadata: Metadata = {
     "卸売・IT・電機・医薬品・銀行など業界別の平均年収を有価証券報告書で比較。自分の業界の年収水準や転職先の給与水準をチェックできます。",
 };
 import Link from "next/link";
+import { Footer } from "@/components/Footer";
 import { IndustryChart } from "@/components/IndustryChart";
 import { getIndustries, getCompaniesByIndustry } from "@/db/safe-queries";
 
@@ -34,7 +35,7 @@ export default function IndustriesPage() {
             業界別 平均年収
           </h2>
           <p className="text-sm text-[var(--color-text-muted)]">
-            有価証券報告書ベース・全{industries.reduce((s, i) => s + i.companies, 0).toLocaleString()}社の集計
+            有価証券報告書ベース・{industries.reduce((s, i) => s + i.companies, 0).toLocaleString()}社を{industries.filter((i) => i.industry && i.companies > 0).length}業界に分類して集計
           </p>
         </div>
 
@@ -81,6 +82,7 @@ export default function IndustriesPage() {
           ))}
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

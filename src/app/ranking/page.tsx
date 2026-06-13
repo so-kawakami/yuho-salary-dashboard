@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { RankingWithFilter } from "@/components/RankingWithFilter";
 import { getAllCompanies } from "@/db/safe-queries";
 
@@ -60,6 +61,7 @@ export default function RankingPage() {
 
         <RankingWithFilter data={data} />
       </main>
+      <Footer />
     </div>
   );
 }

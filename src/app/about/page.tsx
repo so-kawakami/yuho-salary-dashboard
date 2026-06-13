@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
+import { Footer } from "@/components/Footer";
 import { getStatsData } from "@/db/safe-queries";
 
 export const metadata: Metadata = {
   title: "このサイトについて | 有報年収ダッシュボード",
   description:
-    "有報年収ダッシュボードは、金融庁EDINETに公開されている有価証券報告書をもとに、上場企業3,000社以上の平均年収・DEI指標・財務データをわかりやすく可視化したサービスです。",
+    "有報年収ダッシュボードは、金融庁EDINETに公開されている有価証券報告書をもとに、上場企業を含む4,000社以上の平均年収・DEI指標・財務データをわかりやすく可視化したサービスです。",
 };
 
 export const dynamic = "force-static";
@@ -34,7 +35,7 @@ export default function AboutPage() {
             </h1>
             <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
               有報年収ダッシュボードは、金融庁が運営する電子開示システム「EDINET」に公開されている
-              有価証券報告書のデータをもとに、上場企業{stats.totalCompanies.toLocaleString()}社以上の
+              有価証券報告書のデータをもとに、上場企業を中心とする{stats.totalCompanies.toLocaleString()}社の
               平均年収・従業員情報・DEI指標・財務データを一覧できるサービスです。
               転職・就職活動の参考情報として、また企業研究・業界分析のツールとして、
               どなたでも無料でご利用いただけます。
@@ -51,7 +52,7 @@ export default function AboutPage() {
                 {
                   icon: "💰",
                   title: "企業の平均年収を調べる",
-                  desc: "上場企業3,000社以上の平均年収を有価証券報告書の公式データで確認できます。年度ごとの推移グラフで、給与トレンドも把握できます。",
+                  desc: "上場企業を含む4,000社以上の平均年収を有価証券報告書の公式データで確認できます。年度ごとの推移グラフで、給与トレンドも把握できます。",
                 },
                 {
                   icon: "📊",
@@ -185,33 +186,7 @@ export default function AboutPage() {
         </div>
       </main>
 
-      <footer className="glass-header py-8">
-        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
-          <p className="text-sm text-[var(--color-text-muted)]">
-            データ出典：
-            <a
-              href="https://disclosure.edinet-fsa.go.jp/"
-              className="text-[var(--color-primary)] hover:underline"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              EDINET（金融庁）
-            </a>
-            の有価証券報告書より自動集計
-          </p>
-          <div className="mt-4 flex justify-center gap-6">
-            <Link href="/about" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
-              このサイトについて
-            </Link>
-            <Link href="/privacy" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
-              プライバシーポリシー
-            </Link>
-            <Link href="/contact" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors">
-              お問い合わせ
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

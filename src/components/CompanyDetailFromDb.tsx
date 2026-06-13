@@ -167,9 +167,13 @@ export function CompanyDetailFromDb({
           {company.name}
         </h1>
         {company.industry && (
-          <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--color-primary-light)] text-[var(--color-primary)] font-medium">
-            {company.industry}
-          </span>
+          <Link
+            href={`/industries/${company.industry}`}
+            className="text-xs px-2.5 py-1 rounded-full bg-[var(--color-primary-light)] text-[var(--color-primary)] font-medium hover:bg-[var(--color-primary)] hover:text-white transition-colors"
+            title={`${company.industry}の年収ランキングを見る`}
+          >
+            {company.industry} →
+          </Link>
         )}
         {company.secCode && (
           <span className="text-xs px-2.5 py-1 rounded-full bg-[var(--color-surface-secondary)] text-[var(--color-text-muted)]">
@@ -325,7 +329,7 @@ export function CompanyDetailFromDb({
             同業他社と比較
           </h2>
           <p className="text-xs text-[var(--color-text-muted)] mb-3">
-            {company.industry || "同業界"} · 従業員1,000名以上
+            {company.industry || "同業界"}の主要企業と平均年収を比較
           </p>
           {peers.length > 0 ? (
             <div className="space-y-2">

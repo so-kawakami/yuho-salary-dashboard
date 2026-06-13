@@ -57,38 +57,64 @@ const ranking = db
     periodEnd: row.periodEnd ?? "",
   }));
 
-// 統計
-const statsRow = db
+// 統計（各社の最新年度の値のみで集計し、全ページで同じ母数を使う）
+const latestSalaries = db
   .prepare(
-    `SELECT
-      COUNT(DISTINCT company_id) as totalCompanies,
-      ROUND(AVG(avg_salary) / 10000) as avgSalary
-    FROM salary_data WHERE avg_salary IS NOT NULL`
-  )
-  .get() as any;
-
-const listedRow = db
-  .prepare(`SELECT COUNT(*) as cnt FROM companies WHERE is_listed = 1`)
-  .get() as any;
-
-const allSalaries = db
-  .prepare(
-    `SELECT avg_salary FROM salary_data WHERE avg_salary IS NOT NULL ORDER BY avg_salary`
+    `SELECT s.avg_salary as avgSalary
+    FROM salary_data s
+    WHERE s.avg_salary IS NOT NULL
+      AND s.fiscal_year = (
+        SELECT MAX(s2.fiscal_year)
+        FROM salary_data s2
+        WHERE s2.company_id = s.company_id
+          AND s2.avg_salary IS NOT NULL
+      )
+    ORDER BY s.avg_salary`
   )
   .all()
-  .map((r: any) => r.avg_salary);
+  .map((r: any) => r.avgSalary as number);
 
-const median = Math.round(
-  allSalaries[Math.floor(allSalaries.length / 2)] / 10000
+const listedRow = db
+  .prepare(
+    `SELECT COUNT(*) as cnt FROM companies c
+     WHERE c.is_listed = 1
+       AND EXISTS (SELECT 1 FROM salary_data s WHERE s.company_id = c.id AND s.avg_salary IS NOT NULL)`
+  )
+  .get() as any;
+
+const mean =
+  latestSalaries.reduce((a, b) => a + b, 0) / latestSalaries.length;
+const stddev = Math.sqrt(
+  latestSalaries.reduce((sum, v) => sum + (v - mean) ** 2, 0) /
+    latestSalaries.length
 );
+const median = latestSalaries[Math.floor(latestSalaries.length / 2)];
 
 const stats = {
-  totalCompanies: statsRow.totalCompanies,
+  totalCompanies: latestSalaries.length,
   listedCompanies: listedRow.cnt,
-  averageSalary: statsRow.avgSalary,
-  medianSalary: median,
+  averageSalary: Math.round(mean / 10000),
+  medianSalary: Math.round(median / 10000),
+  // 年収偏差値の計算用（実データの分布・万円）
+  salaryMean: Math.round(mean / 10000),
+  salaryStddev: Math.round(stddev / 10000),
   dataYear: "2025年3月期",
 };
+
+// 年度別の平均年収トレンド（3月期決算で集計、十分なサンプル数がある年度のみ）
+const trend = db
+  .prepare(
+    `SELECT
+      substr(fiscal_year, 1, 4) as year,
+      ROUND(AVG(avg_salary) / 10000) as avgSalary,
+      COUNT(*) as companies
+    FROM salary_data
+    WHERE avg_salary IS NOT NULL
+    GROUP BY substr(fiscal_year, 1, 4)
+    HAVING COUNT(*) >= 300
+    ORDER BY year`
+  )
+  .all();
 
 // 業界別平均
 const industries = db
@@ -197,6 +223,10 @@ fs.writeFileSync(
 fs.writeFileSync(
   path.join(OUT_DIR, "industries.json"),
   JSON.stringify(industries, null, 2)
+);
+fs.writeFileSync(
+  path.join(OUT_DIR, "trend.json"),
+  JSON.stringify(trend, null, 2)
 );
 fs.writeFileSync(
   path.join(OUT_DIR, "companies.json"),
