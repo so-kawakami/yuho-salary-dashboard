@@ -267,6 +267,114 @@ export function getYoungHighIncomeRanking(limit = 200) {
     .slice(0, limit);
 }
 
+// 人気比較ページ（同業界の年収上位企業ペア）を事前生成用に列挙する
+// 戻り値は "code1-vs-code2" 形式（重複・自己比較を除外、code昇順で正規化）
+export function getPopularComparisonCodes(): string[] {
+  const all = getAllCompanies().filter((c) => c.salary > 0 && c.code);
+
+  // 業界ごとに年収上位6社を抽出
+  const byIndustry = new Map<string, CompanySalary[]>();
+  for (const c of all) {
+    if (!c.industry) continue;
+    const list = byIndustry.get(c.industry) ?? [];
+    list.push(c);
+    byIndustry.set(c.industry, list);
+  }
+
+  const pairs = new Set<string>();
+  const addPair = (a: string, b: string) => {
+    if (a === b) return;
+    const [x, y] = a < b ? [a, b] : [b, a];
+    pairs.add(`${x}-vs-${y}`);
+  };
+
+  // 各業界トップ6社の総当たり
+  for (const list of byIndustry.values()) {
+    const top = [...list].sort((a, b) => b.salary - a.salary).slice(0, 6);
+    for (let i = 0; i < top.length; i++) {
+      for (let j = i + 1; j < top.length; j++) {
+        addPair(top[i].code, top[j].code);
+      }
+    }
+  }
+
+  // 全体の年収トップ12社の総当たり（業界横断の注目比較）
+  const overallTop = [...all].sort((a, b) => b.salary - a.salary).slice(0, 12);
+  for (let i = 0; i < overallTop.length; i++) {
+    for (let j = i + 1; j < overallTop.length; j++) {
+      addPair(overallTop[i].code, overallTop[j].code);
+    }
+  }
+
+  return Array.from(pairs);
+}
+
+// トップページ用の注目比較（主要業界の年収1位 vs 2位のペア）
+export function getFeaturedComparisons(limit = 6): {
+  codes: string;
+  name1: string;
+  salary1: number;
+  name2: string;
+  salary2: number;
+  industry: string;
+}[] {
+  const all = getAllCompanies().filter((c) => c.salary > 0 && c.code);
+  const byIndustry = new Map<string, CompanySalary[]>();
+  for (const c of all) {
+    if (!c.industry) continue;
+    const list = byIndustry.get(c.industry) ?? [];
+    list.push(c);
+    byIndustry.set(c.industry, list);
+  }
+
+  // 各業界トップ2社のペアを作り、年収合計が高い順（＝注目度が高い）に並べる
+  const featured = Array.from(byIndustry.values())
+    .map((list) => [...list].sort((a, b) => b.salary - a.salary).slice(0, 2))
+    .filter((top) => top.length === 2)
+    .map((top) => {
+      const [x, y] = top[0].code < top[1].code ? [top[0], top[1]] : [top[1], top[0]];
+      return {
+        codes: `${x.code}-vs-${y.code}`,
+        name1: x.name,
+        salary1: x.salary,
+        name2: y.name,
+        salary2: y.salary,
+        industry: top[0].industry ?? "",
+        score: top[0].salary + top[1].salary,
+      };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit);
+
+  return featured.map(({ score: _score, ...rest }) => rest);
+}
+
+// 指定2社に関連する比較候補（同業界の他社との比較）を返す。回遊導線用。
+export function getRelatedComparisons(
+  code1: string,
+  code2: string,
+  industry: string,
+  limit = 6
+): { codes: string; name1: string; name2: string }[] {
+  if (!industry) return [];
+  const all = getAllCompanies().filter((c) => c.salary > 0 && c.code);
+  const byCode = new Map(all.map((c) => [c.code, c]));
+  const base = byCode.get(code1) ?? byCode.get(code2);
+  if (!base) return [];
+
+  const peers = all
+    .filter((c) => c.industry === industry && c.code !== code1 && c.code !== code2)
+    .sort((a, b) => b.salary - a.salary)
+    .slice(0, limit);
+
+  return peers.map((peer) => {
+    const [x, y] = base.code < peer.code ? [base.code, peer.code] : [peer.code, base.code];
+    const nx = byCode.get(x)?.name ?? "";
+    const ny = byCode.get(y)?.name ?? "";
+    return { codes: `${x}-vs-${y}`, name1: nx, name2: ny };
+  });
+}
+
 export function getAllCompanies(): CompanySalary[] {
   if (Object.keys(companiesJson).length > 0) {
     return Object.entries(companiesJson).map(([code, data]: [string, any]) => {

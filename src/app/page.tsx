@@ -4,7 +4,7 @@ import { Footer } from "@/components/Footer";
 import { StatsCards } from "@/components/StatsCards";
 import { SalaryChecker } from "@/components/SalaryChecker";
 import { AdBanner } from "@/components/AdBanner";
-import { getRanking, getStatsData, getIndustries, getAllCompanies } from "@/db/safe-queries";
+import { getRanking, getStatsData, getIndustries, getAllCompanies, getFeaturedComparisons } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
 export const revalidate = 86400;
@@ -41,6 +41,9 @@ export default function Home() {
 
   // ランキングTOP5（コンパクトプレビュー）
   const top5 = ranking.slice(0, 5);
+
+  // 注目の年収比較（主要業界のトップ2社対決）
+  const featuredComparisons = getFeaturedComparisons(6);
 
   // 勤続年数が長い企業TOP4（年収だけじゃない切り口）
   const longTenure = [...ranking]
@@ -211,6 +214,40 @@ export default function Home() {
               ))}
             </div>
           </section>
+
+          {/* 注目の年収比較 */}
+          {featuredComparisons.length > 0 && (
+            <section>
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h2 className="text-xl font-bold text-[var(--color-text-primary)]">注目の年収比較</h2>
+                  <p className="text-sm text-[var(--color-text-muted)]">主要業界のトップ企業を直接比較</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {featuredComparisons.map((c) => (
+                  <Link
+                    key={c.codes}
+                    href={`/compare/${c.codes}`}
+                    className="glass rounded-xl p-5 glass-hover block"
+                  >
+                    <p className="text-xs text-[var(--color-text-muted)] mb-3">{c.industry}</p>
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex-1 min-w-0 text-center">
+                        <p className="text-sm font-bold text-[var(--color-text-primary)] truncate">{c.name1}</p>
+                        <p className="text-lg font-extrabold text-gradient">{c.salary1.toLocaleString()}<span className="text-xs font-normal text-[var(--color-text-secondary)]">万</span></p>
+                      </div>
+                      <span className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center text-white text-xs font-extrabold">VS</span>
+                      <div className="flex-1 min-w-0 text-center">
+                        <p className="text-sm font-bold text-[var(--color-text-primary)] truncate">{c.name2}</p>
+                        <p className="text-lg font-extrabold text-gradient">{c.salary2.toLocaleString()}<span className="text-xs font-normal text-[var(--color-text-secondary)]">万</span></p>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* 若手向け高年収企業 */}
           {youngHighPay.length > 0 && (

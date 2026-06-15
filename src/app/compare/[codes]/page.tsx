@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CompanyComparison } from "@/components/CompanyComparison";
-import { getCompany, getPeers } from "@/db/safe-queries";
+import { getCompany, getPopularComparisonCodes, getRelatedComparisons, getStatsData } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
 
@@ -33,9 +33,13 @@ export async function generateMetadata({
   const s2 = latest2?.avgSalary ? Math.round(latest2.avgSalary / 10000) : null;
 
   const title = `${name1} vs ${name2} 年収比較【有価証券報告書】`;
+  const diffText =
+    s1 && s2 && s1 !== s2
+      ? `年収差は${Math.abs(s1 - s2).toLocaleString()}万円（${s1 > s2 ? name1 : name2}が高い）。`
+      : "";
   const description = s1 && s2
-    ? `${name1}（${s1.toLocaleString()}万円）と${name2}（${s2.toLocaleString()}万円）の平均年収・従業員数・平均年齢などを有価証券報告書データで徹底比較。`
-    : `${name1}と${name2}の年収データを有価証券報告書で比較。`;
+    ? `${name1}（${s1.toLocaleString()}万円）と${name2}（${s2.toLocaleString()}万円）の平均年収を有価証券報告書データで徹底比較。${diffText}従業員数・平均年齢・勤続年数・年収推移グラフも掲載。転職・就職の企業研究に。`
+    : `${name1}と${name2}の平均年収・従業員数・平均年齢などを有価証券報告書データで比較。転職・就職の企業研究に。`;
 
   return {
     title,
@@ -46,8 +50,9 @@ export async function generateMetadata({
 }
 
 export function generateStaticParams() {
-  // 静的生成は行わず、動的に生成（組み合わせが膨大なため）
-  return [];
+  // 同業界の年収上位企業ペアなど「人気の比較」を事前生成（SEO・内部リンク用）。
+  // それ以外の組み合わせはオンデマンドで生成される。
+  return getPopularComparisonCodes().map((codes) => ({ codes }));
 }
 
 export default async function ComparePage({
@@ -107,6 +112,10 @@ export default async function ComparePage({
     );
   }
 
+  const stats = getStatsData();
+  const industry = data1.company.industry ?? data2.company.industry ?? "";
+  const related = getRelatedComparisons(code1, code2, industry);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -131,7 +140,32 @@ export default async function ComparePage({
           </span>
         </nav>
 
-        <CompanyComparison data1={data1} data2={data2} />
+        <CompanyComparison data1={data1} data2={data2} stats={stats} />
+
+        {/* 関連する比較（回遊導線） */}
+        {related.length > 0 && (
+          <section className="mt-6 glass rounded-2xl p-6">
+            <h2 className="text-base font-bold text-[var(--color-text-primary)] mb-1">
+              {industry}の他の比較もチェック
+            </h2>
+            <p className="text-xs text-[var(--color-text-muted)] mb-4">
+              同じ業界の企業同士で年収・待遇を比べてみよう
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+              {related.map((r) => (
+                <Link
+                  key={r.codes}
+                  href={`/compare/${r.codes}`}
+                  className="flex items-center justify-center gap-2 px-3 py-3 rounded-xl bg-[var(--color-surface-secondary)] hover:bg-[var(--color-primary-light)] text-xs font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors text-center"
+                >
+                  <span className="line-clamp-1">{r.name1}</span>
+                  <span className="text-[10px] text-[var(--color-text-muted)] shrink-0">vs</span>
+                  <span className="line-clamp-1">{r.name2}</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
       </main>
 
       <Footer />

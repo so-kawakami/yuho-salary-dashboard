@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import companiesJson from "@/data/generated/companies.json";
-import { getAllIndustrySlugs } from "@/db/safe-queries";
+import { getAllIndustrySlugs, getPopularComparisonCodes } from "@/db/safe-queries";
 
 const SITE_URL = "https://yuho-salary-dashboard.vercel.app";
 
@@ -61,5 +61,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticPages, ...specialRankingPages, ...checkerPages, ...industryPages, ...companyPages];
+  // 人気の企業比較ページ（同業界上位企業のペア）
+  const comparePages: MetadataRoute.Sitemap = getPopularComparisonCodes().map((codes) => ({
+    url: `${SITE_URL}/compare/${codes}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.5,
+  }));
+
+  return [...staticPages, ...specialRankingPages, ...checkerPages, ...industryPages, ...companyPages, ...comparePages];
 }

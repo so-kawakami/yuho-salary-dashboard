@@ -37,16 +37,18 @@ const COLOR2 = "#7c3aed";
 export function CompanyComparison({
   data1,
   data2,
+  stats,
 }: {
   data1: CompanyData;
   data2: CompanyData;
+  stats?: { salaryMean?: number; salaryStddev?: number };
 }) {
   const latest1 = data1.salaryHistory[data1.salaryHistory.length - 1];
   const latest2 = data2.salaryHistory[data2.salaryHistory.length - 1];
   const s1 = latest1?.avgSalary ? Math.round(latest1.avgSalary / 10000) : 0;
   const s2 = latest2?.avgSalary ? Math.round(latest2.avgSalary / 10000) : 0;
-  const p1 = calcSalaryPercentile(s1);
-  const p2 = calcSalaryPercentile(s2);
+  const p1 = calcSalaryPercentile(s1, stats?.salaryMean, stats?.salaryStddev);
+  const p2 = calcSalaryPercentile(s2, stats?.salaryMean, stats?.salaryStddev);
   const name1 = data1.company.name;
   const name2 = data2.company.name;
 
