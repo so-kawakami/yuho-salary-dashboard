@@ -51,23 +51,54 @@ export default function Home() {
     .sort((a, b) => b.avgTenure - a.avgTenure)
     .slice(0, 4);
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "有報年収ダッシュボード",
-    url: "https://yuho-salary-dashboard.vercel.app",
-    description:
-      "金融庁EDINETの有価証券報告書をもとに、上場企業を含む4,000社以上の平均年収を集計・公開。業界別ランキング・企業検索・年収偏差値チェッカーが使えます。",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate:
-          "https://yuho-salary-dashboard.vercel.app/search?q={search_term_string}",
-      },
-      "query-input": "required name=search_term_string",
+  // よくある質問（FAQ）— 滞在時間・YMYL信頼性・検索リッチリザルト用
+  const faqs = [
+    {
+      q: "平均年収のデータはどこから来ていますか？",
+      a: "すべて金融庁が運営する電子開示システム「EDINET」に各企業が提出した有価証券報告書から取得しています。有価証券報告書は金融商品取引法に基づく法定開示書類で、内容は法的根拠のある公式データです。",
     },
-  };
+    {
+      q: "「平均年収」は何を指していますか？",
+      a: "有価証券報告書に記載される「平均年間給与」で、提出会社（単体）の正社員の値です。賞与・基準外賃金（残業代）を含みます。連結子会社の社員・パート・アルバイト・派遣社員は含まれません。",
+    },
+    {
+      q: "データはいつ時点のものですか？",
+      a: `各企業が直近に提出した有価証券報告書の値で、多くは2025年3月期（2024年4月〜2025年3月）です。決算月は企業によって異なります。現在${stats.totalCompanies.toLocaleString()}社のデータを掲載しています。`,
+    },
+    {
+      q: "持株会社の年収が高く見えるのはなぜですか？",
+      a: "持株会社（ホールディングス）は従業員が管理部門中心で少人数のため、平均年収が高く算出される傾向があります。事業会社の実態とは異なる場合があるため、グループ全体の水準を見る際は注意が必要です。",
+    },
+  ];
+
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      name: "有報年収ダッシュボード",
+      url: "https://yuho-salary-dashboard.vercel.app",
+      description:
+        "金融庁EDINETの有価証券報告書をもとに、上場企業を含む4,000社以上の平均年収を集計・公開。業界別ランキング・企業検索・年収偏差値チェッカーが使えます。",
+      potentialAction: {
+        "@type": "SearchAction",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate:
+            "https://yuho-salary-dashboard.vercel.app/search?q={search_term_string}",
+        },
+        "query-input": "required name=search_term_string",
+      },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+  ];
 
   return (
     <div className="flex flex-col min-h-full bg-mesh">
@@ -306,6 +337,44 @@ export default function Home() {
               </div>
             </section>
           )}
+          {/* よくある質問 */}
+          <section>
+            <div className="mb-4">
+              <h2 className="text-xl font-bold text-[var(--color-text-primary)]">よくある質問</h2>
+              <p className="text-sm text-[var(--color-text-muted)]">データの見方・注意点</p>
+            </div>
+            <div className="space-y-3">
+              {faqs.map((f) => (
+                <details
+                  key={f.q}
+                  className="glass rounded-xl px-5 py-4 group"
+                >
+                  <summary className="flex items-center justify-between cursor-pointer list-none">
+                    <span className="text-sm font-bold text-[var(--color-text-primary)] pr-4">
+                      Q. {f.q}
+                    </span>
+                    <svg
+                      className="h-5 w-5 shrink-0 text-[var(--color-text-muted)] transition-transform group-open:rotate-180"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </summary>
+                  <p className="mt-3 text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                    {f.a}
+                  </p>
+                </details>
+              ))}
+            </div>
+            <div className="mt-4 text-center">
+              <Link href="/about" className="text-sm text-[var(--color-primary)] hover:underline">
+                データの詳しい説明・集計方法を見る →
+              </Link>
+            </div>
+          </section>
         </div>
       </main>
 
