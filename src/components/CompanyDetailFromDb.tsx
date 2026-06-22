@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { track } from "@vercel/analytics";
 import { AdBanner } from "@/components/AdBanner";
 import {
   LineChart,
@@ -466,6 +467,7 @@ export function CompanyDetailFromDb({
               { name: "ビズリーチ", color: "from-red-500 to-red-600", url: `https://www.bizreach.jp/job-list/?free_word=${encodeURIComponent(company.name)}` },
             ].map((site) => (
               <a key={site.name} href={site.url} target="_blank" rel="sponsored nofollow noopener noreferrer"
+                onClick={() => track("job_link_click", { site: site.name, company: company.name })}
                 className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl bg-gradient-to-r ${site.color} text-white text-xs font-bold hover:opacity-90 transition-opacity`}>
                 {site.name}で求人を見る
                 <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1159,6 +1161,7 @@ function ShareButtons({ companyName, salary, code }: { companyName: string; sala
         href={xUrl}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => track("share", { network: "x", company: companyName })}
         className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-black text-white text-sm font-bold hover:bg-gray-800 transition-colors"
       >
         <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
@@ -1170,6 +1173,7 @@ function ShareButtons({ companyName, salary, code }: { companyName: string; sala
         href={lineUrl}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => track("share", { network: "line", company: companyName })}
         className="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#06C755] text-white text-sm font-bold hover:bg-[#05b34c] transition-colors"
       >
         <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
