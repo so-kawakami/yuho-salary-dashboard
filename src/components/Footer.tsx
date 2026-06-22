@@ -84,7 +84,8 @@ export function Footer() {
             ※ 平均年収は各企業の有価証券報告書に記載された「平均年間給与」（単体・正社員）の値です
           </p>
           <p className="text-xs text-[var(--color-text-muted)]">
-            © {new Date().getFullYear()} 有報年収ダッシュボード
+            © {new Date().getFullYear()} 有報年収ダッシュボード 運営事務局 ·{" "}
+            <Link href="/about" className="hover:text-[var(--color-primary)] transition-colors">運営者情報</Link>
           </p>
         </div>
       </div>

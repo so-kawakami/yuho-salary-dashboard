@@ -91,6 +91,37 @@ export default function AboutPage() {
             </div>
           </div>
 
+          {/* 運営者情報 */}
+          <div className="glass rounded-2xl p-8 space-y-4">
+            <h2 className="text-lg font-bold text-[var(--color-text-primary)]">
+              運営者情報
+            </h2>
+            <dl className="divide-y divide-white/10">
+              {[
+                { k: "サイト名", v: "有報年収ダッシュボード" },
+                { k: "運営者", v: "有報年収ダッシュボード 運営事務局" },
+                { k: "運営形態", v: "個人が運営する非営利の情報サイトです。" },
+                { k: "サイトの目的", v: "金融庁EDINETに公開されている有価証券報告書のデータを、誰でも分かりやすく確認できる形に可視化し、企業研究・就職・転職活動の参考情報として提供することを目的としています。" },
+                { k: "データの出典", v: "金融庁EDINET（電子開示システム）に提出された有価証券報告書（公式の法定開示情報）" },
+              ].map((row) => (
+                <div key={row.k} className="grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-1 sm:gap-4 py-3">
+                  <dt className="text-sm font-bold text-[var(--color-text-primary)]">{row.k}</dt>
+                  <dd className="text-sm text-[var(--color-text-secondary)] leading-relaxed">{row.v}</dd>
+                </div>
+              ))}
+              <div className="grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-1 sm:gap-4 py-3">
+                <dt className="text-sm font-bold text-[var(--color-text-primary)]">お問い合わせ</dt>
+                <dd className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                  データの誤り・掲載削除のご依頼・ご意見は
+                  <Link href="/contact" className="text-[var(--color-primary)] hover:underline mx-1">
+                    お問い合わせフォーム
+                  </Link>
+                  より承っています。
+                </dd>
+              </div>
+            </dl>
+          </div>
+
           {/* データについて */}
           <div className="glass rounded-2xl p-8 space-y-4">
             <h2 className="text-lg font-bold text-[var(--color-text-primary)]">

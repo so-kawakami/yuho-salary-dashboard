@@ -14,6 +14,10 @@ declare global {
   }
 }
 
+// AdSense審査が通るまでは空の広告ユニットを出さない（空枠は審査でマイナス評価）。
+// 承認後に Vercel の環境変数 NEXT_PUBLIC_ADS_ENABLED=true を設定すると広告が表示される。
+const ADS_ENABLED = process.env.NEXT_PUBLIC_ADS_ENABLED === "true";
+
 export function AdBanner({
   slot,
   format = "auto",
@@ -22,6 +26,7 @@ export function AdBanner({
   const initialized = useRef(false);
 
   useEffect(() => {
+    if (!ADS_ENABLED) return;
     if (initialized.current) return;
     initialized.current = true;
     try {
@@ -30,6 +35,9 @@ export function AdBanner({
       // AdSenseスクリプトが未ロードの場合は無視
     }
   }, []);
+
+  // 審査中は何も描画しない（空の広告枠を消す）
+  if (!ADS_ENABLED) return null;
 
   return (
     <div className={`overflow-hidden text-center ${className}`}>
