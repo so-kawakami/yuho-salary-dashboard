@@ -68,6 +68,28 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9058571145132739"
           crossOrigin="anonymous"
         />
+        {/* サイト運営者情報（E-E-A-T / 信頼性シグナル） */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "有報年収ダッシュボード",
+              alternateName: "有報年収ダッシュボード 運営事務局",
+              url: SITE_URL,
+              logo: `${SITE_URL}/opengraph-image`,
+              description: SITE_DESCRIPTION,
+              foundingDate: "2025",
+              contactPoint: {
+                "@type": "ContactPoint",
+                contactType: "customer support",
+                url: `${SITE_URL}/contact`,
+                availableLanguage: ["Japanese"],
+              },
+            }),
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col">
         {children}
