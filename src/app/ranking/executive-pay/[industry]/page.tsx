@@ -9,9 +9,9 @@ import { getExecutivePayRanking, getExecPayIndustries } from "@/db/safe-queries"
 const SITE_URL = "https://yuho-salary-dashboard.vercel.app";
 
 export function generateStaticParams() {
-  return getExecPayIndustries().map(({ industry }) => ({
-    industry: encodeURIComponent(industry),
-  }));
+  // 注意: paramsには生の日本語を返す（encodeURIComponentすると本番Vercelで
+  // 二重エンコードされ404になる。/industries/[slug]と同じ方式）
+  return getExecPayIndustries().map(({ industry }) => ({ industry }));
 }
 
 export async function generateMetadata({
