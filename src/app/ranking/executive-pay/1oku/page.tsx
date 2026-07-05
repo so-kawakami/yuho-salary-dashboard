@@ -4,13 +4,14 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { RankingNav } from "@/components/RankingNav";
 import { getExecPayOver1Oku } from "@/db/safe-queries";
+import { formatManYen } from "@/lib/format";
 
 const SITE_URL = "https://yuho-salary-dashboard.vercel.app";
 
 export function generateMetadata(): Metadata {
   const list = getExecPayOver1Oku();
   const top = list[0];
-  const topText = top ? `最高額は${top.name}の${(top.perPerson / 10_000).toFixed(1)}億円。` : "";
+  const topText = top ? `最高額は${top.name}の${formatManYen(top.perPerson)}。` : "";
   return {
     title: `【2026年最新】役員報酬1億円以上の上場企業一覧（全${list.length}社）`,
     description: `役員1人あたり報酬が1億円を超える上場企業${list.length}社の一覧。${topText}有価証券報告書（金融庁EDINET）の公式データから集計。企業名・業界・従業員年収との倍率も掲載。`,
@@ -108,8 +109,8 @@ export default function ExecPay1OkuPage() {
                     <td className="px-4 py-3 text-[var(--color-text-muted)] hidden sm:table-cell text-xs">
                       {row.industry}
                     </td>
-                    <td className="px-4 py-3 text-right font-bold text-gradient">
-                      {(row.perPerson / 10_000).toFixed(2)}億円
+                    <td className="px-4 py-3 text-right font-bold text-gradient whitespace-nowrap">
+                      {formatManYen(row.perPerson)}
                     </td>
                     <td className="px-4 py-3 text-right hidden md:table-cell">
                       {row.ratio != null ? (

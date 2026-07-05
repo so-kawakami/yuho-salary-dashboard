@@ -20,6 +20,7 @@ import {
   Dot,
 } from "recharts";
 import { calcSalaryPercentile } from "@/data/mock";
+import { formatManYen } from "@/lib/format";
 
 interface Company {
   name: string;
@@ -1130,7 +1131,7 @@ function ExecCompSection({
           <div className="rounded-xl bg-[var(--color-surface-secondary)] p-4">
             <p className="text-xs text-[var(--color-text-muted)] mb-1.5">役員1人あたり</p>
             <p className="text-xl font-extrabold text-[var(--color-text-primary)]">
-              {perPerson.toLocaleString()}万円
+              {formatManYen(perPerson)}
             </p>
           </div>
         )}

@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { RankingNav } from "@/components/RankingNav";
 import { getExecutivePayRanking, getExecPayIndustries } from "@/db/safe-queries";
+import { formatManYen } from "@/lib/format";
 
 const SITE_URL = "https://yuho-salary-dashboard.vercel.app";
 
@@ -24,9 +25,7 @@ export async function generateMetadata({
   const data = getExecutivePayRanking(200, industry);
   if (data.length === 0) return {};
   const top = data[0];
-  const topText = top
-    ? `1位は${top.name}の${top.perPerson >= 10_000 ? `${(top.perPerson / 10_000).toFixed(1)}億円` : `${top.perPerson.toLocaleString()}万円`}。`
-    : "";
+  const topText = top ? `1位は${top.name}の${formatManYen(top.perPerson)}。` : "";
   return {
     title: `【2026年最新】${industry}業界の役員報酬ランキング（${data.length}社）`,
     description: `${industry}業界の上場企業${data.length}社の役員報酬ランキング。${topText}役員1人あたり報酬額を有価証券報告書（金融庁EDINET）の公式データで比較。`,
@@ -121,10 +120,8 @@ export default async function ExecPayIndustryPage({
                         {row.name}
                       </Link>
                     </td>
-                    <td className="px-4 py-3 text-right font-bold text-gradient">
-                      {row.perPerson >= 10_000
-                        ? `${(row.perPerson / 10_000).toFixed(2)}億円`
-                        : `${row.perPerson.toLocaleString()}万円`}
+                    <td className="px-4 py-3 text-right font-bold text-gradient whitespace-nowrap">
+                      {formatManYen(row.perPerson)}
                     </td>
                     <td className="px-4 py-3 text-right hidden md:table-cell">
                       {row.ratio != null ? (
