@@ -174,8 +174,8 @@ export function getSimilarCompanies(
   return [...sameIndustry, ...others];
 }
 
-// 役員報酬ランキング
-export function getExecutivePayRanking(limit = 200) {
+// 役員報酬ランキング（industryを指定すると業界内ランキング）
+export function getExecutivePayRanking(limit = 200, industry?: string) {
   if (Object.keys(companiesJson).length === 0) return [];
   return Object.entries(companiesJson)
     .map(([code, data]: [string, any]) => {
@@ -198,8 +198,33 @@ export function getExecutivePayRanking(limit = 200) {
       };
     })
     .filter(Boolean)
+    .filter((r: any) => !industry || r.industry === industry)
     .sort((a: any, b: any) => b.perPerson - a.perPerson)
     .slice(0, limit) as any[];
+}
+
+// 役員1人あたり報酬が1億円（10,000万円）以上の企業一覧
+export function getExecPayOver1Oku() {
+  return getExecutivePayRanking(Number.MAX_SAFE_INTEGER).filter(
+    (r: any) => r.perPerson >= 10_000
+  );
+}
+
+// 役員報酬データを持つ業界一覧（業界別ランキングの事前生成用、5社以上の業界のみ）
+export function getExecPayIndustries(): { industry: string; count: number; topPay: number }[] {
+  const all = getExecutivePayRanking(Number.MAX_SAFE_INTEGER);
+  const map = new Map<string, { count: number; topPay: number }>();
+  for (const r of all) {
+    if (!r.industry) continue;
+    const cur = map.get(r.industry) ?? { count: 0, topPay: 0 };
+    cur.count++;
+    cur.topPay = Math.max(cur.topPay, r.perPerson);
+    map.set(r.industry, cur);
+  }
+  return Array.from(map.entries())
+    .filter(([, v]) => v.count >= 5)
+    .map(([industry, v]) => ({ industry, ...v }))
+    .sort((a, b) => b.topPay - a.topPay);
 }
 
 // 従業員1人あたり売上高ランキング

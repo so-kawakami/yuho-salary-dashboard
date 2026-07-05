@@ -6,7 +6,7 @@ import { RankingNav } from "@/components/RankingNav";
 import { getFemaleManagerRanking } from "@/db/safe-queries";
 
 export const metadata: Metadata = {
-  title: "女性管理職比率ランキング | 上場企業DEI指標",
+  title: "【2026年最新】女性管理職比率ランキング｜上場企業DEI指標",
   description:
     "有価証券報告書をもとにした上場企業の女性管理職比率ランキング。男女賃金格差・男性育休取得率も掲載。",
 };

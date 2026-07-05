@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import companiesJson from "@/data/generated/companies.json";
-import { getAllIndustrySlugs, getPopularComparisonCodes } from "@/db/safe-queries";
+import { getAllIndustrySlugs, getPopularComparisonCodes, getExecPayIndustries } from "@/db/safe-queries";
 
 const SITE_URL = "https://yuho-salary-dashboard.vercel.app";
 
@@ -32,6 +32,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly" as const,
     priority: 0.8,
   }));
+
+  // 役員報酬の特集ページ（1億円以上一覧・業界別）
+  const execPayPages: MetadataRoute.Sitemap = [
+    {
+      url: `${SITE_URL}/ranking/executive-pay/1oku`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    ...getExecPayIndustries().map(({ industry }) => ({
+      url: `${SITE_URL}/ranking/executive-pay/${encodeURIComponent(industry)}`,
+      lastModified: now,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
+  ];
 
   // 年収偏差値チェッカー結果ページ（事前生成分）
   const checkerPages: MetadataRoute.Sitemap = [];
@@ -69,5 +85,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticPages, ...specialRankingPages, ...checkerPages, ...industryPages, ...companyPages, ...comparePages];
+  return [...staticPages, ...specialRankingPages, ...execPayPages, ...checkerPages, ...industryPages, ...companyPages, ...comparePages];
 }

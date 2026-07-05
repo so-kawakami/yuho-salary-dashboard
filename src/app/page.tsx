@@ -246,6 +246,31 @@ export default function Home() {
             </div>
           </section>
 
+          {/* 役員報酬特集（検索流入の主力テーマ） */}
+          <section>
+            <div className="mb-4">
+              <h2 className="text-xl font-bold text-[var(--color-text-primary)]">役員報酬ランキング</h2>
+              <p className="text-sm text-[var(--color-text-muted)]">経営トップの報酬はいくら？ 有価証券報告書の公式データで公開</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <Link href="/ranking/executive-pay" className="glass rounded-xl p-5 glass-hover block">
+                <span className="text-2xl">💼</span>
+                <p className="text-sm font-bold text-[var(--color-text-primary)] mt-2 mb-1">役員報酬ランキング TOP200</p>
+                <p className="text-xs text-[var(--color-text-muted)]">役員1人あたり報酬額・従業員年収との倍率つき</p>
+              </Link>
+              <Link href="/ranking/executive-pay/1oku" className="glass rounded-xl p-5 glass-hover block">
+                <span className="text-2xl">👑</span>
+                <p className="text-sm font-bold text-[var(--color-text-primary)] mt-2 mb-1">報酬1億円以上の企業一覧</p>
+                <p className="text-xs text-[var(--color-text-muted)]">1人あたり平均1億円超えの上場企業だけを厳選</p>
+              </Link>
+              <Link href="/ranking/executive-pay#industry" className="glass rounded-xl p-5 glass-hover block">
+                <span className="text-2xl">🏭</span>
+                <p className="text-sm font-bold text-[var(--color-text-primary)] mt-2 mb-1">業界別 役員報酬ランキング</p>
+                <p className="text-xs text-[var(--color-text-muted)]">33業界ごとの役員報酬水準を比較</p>
+              </Link>
+            </div>
+          </section>
+
           {/* 注目の年収比較 */}
           {featuredComparisons.length > 0 && (
             <section>

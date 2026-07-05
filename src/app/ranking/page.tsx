@@ -6,7 +6,7 @@ import { RankingWithFilter } from "@/components/RankingWithFilter";
 import { getAllCompanies } from "@/db/safe-queries";
 
 export const metadata: Metadata = {
-  title: "年収ランキング | 上場企業の平均年収",
+  title: "【2026年最新】年収ランキング｜上場企業4,000社の平均年収",
   description:
     "有価証券報告書をもとにした上場企業の平均年収ランキング。業界・規模・勤続年数でフィルタリングできます。",
 };

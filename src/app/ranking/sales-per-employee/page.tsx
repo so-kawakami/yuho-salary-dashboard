@@ -6,7 +6,7 @@ import { RankingNav } from "@/components/RankingNav";
 import { getSalesPerEmployeeRanking } from "@/db/safe-queries";
 
 export const metadata: Metadata = {
-  title: "従業員1人あたり売上高ランキング | 上場企業",
+  title: "【2026年最新】従業員1人あたり売上高ランキング｜上場企業",
   description:
     "有価証券報告書をもとにした上場企業の従業員1人あたり売上高ランキング。生産性・効率性の観点で企業を比較。",
 };

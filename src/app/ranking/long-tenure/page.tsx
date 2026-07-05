@@ -6,7 +6,7 @@ import { RankingNav } from "@/components/RankingNav";
 import { getLongTenureRanking } from "@/db/safe-queries";
 
 export const metadata: Metadata = {
-  title: "勤続年数が長い高年収企業ランキング | 上場企業",
+  title: "【2026年最新】勤続年数が長い高年収企業ランキング｜上場企業",
   description:
     "有価証券報告書をもとにした上場企業の平均勤続年数ランキング（年収400万円以上）。長く働ける優良企業を確認。",
 };

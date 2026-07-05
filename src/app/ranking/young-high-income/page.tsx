@@ -6,7 +6,7 @@ import { RankingNav } from "@/components/RankingNav";
 import { getYoungHighIncomeRanking } from "@/db/safe-queries";
 
 export const metadata: Metadata = {
-  title: "若手×高年収ランキング（平均年齢40歳未満） | 上場企業",
+  title: "【2026年最新】若手×高年収企業ランキング（平均年齢40歳未満）",
   description:
     "有価証券報告書をもとにした上場企業の若手高年収ランキング。平均年齢40歳未満かつ年収500万円以上の企業を比較。",
 };

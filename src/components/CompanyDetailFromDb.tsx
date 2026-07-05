@@ -284,7 +284,7 @@ export function CompanyDetailFromDb({
               </ResponsiveContainer>
             </div>
           ) : (
-            <p className="text-[var(--color-text-muted)] text-sm py-12 text-center">
+            <p className="text-[var(--color-text-muted)] text-sm py-8 text-center">
               推移データがありません
             </p>
           )}
@@ -298,7 +298,7 @@ export function CompanyDetailFromDb({
             { ...kpis[2], border: "border-[var(--color-success)]" },
             { ...kpis[3], border: "border-[var(--color-warning)]" },
           ].map((kpi) => (
-            <div key={kpi.label} className={`glass rounded-xl px-5 py-4 border-l-4 ${kpi.border} flex flex-col justify-center`}>
+            <div key={kpi.label} className={`glass rounded-2xl px-5 py-4 border-l-4 ${kpi.border} flex flex-col justify-center`}>
               <p className="text-xs font-medium text-[var(--color-text-muted)] uppercase tracking-wider mb-1.5">
                 {kpi.label}
               </p>
@@ -325,7 +325,7 @@ export function CompanyDetailFromDb({
         </div>
 
         {/* 同業他社比較 */}
-        <div className="col-span-12 lg:col-span-4 glass rounded-2xl p-5">
+        <div className="col-span-12 lg:col-span-4 glass rounded-2xl p-5 h-full">
           <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">
             同業他社と比較
           </h2>
@@ -417,7 +417,7 @@ export function CompanyDetailFromDb({
       {/* ── 年収が近い企業 ── */}
       {similarCompanies.length > 0 && (
         <div className="glass rounded-2xl p-5">
-          <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-1">
+          <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">
             年収が近い企業
           </h2>
           <p className="text-xs text-[var(--color-text-muted)] mb-3">
@@ -498,7 +498,7 @@ export function CompanyDetailFromDb({
         <div className="glass rounded-2xl p-5 space-y-3">
           <AdBanner slot="9555970163" format="horizontal" className="" />
           <div>
-            <h2 className="text-xs font-semibold text-[var(--color-text-primary)] mb-1">データについて</h2>
+            <h2 className="text-sm font-semibold text-[var(--color-text-primary)] mb-1">データについて</h2>
             <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">
               有価証券報告書（EDINET）に基づくデータです。平均年収は単体・正社員の値です。
               <a href="https://disclosure.edinet-fsa.go.jp/" target="_blank" rel="noopener noreferrer"
@@ -543,7 +543,7 @@ function OrganizationTrendSection({ salaryHistory, compact = false }: { salaryHi
   const maxEmployees = Math.max(...trendData.map((d) => d.従業員数 ?? 0));
 
   return (
-    <div className="glass rounded-2xl p-5">
+    <div className="glass rounded-2xl p-5 h-full">
       <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">
         組織データの推移
       </h2>
@@ -716,7 +716,10 @@ function DeiCompactSection({
 
   return (
     <div className="glass rounded-2xl p-5 h-full flex flex-col justify-between">
-      <h2 className="text-sm font-semibold text-[var(--color-text-muted)] mb-4">DEI指標</h2>
+      <div>
+        <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">DEI指標</h2>
+        <p className="text-xs text-[var(--color-text-muted)] mb-3">男女賃金格差・女性管理職比率</p>
+      </div>
       <div className="space-y-5 flex-1">
         {wageGap != null && (
           <div>
@@ -807,7 +810,7 @@ function DeiSection({
   if (items.length === 0) return null;
 
   return (
-    <div className="glass rounded-2xl p-5">
+    <div className="glass rounded-2xl p-5 h-full">
       <div className="flex items-start justify-between mb-0.5">
         <h2 className="text-base font-semibold text-[var(--color-text-primary)]">
           DEI・男女格差データ
@@ -818,7 +821,7 @@ function DeiSection({
           </span>
         )}
       </div>
-      <p className="text-xs text-[var(--color-text-muted)] mb-4">
+      <p className="text-xs text-[var(--color-text-muted)] mb-3">
         有価証券報告書ベース（2023年度以降開示義務化）
       </p>
       <div className="space-y-4">
@@ -904,7 +907,7 @@ function DeiTrendSection({ salaryHistory }: { salaryHistory: SalaryRecord[] }) {
   const hasMaleLeave = trendData.some((d) => d.男性育休取得率 != null);
 
   return (
-    <div className="glass rounded-2xl p-5">
+    <div className="glass rounded-2xl p-5 h-full">
       <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">
         DEI指標の推移
       </h2>
@@ -995,7 +998,7 @@ function FinancialsSection({
   const maxVal = allValues.length > 0 ? Math.ceil(Math.max(...allValues) * 1.15 / 100) * 100 : 1000;
 
   return (
-    <div className="glass rounded-2xl p-5">
+    <div className="glass rounded-2xl p-5 h-full">
       <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">
         業績推移
       </h2>
@@ -1105,7 +1108,7 @@ function ExecCompSection({
       <h2 className="text-base font-semibold text-[var(--color-text-primary)] mb-0.5">
         役員報酬
       </h2>
-      <p className="text-xs text-[var(--color-text-muted)] mb-4">
+      <p className="text-xs text-[var(--color-text-muted)] mb-3">
         {formatFiscalYear(fiscalYear)}・有価証券報告書より
       </p>
       <div className="grid grid-cols-2 gap-3">
