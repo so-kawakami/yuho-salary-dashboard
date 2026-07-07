@@ -2,8 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { CompanyDetailFromDb } from "@/components/CompanyDetailFromDb";
-import { getCompany, getPeers, getIndustryDeiAverage, getSimilarCompanies } from "@/db/safe-queries";
+import { CompanyDetailFromDb, type RankContext } from "@/components/CompanyDetailFromDb";
+import { buildHistogram, bucketIndexFor } from "@/lib/distribution";
+import {
+  getCompany,
+  getPeers,
+  getIndustryDeiAverage,
+  getSimilarCompanies,
+  getAllCompanies,
+  getStatsData,
+} from "@/db/safe-queries";
 
 export const dynamic = "force-static";
 
@@ -59,6 +67,41 @@ export function generateStaticParams() {
   }
 }
 
+// 全社ランキング・業界内順位・分布などファーストビュー用の集計
+function buildRankContext(code: string, industry: string, salaryMan: number): RankContext | null {
+  if (salaryMan <= 0) return null;
+
+  const ranked = getAllCompanies()
+    .filter((c) => c.salary > 0)
+    .sort((a, b) => b.salary - a.salary);
+  if (ranked.length === 0) return null;
+
+  const rank = ranked.findIndex((c) => c.code === code) + 1;
+  if (rank === 0) return null;
+
+  const inIndustry = industry
+    ? ranked.filter((c) => c.industry === industry)
+    : [];
+  const industryRank = industry
+    ? inIndustry.findIndex((c) => c.code === code) + 1
+    : 0;
+  const industryAvg =
+    inIndustry.length > 0
+      ? Math.round(inIndustry.reduce((s, c) => s + c.salary, 0) / inIndustry.length)
+      : null;
+
+  return {
+    rank,
+    totalRanked: ranked.length,
+    industryAvg,
+    industryRank: industryRank > 0 ? industryRank : null,
+    industryCount: inIndustry.length,
+    median: getStatsData().medianSalary,
+    histogram: buildHistogram(ranked.map((c) => c.salary)),
+    highlightIndex: bucketIndexFor(salaryMan),
+  };
+}
+
 export default async function CompanyPage({
   params,
 }: {
@@ -69,28 +112,34 @@ export default async function CompanyPage({
   const peers = data ? getPeers(data.company.industry ?? "", code) : [];
   const industryDei = data ? getIndustryDeiAverage(data.company.industry ?? "") : null;
   const latestForSimilar = data?.salaryHistory[data.salaryHistory.length - 1];
+  const salaryMan = latestForSimilar?.avgSalary
+    ? Math.round(latestForSimilar.avgSalary / 10000)
+    : 0;
   const similarCompanies = data ? getSimilarCompanies(
     code,
-    latestForSimilar?.avgSalary ? Math.round(latestForSimilar.avgSalary / 10000) : 0,
+    salaryMan,
     latestForSimilar?.employees ?? 0,
     data.company.industry ?? ""
   ) : [];
+  const context = data
+    ? buildRankContext(code, data.company.industry ?? "", salaryMan)
+    : null;
 
   if (!data) {
     return (
-      <div className="flex flex-col min-h-full bg-mesh">
+      <div className="flex flex-col min-h-full">
         <Header />
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
+            <h2 className="text-2xl font-black text-[var(--color-text)] mb-2">
               企業が見つかりません
             </h2>
-            <p className="text-[var(--color-text-muted)] mb-4">
+            <p className="text-[var(--color-text-faint)] mb-4">
               コード: {code}
             </p>
             <Link
               href="/"
-              className="text-[var(--color-primary)] hover:underline"
+              className="text-[var(--color-primary)] font-bold hover:underline"
             >
               トップに戻る
             </Link>
@@ -100,8 +149,6 @@ export default async function CompanyPage({
     );
   }
 
-  const latest = data.salaryHistory[data.salaryHistory.length - 1];
-  const salaryMan = latest?.avgSalary ? Math.round(latest.avgSalary / 10000) : null;
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -113,30 +160,10 @@ export default async function CompanyPage({
   };
 
   return (
-    <div className="flex flex-col min-h-full bg-mesh">
+    <div className="flex flex-col min-h-full">
       <Header />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <main className="mx-auto w-full max-w-[1600px] flex-1 px-3 py-4 sm:px-5">
-        <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)] mb-6">
-          <Link
-            href="/"
-            className="hover:text-[var(--color-primary)] transition-colors"
-          >
-            ホーム
-          </Link>
-          <span>/</span>
-          <Link
-            href="/ranking"
-            className="hover:text-[var(--color-primary)] transition-colors"
-          >
-            ランキング
-          </Link>
-          <span>/</span>
-          <span className="text-[var(--color-text-primary)]">
-            {data.company.name}
-          </span>
-        </nav>
-
+      <main className="mx-auto w-full max-w-7xl flex-1 px-5 sm:px-8 lg:px-12 py-6 sm:py-8">
         <CompanyDetailFromDb
           company={data.company}
           salaryHistory={data.salaryHistory}
@@ -144,6 +171,7 @@ export default async function CompanyPage({
           financialsHistory={data.financialsHistory ?? []}
           industryDei={industryDei}
           similarCompanies={similarCompanies}
+          context={context}
         />
       </main>
 

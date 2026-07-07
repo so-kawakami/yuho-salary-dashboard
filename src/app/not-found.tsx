@@ -8,8 +8,8 @@ export default function NotFound() {
       <Header />
       <main className="flex-1 flex items-center justify-center px-4 py-16">
         <div className="text-center max-w-md">
-          <p className="text-6xl mb-4">🔍</p>
-          <h1 className="text-3xl font-extrabold text-[var(--color-text-primary)] mb-3">
+          <p className="text-5xl font-black text-[var(--color-primary-soft)] mb-4">404</p>
+          <h1 className="text-3xl font-black text-[var(--color-text-primary)] mb-3">
             ページが見つかりません
           </h1>
           <p className="text-sm text-[var(--color-text-secondary)] mb-8 leading-relaxed">
@@ -19,13 +19,13 @@ export default function NotFound() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/search"
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white text-sm font-bold shadow-lg shadow-[var(--color-primary-glow)] hover:opacity-90 transition-opacity"
+              className="px-6 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-bold hover:bg-[var(--color-primary-dark)] transition-colors"
             >
               企業を検索する
             </Link>
             <Link
               href="/ranking"
-              className="px-6 py-3 rounded-xl glass text-sm font-bold text-[var(--color-primary)] hover:bg-[var(--color-primary-light)] transition-colors"
+              className="px-6 py-3 rounded-full bg-white border-[1.5px] border-[var(--color-primary)] text-sm font-bold text-[var(--color-primary)] hover:bg-[var(--color-primary-tint)] transition-colors"
             >
               年収ランキングを見る
             </Link>

@@ -117,7 +117,7 @@ export default async function CheckerResultPage({
           <div className="max-w-md mx-auto">
             <div className="h-3 rounded-full bg-white/60 overflow-hidden">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)]"
+                className="h-full rounded-full bg-[var(--color-primary)]"
                 style={{ width: `${result.percentile}%` }}
               />
             </div>
@@ -213,7 +213,7 @@ export default async function CheckerResultPage({
                     {c.salary.toLocaleString()}万円
                   </span>
                   {c.industry && (
-                    <span className="text-[10px] text-[var(--color-text-muted)] line-clamp-1">{c.industry}</span>
+                    <span className="text-[12px] text-[var(--color-text-muted)] line-clamp-1">{c.industry}</span>
                   )}
                 </Link>
               ))}
@@ -244,7 +244,7 @@ export default async function CheckerResultPage({
                     {c.salary.toLocaleString()}万円
                   </span>
                   {c.industry && (
-                    <span className="text-[10px] text-[var(--color-text-muted)] line-clamp-1">{c.industry}</span>
+                    <span className="text-[12px] text-[var(--color-text-muted)] line-clamp-1">{c.industry}</span>
                   )}
                 </Link>
               ))}

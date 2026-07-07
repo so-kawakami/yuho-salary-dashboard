@@ -1,17 +1,15 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Noto_Sans_JP } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const notoSansJP = Noto_Sans_JP({
+  variable: "--font-noto-sans-jp",
+  weight: ["400", "500", "700", "900"],
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 const SITE_NAME = "有報年収ダッシュボード";
@@ -60,15 +58,10 @@ export default function RootLayout({
   return (
     <html
       lang="ja"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${notoSansJP.variable} h-full antialiased`}
     >
-      <head>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9058571145132739"
-          crossOrigin="anonymous"
-        />
-        {/* サイト運営者情報（E-E-A-T / 信頼性シグナル） */}
+      <body className="min-h-full flex flex-col">
+        {children}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -87,12 +80,15 @@ export default function RootLayout({
                 url: `${SITE_URL}/contact`,
                 availableLanguage: ["Japanese"],
               },
-            }),
+            }).replace(/</g, "\\u003c"),
           }}
         />
-      </head>
-      <body className="min-h-full flex flex-col">
-        {children}
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9058571145132739"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <Analytics />
         <SpeedInsights />
       </body>

@@ -49,7 +49,7 @@ export default function ContactPage() {
               href="https://docs.google.com/forms/d/e/1FAIpQLSfVHRd1lIXFi7Lf5Z_eGWdAVvh7ChcqHmItuwGw79MI42qVUw/viewform"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white font-bold text-base shadow-lg shadow-[var(--color-primary-glow)] hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl bg-[var(--color-primary)] text-white font-bold text-base shadow-lg shadow-[var(--color-primary-glow)] hover:opacity-90 transition-opacity"
             >
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />

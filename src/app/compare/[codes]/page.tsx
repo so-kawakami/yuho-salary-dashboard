@@ -159,7 +159,7 @@ export default async function ComparePage({
                   className="flex items-center justify-center gap-2 px-3 py-3 rounded-xl bg-[var(--color-surface-secondary)] hover:bg-[var(--color-primary-light)] text-xs font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors text-center"
                 >
                   <span className="line-clamp-1">{r.name1}</span>
-                  <span className="text-[10px] text-[var(--color-text-muted)] shrink-0">vs</span>
+                  <span className="text-[12px] text-[var(--color-text-muted)] shrink-0">vs</span>
                   <span className="line-clamp-1">{r.name2}</span>
                 </Link>
               ))}

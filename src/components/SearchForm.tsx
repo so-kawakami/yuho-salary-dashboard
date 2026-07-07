@@ -96,7 +96,7 @@ export function SearchForm({ companies }: { companies: CompanySalary[] }) {
           onChange={(e) => handleChange(e.target.value)}
           placeholder="企業名・業種・証券コードで検索..."
           autoFocus
-          className="w-full h-14 rounded-2xl glass px-5 pl-12 text-base outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition placeholder:text-[var(--color-text-muted)]"
+          className="w-full h-14 rounded-xl bg-white border-[1.5px] border-[var(--color-border-input)] px-5 pl-12 text-base outline-none focus:border-[var(--color-primary)] transition-colors placeholder:text-[var(--color-text-faint)]"
         />
         <svg
           className="absolute left-4 top-4 h-5 w-5 text-[var(--color-text-muted)]"
@@ -128,7 +128,7 @@ export function SearchForm({ companies }: { companies: CompanySalary[] }) {
             <div className="text-center">
               <button
                 onClick={() => setDisplayCount((c) => c + DISPLAY_STEP * 2)}
-                className="px-8 py-3 rounded-xl glass text-sm font-bold text-[var(--color-primary)] hover:bg-[var(--color-primary-light)] transition-colors"
+                className="px-10 py-[13px] rounded-full bg-white border-[1.5px] border-[var(--color-primary)] text-[15px] font-bold text-[var(--color-primary)] hover:bg-[var(--color-primary-tint)] transition-colors"
               >
                 さらに表示（残り{(filtered.length - displayCount).toLocaleString()}件）
               </button>
@@ -140,8 +140,7 @@ export function SearchForm({ companies }: { companies: CompanySalary[] }) {
       {query.length === 0 && (
         <div className="space-y-4">
           <div className="text-center py-8">
-            <p className="text-4xl mb-4">🔍</p>
-            <p className="text-lg font-medium text-[var(--color-text-primary)] mb-2">
+            <p className="text-lg font-bold text-[var(--color-text)] mb-2">
               企業名・業種・証券コードで検索
             </p>
             <p className="text-sm text-[var(--color-text-muted)]">

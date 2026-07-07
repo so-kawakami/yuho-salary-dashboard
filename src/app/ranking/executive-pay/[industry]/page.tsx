@@ -148,7 +148,6 @@ export default async function ExecPayIndustryPage({
             </div>
           </Link>
           <Link href="/ranking/executive-pay/1oku" className="glass rounded-xl p-4 glass-hover flex items-center gap-3">
-            <span className="text-2xl">👑</span>
             <div>
               <p className="text-sm font-bold text-[var(--color-text-primary)]">役員報酬1億円以上の企業一覧</p>
               <p className="text-xs text-[var(--color-text-muted)]">全業界の1億円プレイヤー企業</p>

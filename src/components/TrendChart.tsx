@@ -37,7 +37,7 @@ export function TrendChart({ data }: { data: TrendPoint[] }) {
             data={data}
             margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#edf1f5" vertical={false} />
             <XAxis dataKey="year" tick={{ fontSize: 12 }} />
             <YAxis domain={[min, max]} tick={{ fontSize: 12 }} />
             <Tooltip
@@ -59,7 +59,7 @@ export function TrendChart({ data }: { data: TrendPoint[] }) {
             <Line
               type="monotone"
               dataKey="listed"
-              stroke="#1a56db"
+              stroke="#1e56a0"
               strokeWidth={3}
               dot={{ r: 5 }}
               activeDot={{ r: 7 }}

@@ -104,14 +104,12 @@ export default function ExecutivePayPage() {
         {/* 注目ページへの導線 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <Link href="/ranking/executive-pay/1oku" className="glass rounded-xl p-4 glass-hover flex items-center gap-3">
-            <span className="text-2xl">👑</span>
             <div>
               <p className="text-sm font-bold text-[var(--color-text-primary)]">役員報酬1億円以上の企業一覧</p>
               <p className="text-xs text-[var(--color-text-muted)]">1人あたり平均1億円超えは{over1oku.length}社</p>
             </div>
           </Link>
           <a href="#industry" className="glass rounded-xl p-4 glass-hover flex items-center gap-3">
-            <span className="text-2xl">🏭</span>
             <div>
               <p className="text-sm font-bold text-[var(--color-text-primary)]">業界別 役員報酬ランキング</p>
               <p className="text-xs text-[var(--color-text-muted)]">{industries.length}業界の役員報酬を比較</p>
@@ -182,7 +180,7 @@ export default function ExecutivePayPage() {
                 className="px-3 py-2.5 rounded-xl bg-[var(--color-surface-secondary)] hover:bg-[var(--color-primary-light)] text-xs font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
               >
                 {ind.industry}
-                <span className="block text-[10px] text-[var(--color-text-muted)] mt-0.5">
+                <span className="block text-[12px] text-[var(--color-text-muted)] mt-0.5">
                   最高 {ind.topPay >= 10_000 ? `${(ind.topPay / 10_000).toFixed(1)}億円` : `${ind.topPay.toLocaleString()}万円`}
                 </span>
               </Link>

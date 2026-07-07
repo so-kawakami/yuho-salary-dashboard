@@ -65,7 +65,7 @@ export default function ExecPay1OkuPage() {
 
         <div>
           <h1 className="text-2xl font-extrabold text-[var(--color-text-primary)] mb-1">
-            👑 役員報酬1億円以上の上場企業一覧
+            役員報酬1億円以上の上場企業一覧
           </h1>
           <p className="text-sm text-[var(--color-text-muted)]">
             役員1人あたり平均報酬が1億円を超える{data.length}社（有価証券報告書・2026年最新）
@@ -137,7 +137,7 @@ export default function ExecPay1OkuPage() {
         <div className="text-center">
           <Link
             href="/ranking/executive-pay"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent)] text-white text-sm font-bold shadow-lg hover:opacity-90 transition-opacity"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-primary)] text-white text-sm font-bold shadow-lg hover:opacity-90 transition-opacity"
           >
             役員報酬ランキング トップ200を見る →
           </Link>

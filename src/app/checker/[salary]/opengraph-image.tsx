@@ -33,7 +33,7 @@ export default async function Image({
           height: "630px",
           display: "flex",
           flexDirection: "column",
-          background: "linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)",
+          background: "#17437d",
           fontFamily: fontData ? "NotoSansJP" : "sans-serif",
           position: "relative",
           overflow: "hidden",
@@ -47,7 +47,7 @@ export default async function Image({
             width: "600px",
             height: "600px",
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%)",
             display: "flex",
           }}
         />
@@ -59,7 +59,7 @@ export default async function Image({
             width: "400px",
             height: "400px",
             borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(26,86,219,0.12) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%)",
             display: "flex",
           }}
         />
@@ -81,7 +81,7 @@ export default async function Image({
                   width: "44px",
                   height: "44px",
                   borderRadius: "12px",
-                  background: "linear-gradient(135deg, #1a56db, #7c3aed)",
+                  background: "#1e56a0",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -121,7 +121,7 @@ export default async function Image({
                 style={{
                   fontSize: "150px",
                   fontWeight: 700,
-                  background: "linear-gradient(90deg, #60a5fa, #a78bfa)",
+                  background: "#a3bedd",
                   backgroundClip: "text",
                   color: "transparent",
                   lineHeight: 1,

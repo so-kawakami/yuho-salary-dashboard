@@ -31,8 +31,8 @@ interface CompanyData {
   }[];
 }
 
-const COLOR1 = "#1a56db";
-const COLOR2 = "#7c3aed";
+const COLOR1 = "#1e56a0";
+const COLOR2 = "#6b93c4";
 
 export function CompanyComparison({
   data1,
@@ -111,7 +111,7 @@ export function CompanyComparison({
 
           {/* VS */}
           <div className="flex flex-col items-center">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center text-white font-extrabold text-sm shadow-lg">
+            <div className="w-12 h-12 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white font-black text-sm">
               VS
             </div>
             {s1 > 0 && s2 > 0 && (
@@ -191,7 +191,7 @@ export function CompanyComparison({
           <div className="h-[280px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={trendData} margin={{ top: 5, right: 30, bottom: 5, left: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#edf1f5" vertical={false} />
                 <XAxis dataKey="year" tick={{ fontSize: 11 }} />
                 <YAxis
                   domain={[minSalary, maxSalary]}

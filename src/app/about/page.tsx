@@ -50,41 +50,32 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
                 {
-                  icon: "💰",
                   title: "企業の平均年収を調べる",
                   desc: "上場企業を含む4,000社以上の平均年収を有価証券報告書の公式データで確認できます。年度ごとの推移グラフで、給与トレンドも把握できます。",
                 },
                 {
-                  icon: "📊",
                   title: "業界別に比較する",
                   desc: "情報・通信業、製造業、金融業など業界ごとの平均年収を比較。同業他社との年収差をグラフで視覚的に確認できます。",
                 },
                 {
-                  icon: "📈",
                   title: "DEI指標を確認する",
                   desc: "男女賃金格差・男性育休取得率・女性管理職比率など、2023年度以降に開示義務化されたDEI（多様性・公平性・包括性）データを掲載しています。",
                 },
                 {
-                  icon: "🏢",
                   title: "財務情報と年収を照合する",
                   desc: "売上高・営業利益の推移と年収を並べて確認できます。「業績が上がっても年収が変わらない企業」や「効率よく稼ぐ企業」を見つけることができます。",
                 },
                 {
-                  icon: "🎯",
                   title: "年収偏差値を計算する",
                   desc: "自分の年収が上場企業全体の中でどの位置にあるかを偏差値で確認できます。転職・交渉時の参考情報としてご活用ください。",
                 },
                 {
-                  icon: "🔍",
                   title: "企業を横断検索する",
                   desc: "社名・業種での検索や、年収・従業員数・平均年齢によるランキングフィルタリングが可能です。",
                 },
               ].map((item) => (
                 <div key={item.title} className="rounded-xl bg-[var(--color-surface-secondary)] p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xl">{item.icon}</span>
-                    <h3 className="text-sm font-bold text-[var(--color-text-primary)]">{item.title}</h3>
-                  </div>
+                  <h3 className="text-sm font-bold text-[var(--color-text-primary)] mb-2">{item.title}</h3>
                   <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed">{item.desc}</p>
                 </div>
               ))}

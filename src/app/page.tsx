@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { StatsCards } from "@/components/StatsCards";
 import { SalaryChecker } from "@/components/SalaryChecker";
+import { SalaryHistogram } from "@/components/SalaryHistogram";
+import { HeroSearch } from "@/components/HeroSearch";
 import { AdBanner } from "@/components/AdBanner";
+import { buildHistogram } from "@/lib/distribution";
 import { getRanking, getStatsData, getIndustries, getAllCompanies, getFeaturedComparisons } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
@@ -13,11 +15,21 @@ export default function Home() {
   const ranking = getRanking(100);
   const stats = getStatsData();
   const industries = getIndustries();
+  const allCompanies = getAllCompanies();
+
+  // 分布ヒストグラム（全社の年収から集計）
+  const histogram = buildHistogram(allCompanies.map((c) => c.salary));
+
+  // 最高年収の企業・トップ業界
+  const topCompany = ranking[0];
+  const topIndustry = [...industries]
+    .filter((i) => i.industry && i.companies >= 3)
+    .sort((a, b) => b.avgSalary - a.avgSalary)[0];
 
   // 偏差値チェッカー用：年収帯（100万円刻み）ごとに代表企業を最大6社サンプリング
   const checkerSamples = (() => {
     const byBand = new Map<number, { code: string; name: string; salary: number }[]>();
-    for (const c of getAllCompanies()) {
+    for (const c of allCompanies) {
       if (!c.salary || !c.code) continue;
       const band = Math.floor(c.salary / 100);
       const list = byBand.get(band) ?? [];
@@ -29,21 +41,13 @@ export default function Home() {
     return Array.from(byBand.values()).flat();
   })();
 
-  // 業界別ハイライト（全社集計データから上位4業界）
-  const topIndustries = industries
-    .filter((i) => i.industry && i.companies >= 3)
-    .slice(0, 4);
+  // 注目の年収比較（主要業界のトップ2社対決）
+  const featuredComparisons = getFeaturedComparisons(6);
 
   // 高年収・若手に人気の企業（平均年齢が低くて年収が高い）
   const youngHighPay = ranking
     .filter((r) => r.avgAge > 0 && r.avgAge < 38 && r.salary > 600)
     .slice(0, 4);
-
-  // ランキングTOP5（コンパクトプレビュー）
-  const top5 = ranking.slice(0, 5);
-
-  // 注目の年収比較（主要業界のトップ2社対決）
-  const featuredComparisons = getFeaturedComparisons(6);
 
   // 勤続年数が長い企業TOP4（年収だけじゃない切り口）
   const longTenure = [...ranking]
@@ -101,7 +105,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col min-h-full bg-mesh">
+    <div className="flex flex-col min-h-full">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -109,56 +113,149 @@ export default function Home() {
       <Header />
 
       <main className="flex-1">
-        {/* ヒーローセクション */}
-        <section className="relative overflow-hidden pt-16 pb-12 sm:pt-24 sm:pb-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto">
-              <p className="text-sm font-medium text-[var(--color-primary)] mb-3 tracking-wide">
-                有価証券報告書 × {stats.totalCompanies.toLocaleString()}社のデータ
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
+          {/* ヒーロー: 検索と統計が主役 */}
+          <section className="pt-10 pb-6 lg:pt-16 lg:pb-10 grid lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)] gap-10 lg:gap-16 items-center">
+            <div>
+              <p className="text-[13px] sm:text-sm text-[var(--color-primary)] font-bold tracking-[0.05em]">
+                有価証券報告書ベースの年収データ
               </p>
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] mb-6">
-                <span className="text-gradient">あの企業の年収、</span>
-                <br />
-                <span className="text-[var(--color-text-primary)]">知ってる？</span>
-              </h2>
-              <p className="text-base sm:text-lg text-[var(--color-text-secondary)] max-w-xl mx-auto mb-8 leading-relaxed">
-                金融庁EDINETの有価証券報告書から、上場企業の平均年収を自動集計。
-                業界別比較やトレンド分析をダッシュボードで。
+              <h1 className="text-[28px] sm:text-[44px] font-black leading-[1.45] sm:leading-[1.4] mt-3 text-[var(--color-text)]">
+                気になるあの会社の年収、
+                <br className="hidden sm:block" />
+                本当の数字で。
+              </h1>
+              <p className="text-[14.5px] sm:text-[15px] leading-[1.9] sm:leading-[2.0] text-[var(--color-text-muted)] mt-4">
+                口コミの推定でも、求人票の「モデル年収」でもなく。企業が国に提出する書類に記載された平均年間給与を、上場企業{stats.totalCompanies.toLocaleString()}社ぶん収録しています。
               </p>
-              <div className="flex justify-center">
-                <Link
-                  href="/search"
-                  className="relative w-full max-w-lg group"
-                >
-                  <div className="w-full h-14 rounded-2xl glass px-5 pl-12 text-base flex items-center text-[var(--color-text-muted)] group-hover:ring-2 group-hover:ring-[var(--color-primary)] transition cursor-text">
-                    企業名・業種で検索...
-                  </div>
-                  <svg className="absolute left-4 top-4 h-5 w-5 text-[var(--color-text-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </Link>
+              <div className="mt-7">
+                <HeroSearch />
               </div>
-              <div className="flex flex-wrap justify-center gap-2 mt-4">
-                {["キーエンス", "トヨタ", "ソニー", "三菱商事", "任天堂"].map((name) => (
+              <div className="flex sm:hidden flex-wrap gap-2 mt-3">
+                {["キーエンス", "トヨタ", "任天堂"].map((name) => (
                   <Link
                     key={name}
                     href={`/search?q=${encodeURIComponent(name)}`}
-                    className="text-xs px-3 py-1.5 rounded-full glass text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"
+                    className="text-[13.5px] px-3.5 py-[7px] rounded-full bg-white border border-[var(--color-border-input)] text-[var(--color-text-body)]"
                   >
                     {name}
                   </Link>
                 ))}
               </div>
             </div>
-          </div>
-        </section>
 
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pb-16 space-y-12">
-          {/* 統計カード */}
-          <section>
-            <StatsCards stats={stats} />
+            {/* 統計カード */}
+            <div className="bg-white border-[1.5px] border-[var(--color-border)] rounded-2xl px-7 py-7 sm:px-9 sm:py-8">
+              <p className="text-[15px] font-bold text-[var(--color-text)] mb-4">
+                上場企業のいま{" "}
+                <span className="text-[12.5px] text-[var(--color-text-faint)] font-normal ml-1.5">
+                  {stats.dataYear}
+                </span>
+              </p>
+              <dl>
+                <div className="flex justify-between items-baseline py-[13px] border-t border-[var(--color-border-subtle)]">
+                  <dt className="text-[14.5px] text-[var(--color-text-muted)]">平均年収</dt>
+                  <dd className="text-[26px] font-black text-[var(--color-text)]">
+                    {stats.averageSalary.toLocaleString()}
+                    <span className="text-sm font-bold text-[var(--color-text-faint)]">万円</span>
+                  </dd>
+                </div>
+                <div className="flex justify-between items-baseline py-[13px] border-t border-[var(--color-border-subtle)]">
+                  <dt className="text-[14.5px] text-[var(--color-text-muted)]">中央値</dt>
+                  <dd className="text-[26px] font-black text-[var(--color-text)]">
+                    {stats.medianSalary.toLocaleString()}
+                    <span className="text-sm font-bold text-[var(--color-text-faint)]">万円</span>
+                  </dd>
+                </div>
+                {topCompany && (
+                  <div className="flex justify-between items-baseline gap-3 py-[13px] border-t border-[var(--color-border-subtle)]">
+                    <dt className="text-[14.5px] text-[var(--color-text-muted)] min-w-0">
+                      最高（{topCompany.name.replace(/株式会社/g, "")}）
+                    </dt>
+                    <dd className="text-[26px] font-black text-[var(--color-primary)] whitespace-nowrap shrink-0">
+                      {topCompany.salary.toLocaleString()}
+                      <span className="text-sm font-bold text-[var(--color-text-faint)]">万円</span>
+                    </dd>
+                  </div>
+                )}
+              </dl>
+            </div>
           </section>
 
+          {/* 分布セクション */}
+          <section className="pb-4">
+            <div className="bg-[var(--color-surface-section)] rounded-2xl px-6 py-7 sm:px-10 sm:py-9">
+              <div className="flex justify-between items-baseline flex-wrap gap-2">
+                <h2 className="text-[15px] sm:text-[17px] font-black text-[var(--color-text)]">
+                  {stats.totalCompanies.toLocaleString()}社はこう分布している
+                </h2>
+                <a
+                  href="#checker"
+                  className="text-sm text-[var(--color-primary)] font-bold hover:underline"
+                >
+                  あなたの位置を見る →
+                </a>
+              </div>
+              <div className="mt-7">
+                <SalaryHistogram
+                  bars={histogram}
+                  height={100}
+                  axisLabels={[
+                    { text: "〜300万" },
+                    { text: `中央値 ${stats.medianSalary.toLocaleString()}万`, highlight: true },
+                    { text: "1,000万" },
+                    { text: "1,500万" },
+                    { text: "2,500万+" },
+                  ]}
+                />
+              </div>
+            </div>
+
+            {/* 3枚カード列 */}
+            <div className="grid sm:grid-cols-3 gap-4 mt-4">
+              <Link
+                href="/ranking"
+                className="bg-white border-[1.5px] border-[var(--color-border)] rounded-2xl px-7 py-6 hover:bg-[var(--color-surface-section)] transition-colors"
+              >
+                <p className="text-[15.5px] font-black text-[var(--color-text)]">年収ランキング</p>
+                {topCompany && (
+                  <p className="text-[13.5px] text-[var(--color-text-faint)] mt-1">
+                    1位 {topCompany.name} {topCompany.salary.toLocaleString()}万円
+                  </p>
+                )}
+                <p className="text-sm text-[var(--color-primary)] font-bold mt-4">
+                  全{allCompanies.filter((c) => c.salary > 0).length.toLocaleString()}社を見る →
+                </p>
+              </Link>
+              <Link
+                href="/industries"
+                className="bg-white border-[1.5px] border-[var(--color-border)] rounded-2xl px-7 py-6 hover:bg-[var(--color-surface-section)] transition-colors"
+              >
+                <p className="text-[15.5px] font-black text-[var(--color-text)]">業界別 平均年収</p>
+                {topIndustry && (
+                  <p className="text-[13.5px] text-[var(--color-text-faint)] mt-1">
+                    1位 {topIndustry.industry} {topIndustry.avgSalary.toLocaleString()}万円
+                  </p>
+                )}
+                <p className="text-sm text-[var(--color-primary)] font-bold mt-4">
+                  全{industries.filter((i) => i.industry && i.companies > 0).length}業界を見る →
+                </p>
+              </Link>
+              <a
+                href="#checker"
+                className="bg-[var(--color-primary)] text-white rounded-2xl px-7 py-6 hover:bg-[var(--color-primary-dark)] transition-colors"
+              >
+                <p className="text-[15.5px] font-black">年収偏差値チェッカー</p>
+                <p className="text-[13.5px] text-[#b9cfec] mt-1">
+                  {stats.totalCompanies.toLocaleString()}社の中でのあなたの位置
+                </p>
+                <p className="text-sm font-bold mt-4">30秒で診断する →</p>
+              </a>
+            </div>
+          </section>
+        </div>
+
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 pb-16 pt-8 space-y-12">
           {/* 年収偏差値チェッカー */}
           <section id="checker" className="scroll-mt-20">
             <SalaryChecker stats={stats} sampleCompanies={checkerSamples} />
@@ -167,136 +264,55 @@ export default function Home() {
           {/* 広告 */}
           <AdBanner slot="7121378512" format="auto" />
 
-          {/* 業界別ハイライト（全社集計ベース） */}
-          {topIndustries.length > 0 && (
-            <section>
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h2 className="text-xl font-bold text-[var(--color-text-primary)]">業界別 平均年収</h2>
-                  <p className="text-sm text-[var(--color-text-muted)]">平均年収が高い業界トップ4</p>
-                </div>
-                <Link href="/industries" className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1">
-                  もっと見る
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-              </div>
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {topIndustries.map((ind, i) => (
-                  <Link
-                    key={ind.industry}
-                    href={`/industries/${ind.industry}`}
-                    className="glass rounded-xl p-4 glass-hover block"
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white ${
-                        i === 0 ? "bg-[var(--color-primary)]" : "bg-[var(--color-text-muted)]"
-                      }`}>
-                        {i + 1}
-                      </span>
-                      <span className="text-xs text-[var(--color-text-muted)]">{ind.companies}社</span>
-                    </div>
-                    <p className="text-sm font-bold text-[var(--color-text-primary)] mb-1">{ind.industry}</p>
-                    <p className="text-2xl font-extrabold text-gradient">{ind.avgSalary.toLocaleString()}<span className="text-sm font-normal text-[var(--color-text-secondary)]"> 万円</span></p>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          )}
-
-          {/* 年収ランキング TOP5（コンパクト） */}
-          <section>
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h2 className="text-xl font-bold text-[var(--color-text-primary)]">年収ランキング</h2>
-                <p className="text-sm text-[var(--color-text-muted)]">有価証券報告書ベース</p>
-              </div>
-              <Link href="/ranking" className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1">
-                全ランキングを見る
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
-            <div className="space-y-2">
-              {top5.map((r, i) => (
-                <Link
-                  key={r.code}
-                  href={`/company/${r.code}`}
-                  className="glass rounded-xl px-5 py-4 glass-hover flex items-center gap-4"
-                >
-                  <span className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
-                    i === 0 ? "bg-yellow-400 text-white" :
-                    i === 1 ? "bg-gray-300 text-white" :
-                    i === 2 ? "bg-amber-600 text-white" :
-                    "bg-[var(--color-surface-secondary)] text-[var(--color-text-muted)]"
-                  }`}>
-                    {i + 1}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-bold text-[var(--color-text-primary)] truncate">{r.name}</p>
-                    <p className="text-xs text-[var(--color-text-muted)]">{r.industry || ""}</p>
-                  </div>
-                  <p className="text-xl font-extrabold text-gradient shrink-0">
-                    {r.salary.toLocaleString()}<span className="text-sm font-normal text-[var(--color-text-secondary)]"> 万円</span>
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </section>
-
           {/* 役員報酬特集（検索流入の主力テーマ） */}
           <section>
             <div className="mb-4">
-              <h2 className="text-xl font-bold text-[var(--color-text-primary)]">役員報酬ランキング</h2>
-              <p className="text-sm text-[var(--color-text-muted)]">経営トップの報酬はいくら？ 有価証券報告書の公式データで公開</p>
+              <h2 className="text-[17px] sm:text-lg font-black text-[var(--color-text)]">役員報酬ランキング</h2>
+              <p className="text-sm text-[var(--color-text-faint)] mt-0.5">経営トップの報酬はいくら？ 有価証券報告書の公式データで公開</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <Link href="/ranking/executive-pay" className="glass rounded-xl p-5 glass-hover block">
-                <span className="text-2xl">💼</span>
-                <p className="text-sm font-bold text-[var(--color-text-primary)] mt-2 mb-1">役員報酬ランキング TOP200</p>
-                <p className="text-xs text-[var(--color-text-muted)]">役員1人あたり報酬額・従業員年収との倍率つき</p>
-              </Link>
-              <Link href="/ranking/executive-pay/1oku" className="glass rounded-xl p-5 glass-hover block">
-                <span className="text-2xl">👑</span>
-                <p className="text-sm font-bold text-[var(--color-text-primary)] mt-2 mb-1">報酬1億円以上の企業一覧</p>
-                <p className="text-xs text-[var(--color-text-muted)]">1人あたり平均1億円超えの上場企業だけを厳選</p>
-              </Link>
-              <Link href="/ranking/executive-pay#industry" className="glass rounded-xl p-5 glass-hover block">
-                <span className="text-2xl">🏭</span>
-                <p className="text-sm font-bold text-[var(--color-text-primary)] mt-2 mb-1">業界別 役員報酬ランキング</p>
-                <p className="text-xs text-[var(--color-text-muted)]">33業界ごとの役員報酬水準を比較</p>
-              </Link>
+              {[
+                { href: "/ranking/executive-pay", title: "役員報酬ランキング TOP200", sub: "役員1人あたり報酬額・従業員年収との倍率つき" },
+                { href: "/ranking/executive-pay/1oku", title: "報酬1億円以上の企業一覧", sub: "1人あたり平均1億円超えの上場企業だけを厳選" },
+                { href: "/ranking/executive-pay#industry", title: "業界別 役員報酬ランキング", sub: "33業界ごとの役員報酬水準を比較" },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="bg-white border border-[var(--color-border)] rounded-2xl px-7 py-6 hover:bg-[var(--color-surface-section)] transition-colors"
+                >
+                  <p className="text-[15px] font-bold text-[var(--color-text)]">{item.title}</p>
+                  <p className="text-[13px] text-[var(--color-text-faint)] mt-1.5 leading-relaxed">{item.sub}</p>
+                  <p className="text-sm text-[var(--color-primary)] font-bold mt-3">見る →</p>
+                </Link>
+              ))}
             </div>
           </section>
 
           {/* 注目の年収比較 */}
           {featuredComparisons.length > 0 && (
             <section>
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h2 className="text-xl font-bold text-[var(--color-text-primary)]">注目の年収比較</h2>
-                  <p className="text-sm text-[var(--color-text-muted)]">主要業界のトップ企業を直接比較</p>
-                </div>
+              <div className="mb-4">
+                <h2 className="text-[17px] sm:text-lg font-black text-[var(--color-text)]">注目の年収比較</h2>
+                <p className="text-sm text-[var(--color-text-faint)] mt-0.5">主要業界のトップ企業を直接比較</p>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {featuredComparisons.map((c) => (
                   <Link
                     key={c.codes}
                     href={`/compare/${c.codes}`}
-                    className="glass rounded-xl p-5 glass-hover block"
+                    className="bg-white border border-[var(--color-border)] rounded-2xl px-6 py-5 hover:bg-[var(--color-surface-section)] transition-colors block"
                   >
-                    <p className="text-xs text-[var(--color-text-muted)] mb-3">{c.industry}</p>
+                    <p className="text-xs text-[var(--color-text-faint)] mb-3">{c.industry}</p>
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex-1 min-w-0 text-center">
-                        <p className="text-sm font-bold text-[var(--color-text-primary)] truncate">{c.name1}</p>
-                        <p className="text-lg font-extrabold text-gradient">{c.salary1.toLocaleString()}<span className="text-xs font-normal text-[var(--color-text-secondary)]">万</span></p>
+                        <p className="text-sm font-bold text-[var(--color-text)] truncate">{c.name1}</p>
+                        <p className="text-lg font-black text-[var(--color-primary)]">{c.salary1.toLocaleString()}<span className="text-xs font-bold text-[var(--color-text-faint)]">万</span></p>
                       </div>
-                      <span className="shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-accent)] flex items-center justify-center text-white text-xs font-extrabold">VS</span>
+                      <span className="shrink-0 text-[13px] font-bold text-[var(--color-text-faint)]">vs</span>
                       <div className="flex-1 min-w-0 text-center">
-                        <p className="text-sm font-bold text-[var(--color-text-primary)] truncate">{c.name2}</p>
-                        <p className="text-lg font-extrabold text-gradient">{c.salary2.toLocaleString()}<span className="text-xs font-normal text-[var(--color-text-secondary)]">万</span></p>
+                        <p className="text-sm font-bold text-[var(--color-text)] truncate">{c.name2}</p>
+                        <p className="text-lg font-black text-[var(--color-primary)]">{c.salary2.toLocaleString()}<span className="text-xs font-bold text-[var(--color-text-faint)]">万</span></p>
                       </div>
                     </div>
                   </Link>
@@ -310,14 +326,11 @@ export default function Home() {
             <section>
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h2 className="text-xl font-bold text-[var(--color-text-primary)]">若手に人気の高年収企業</h2>
-                  <p className="text-sm text-[var(--color-text-muted)]">平均年齢38歳未満 × 年収600万円以上</p>
+                  <h2 className="text-[17px] sm:text-lg font-black text-[var(--color-text)]">若手に人気の高年収企業</h2>
+                  <p className="text-sm text-[var(--color-text-faint)] mt-0.5">平均年齢38歳未満 × 年収600万円以上</p>
                 </div>
-                <Link href="/ranking" className="text-sm text-[var(--color-primary)] hover:underline flex items-center gap-1">
-                  ランキングへ
-                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
+                <Link href="/ranking/young-high-income" className="text-sm font-bold text-[var(--color-primary)] hover:underline shrink-0">
+                  もっと見る →
                 </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -325,12 +338,12 @@ export default function Home() {
                   <Link
                     key={r.code}
                     href={`/company/${r.code}`}
-                    className="glass rounded-xl p-5 glass-hover block"
+                    className="bg-white border border-[var(--color-border)] rounded-2xl px-6 py-5 hover:bg-[var(--color-surface-section)] transition-colors block"
                   >
-                    <p className="text-xs text-[var(--color-text-muted)] mb-1">{r.industry || ""}</p>
-                    <p className="text-sm font-bold text-[var(--color-text-primary)] mb-3">{r.name}</p>
-                    <p className="text-2xl font-extrabold text-gradient">{r.salary.toLocaleString()}<span className="text-sm font-normal text-[var(--color-text-secondary)]"> 万円</span></p>
-                    <p className="text-xs text-[var(--color-text-muted)] mt-1">平均 {r.avgAge}歳</p>
+                    <p className="text-xs text-[var(--color-text-faint)] mb-1">{r.industry || ""}</p>
+                    <p className="text-sm font-bold text-[var(--color-text)] mb-3">{r.name}</p>
+                    <p className="text-2xl font-black text-[var(--color-primary)]">{r.salary.toLocaleString()}<span className="text-sm font-bold text-[var(--color-text-faint)]"> 万円</span></p>
+                    <p className="text-xs text-[var(--color-text-faint)] mt-1">平均 {r.avgAge}歳</p>
                   </Link>
                 ))}
               </div>
@@ -342,44 +355,48 @@ export default function Home() {
             <section>
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h2 className="text-xl font-bold text-[var(--color-text-primary)]">長く働ける高年収企業</h2>
-                  <p className="text-sm text-[var(--color-text-muted)]">平均勤続年数が長い × 年収500万円以上</p>
+                  <h2 className="text-[17px] sm:text-lg font-black text-[var(--color-text)]">長く働ける高年収企業</h2>
+                  <p className="text-sm text-[var(--color-text-faint)] mt-0.5">平均勤続年数が長い × 年収500万円以上</p>
                 </div>
+                <Link href="/ranking/long-tenure" className="text-sm font-bold text-[var(--color-primary)] hover:underline shrink-0">
+                  もっと見る →
+                </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {longTenure.map((r) => (
                   <Link
                     key={r.code}
                     href={`/company/${r.code}`}
-                    className="glass rounded-xl p-5 glass-hover block"
+                    className="bg-white border border-[var(--color-border)] rounded-2xl px-6 py-5 hover:bg-[var(--color-surface-section)] transition-colors block"
                   >
-                    <p className="text-xs text-[var(--color-text-muted)] mb-1">{r.industry || ""}</p>
-                    <p className="text-sm font-bold text-[var(--color-text-primary)] mb-3">{r.name}</p>
-                    <p className="text-2xl font-extrabold text-gradient">{r.salary.toLocaleString()}<span className="text-sm font-normal text-[var(--color-text-secondary)]"> 万円</span></p>
-                    <p className="text-xs text-[var(--color-text-muted)] mt-1">平均勤続 {r.avgTenure}年</p>
+                    <p className="text-xs text-[var(--color-text-faint)] mb-1">{r.industry || ""}</p>
+                    <p className="text-sm font-bold text-[var(--color-text)] mb-3">{r.name}</p>
+                    <p className="text-2xl font-black text-[var(--color-primary)]">{r.salary.toLocaleString()}<span className="text-sm font-bold text-[var(--color-text-faint)]"> 万円</span></p>
+                    <p className="text-xs text-[var(--color-text-faint)] mt-1">平均勤続 {r.avgTenure}年</p>
                   </Link>
                 ))}
               </div>
             </section>
           )}
+
           {/* よくある質問 */}
           <section>
             <div className="mb-4">
-              <h2 className="text-xl font-bold text-[var(--color-text-primary)]">よくある質問</h2>
-              <p className="text-sm text-[var(--color-text-muted)]">データの見方・注意点</p>
+              <h2 className="text-[17px] sm:text-lg font-black text-[var(--color-text)]">よくある質問</h2>
+              <p className="text-sm text-[var(--color-text-faint)] mt-0.5">データの見方・注意点</p>
             </div>
             <div className="space-y-3">
               {faqs.map((f) => (
                 <details
                   key={f.q}
-                  className="glass rounded-xl px-5 py-4 group"
+                  className="bg-white border border-[var(--color-border)] rounded-2xl px-6 py-4 group"
                 >
-                  <summary className="flex items-center justify-between cursor-pointer list-none">
-                    <span className="text-sm font-bold text-[var(--color-text-primary)] pr-4">
+                  <summary className="flex items-center justify-between cursor-pointer list-none min-h-8">
+                    <span className="text-[15px] font-bold text-[var(--color-text)] pr-4">
                       Q. {f.q}
                     </span>
                     <svg
-                      className="h-5 w-5 shrink-0 text-[var(--color-text-muted)] transition-transform group-open:rotate-180"
+                      className="h-5 w-5 shrink-0 text-[var(--color-text-faint)] transition-transform group-open:rotate-180"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -388,14 +405,14 @@ export default function Home() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                     </svg>
                   </summary>
-                  <p className="mt-3 text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                  <p className="mt-3 text-[15px] text-[var(--color-text-body)] leading-[1.9]">
                     {f.a}
                   </p>
                 </details>
               ))}
             </div>
             <div className="mt-4 text-center">
-              <Link href="/about" className="text-sm text-[var(--color-primary)] hover:underline">
+              <Link href="/about" className="text-sm font-bold text-[var(--color-primary)] hover:underline">
                 データの詳しい説明・集計方法を見る →
               </Link>
             </div>

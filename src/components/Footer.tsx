@@ -43,12 +43,12 @@ const footerSections = [
 
 export function Footer() {
   return (
-    <footer className="glass-header mt-12">
+    <footer className="mt-12 bg-[var(--color-surface-raised)] border-t border-[var(--color-border)]">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           {footerSections.map((section) => (
             <div key={section.title}>
-              <h2 className="text-xs font-bold text-[var(--color-text-primary)] uppercase tracking-wider mb-3">
+              <h2 className="text-[13px] font-black text-[var(--color-text)] tracking-wider mb-3">
                 {section.title}
               </h2>
               <ul className="space-y-2">
