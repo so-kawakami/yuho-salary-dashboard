@@ -7,7 +7,7 @@ import { RankingNav } from "@/components/RankingNav";
 import { getExecutivePayRanking, getExecPayIndustries } from "@/db/safe-queries";
 import { formatManYen } from "@/lib/format";
 
-const SITE_URL = "https://yuho-salary-dashboard.vercel.app";
+const SITE_URL = "https://yuho-nenshu.com";
 
 export function generateStaticParams() {
   // 注意: paramsには生の日本語を返す（encodeURIComponentすると本番Vercelで

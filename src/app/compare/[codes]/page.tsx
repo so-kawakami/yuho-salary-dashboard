@@ -120,8 +120,8 @@ export default async function ComparePage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "ホーム", item: "https://yuho-salary-dashboard.vercel.app" },
-      { "@type": "ListItem", position: 2, name: "企業比較", item: `https://yuho-salary-dashboard.vercel.app/compare/${codes}` },
+      { "@type": "ListItem", position: 1, name: "ホーム", item: "https://yuho-nenshu.com" },
+      { "@type": "ListItem", position: 2, name: "企業比較", item: `https://yuho-nenshu.com/compare/${codes}` },
     ],
   };
 

@@ -6,7 +6,7 @@ import { RankingNav } from "@/components/RankingNav";
 import { getExecPayOver1Oku } from "@/db/safe-queries";
 import { formatManYen } from "@/lib/format";
 
-const SITE_URL = "https://yuho-salary-dashboard.vercel.app";
+const SITE_URL = "https://yuho-nenshu.com";
 
 export function generateMetadata(): Metadata {
   const list = getExecPayOver1Oku();

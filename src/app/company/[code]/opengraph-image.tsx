@@ -27,7 +27,7 @@ export default async function Image({
 
   // 画像に登場する全テキスト分のグリフを取得
   const allText =
-    `有報年収ダッシュボード¥万円データなし偏差値上位%期有価証券報告書（EDINET）よりyuho-salary-dashboard.vercel.app0123456789,.　` +
+    `有報年収ダッシュボード¥万円データなし偏差値上位%期有価証券報告書（EDINET）よりyuho-nenshu.com0123456789,.　` +
     companyName +
     industry +
     fiscalYear;
@@ -192,7 +192,7 @@ export default async function Image({
               {fiscalYear ? `　${fiscalYear}期` : ""}
             </span>
             <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "16px" }}>
-              yuho-salary-dashboard.vercel.app
+              yuho-nenshu.com
             </span>
           </div>
         </div>

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import companiesJson from "@/data/generated/companies.json";
 import { getAllIndustrySlugs, getPopularComparisonCodes, getExecPayIndustries } from "@/db/safe-queries";
 
-const SITE_URL = "https://yuho-salary-dashboard.vercel.app";
+const SITE_URL = "https://yuho-nenshu.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

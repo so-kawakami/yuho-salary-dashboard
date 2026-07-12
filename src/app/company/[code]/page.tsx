@@ -153,9 +153,9 @@ export default async function CompanyPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "ホーム", item: "https://yuho-salary-dashboard.vercel.app" },
-      { "@type": "ListItem", position: 2, name: "ランキング", item: "https://yuho-salary-dashboard.vercel.app/ranking" },
-      { "@type": "ListItem", position: 3, name: data.company.name, item: `https://yuho-salary-dashboard.vercel.app/company/${code}` },
+      { "@type": "ListItem", position: 1, name: "ホーム", item: "https://yuho-nenshu.com" },
+      { "@type": "ListItem", position: 2, name: "ランキング", item: "https://yuho-nenshu.com/ranking" },
+      { "@type": "ListItem", position: 3, name: data.company.name, item: `https://yuho-nenshu.com/company/${code}` },
     ],
   };
 

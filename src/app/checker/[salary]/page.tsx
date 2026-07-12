@@ -8,7 +8,7 @@ import { getStatsData, getAllCompanies, getRanking } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
 
-const SITE_URL = "https://yuho-salary-dashboard.vercel.app";
+const SITE_URL = "https://yuho-nenshu.com";
 
 // 100万〜2,000万円・50万円刻みの結果ページを事前生成（それ以外はオンデマンド生成）
 export function generateStaticParams() {

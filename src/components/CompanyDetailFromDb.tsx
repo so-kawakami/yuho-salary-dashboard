@@ -974,7 +974,7 @@ function ShareButtons({
   salary: number;
   code: string;
 }) {
-  const url = `https://yuho-salary-dashboard.vercel.app/company/${code}`;
+  const url = `https://yuho-nenshu.com/company/${code}`;
   const text =
     salary > 0
       ? `${companyName}の平均年収は${salary.toLocaleString()}万円（有価証券報告書より）`

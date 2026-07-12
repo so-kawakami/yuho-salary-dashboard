@@ -148,7 +148,7 @@ export function SalaryChecker({
             <p className="text-xs text-[var(--color-text-muted)] mb-2">結果をシェア</p>
             <div className="flex gap-2 flex-wrap">
               <a
-                href={`https://x.com/intent/tweet?text=${encodeURIComponent(`私の年収偏差値は${result.deviation}！上場企業の中で上位${100 - result.percentile}%でした。あなたの年収偏差値は？`)}&url=${encodeURIComponent(`https://yuho-salary-dashboard.vercel.app/checker/${checkedSalary}`)}`}
+                href={`https://x.com/intent/tweet?text=${encodeURIComponent(`私の年収偏差値は${result.deviation}！上場企業の中で上位${100 - result.percentile}%でした。あなたの年収偏差値は？`)}&url=${encodeURIComponent(`https://yuho-nenshu.com/checker/${checkedSalary}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 px-3 py-2 rounded-full bg-[var(--color-text)] text-white text-xs font-bold hover:bg-gray-800 transition-colors"
@@ -159,7 +159,7 @@ export function SalaryChecker({
                 Xでシェア
               </a>
               <a
-                href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(`https://yuho-salary-dashboard.vercel.app/checker/${checkedSalary}`)}`}
+                href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(`https://yuho-nenshu.com/checker/${checkedSalary}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 px-3 py-2 rounded-full border-[1.5px] border-[var(--color-border-input)] bg-white text-[var(--color-text-body)] text-xs font-bold hover:bg-[#05b34c] transition-colors"

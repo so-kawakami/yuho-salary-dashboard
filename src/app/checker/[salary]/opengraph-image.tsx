@@ -17,7 +17,7 @@ export default async function Image({
   const result = calcSalaryPercentile(salary, stats.salaryMean, stats.salaryStddev);
 
   const allText =
-    `有報年収ダッシュボード¥年収偏差値チェッカー万円の上場企業社中で上位%トップクラスかなり高いやや低め平均的あなたも診断してみようyuho-salary-dashboard.vercel.app/checker0123456789,.　` +
+    `有報年収ダッシュボード¥年収偏差値チェッカー万円の上場企業社中で上位%トップクラスかなり高いやや低め平均的あなたも診断してみようyuho-nenshu.com/checker0123456789,.　` +
     result.label;
   const fontData = await loadJapaneseFont(allText);
 
@@ -156,7 +156,7 @@ export default async function Image({
               あなたも診断してみよう →
             </span>
             <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "16px" }}>
-              yuho-salary-dashboard.vercel.app
+              yuho-nenshu.com
             </span>
           </div>
         </div>

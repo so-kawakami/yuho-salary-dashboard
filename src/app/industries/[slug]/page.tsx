@@ -299,9 +299,9 @@ export default async function IndustryPage({
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "ホーム", item: "https://yuho-salary-dashboard.vercel.app" },
-      { "@type": "ListItem", position: 2, name: "業界別", item: "https://yuho-salary-dashboard.vercel.app/industries" },
-      { "@type": "ListItem", position: 3, name: industry, item: `https://yuho-salary-dashboard.vercel.app/industries/${slug}` },
+      { "@type": "ListItem", position: 1, name: "ホーム", item: "https://yuho-nenshu.com" },
+      { "@type": "ListItem", position: 2, name: "業界別", item: "https://yuho-nenshu.com/industries" },
+      { "@type": "ListItem", position: 3, name: industry, item: `https://yuho-nenshu.com/industries/${slug}` },
     ],
   };
 

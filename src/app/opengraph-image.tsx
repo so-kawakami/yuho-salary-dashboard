@@ -9,7 +9,7 @@ export default async function Image() {
   const stats = getStatsData();
 
   const allText =
-    `有報年収ダッシュボード¥あの企業の年収、知ってる？上場企業社の平均年収を有価証券報告書から金融庁EDINETの公式データで集計業界別ランキング・企業検索・偏差値チェッカーyuho-salary-dashboard.vercel.app0123456789,.　`;
+    `有報年収ダッシュボード¥あの企業の年収、知ってる？上場企業社の平均年収を有価証券報告書から金融庁EDINETの公式データで集計業界別ランキング・企業検索・偏差値チェッカーyuho-nenshu.com0123456789,.　`;
   const fontData = await loadJapaneseFont(allText);
 
   const options = fontData
@@ -131,7 +131,7 @@ export default async function Image() {
               金融庁EDINETの公式データで集計
             </span>
             <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "16px" }}>
-              yuho-salary-dashboard.vercel.app
+              yuho-nenshu.com
             </span>
           </div>
         </div>

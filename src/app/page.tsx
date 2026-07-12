@@ -80,7 +80,7 @@ export default function Home() {
       "@context": "https://schema.org",
       "@type": "WebSite",
       name: "有報年収ダッシュボード",
-      url: "https://yuho-salary-dashboard.vercel.app",
+      url: "https://yuho-nenshu.com",
       description:
         "金融庁EDINETの有価証券報告書をもとに、上場企業を含む4,000社以上の平均年収を集計・公開。業界別ランキング・企業検索・年収偏差値チェッカーが使えます。",
       potentialAction: {
@@ -88,7 +88,7 @@ export default function Home() {
         target: {
           "@type": "EntryPoint",
           urlTemplate:
-            "https://yuho-salary-dashboard.vercel.app/search?q={search_term_string}",
+            "https://yuho-nenshu.com/search?q={search_term_string}",
         },
         "query-input": "required name=search_term_string",
       },

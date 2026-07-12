@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [{ "type": "host", "value": "yuho-salary-dashboard.vercel.app" }],
+      "destination": "https://yuho-nenshu.com/$1",
+      "permanent": true
+    }
+  ]
+}

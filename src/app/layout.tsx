@@ -13,7 +13,7 @@ const notoSansJP = Noto_Sans_JP({
 });
 
 const SITE_NAME = "有報年収ダッシュボード";
-const SITE_URL = "https://yuho-salary-dashboard.vercel.app";
+const SITE_URL = "https://yuho-nenshu.com";
 const SITE_DESCRIPTION =
   "金融庁EDINETの有価証券報告書をもとに、上場企業を含む4,000社以上の平均年収を集計・公開。業界別ランキング・企業検索・年収偏差値チェッカーが使えます。";
 
