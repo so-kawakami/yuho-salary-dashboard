@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { RankingNav } from "@/components/RankingNav";
+import { RankingJsonLd } from "@/components/RankingJsonLd";
 import { getSalesPerEmployeeRanking } from "@/db/safe-queries";
 
 export const metadata: Metadata = {
@@ -18,6 +19,12 @@ export default function SalesPerEmployeePage() {
 
   return (
     <div className="flex flex-col min-h-full bg-mesh">
+      <RankingJsonLd
+        listName="従業員1人あたり売上高ランキング（上場企業）"
+        path="/ranking/sales-per-employee"
+        breadcrumbLabel="1人あたり売上高"
+        items={data}
+      />
       <Header />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 lg:px-8 space-y-6">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">

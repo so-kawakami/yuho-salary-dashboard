@@ -4,7 +4,9 @@ import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { RankingWithFilter } from "@/components/RankingWithFilter";
+import { RankingJsonLd } from "@/components/RankingJsonLd";
 import { getAllCompanies } from "@/db/safe-queries";
+import { SALARY_BANDS } from "@/lib/salary-bands";
 
 export const metadata: Metadata = {
   title: "【2026年最新】年収ランキング｜上場企業4,000社の平均年収",
@@ -32,6 +34,12 @@ export default function RankingPage() {
 
   return (
     <div className="flex flex-col min-h-full">
+      <RankingJsonLd
+        listName="上場企業 平均年収ランキング"
+        path="/ranking"
+        breadcrumbLabel="年収ランキング"
+        items={data}
+      />
       <Header />
       <main className="mx-auto w-full max-w-7xl flex-1 px-5 sm:px-8 lg:px-12 pb-14">
         <div className="pt-8 sm:pt-12">
@@ -51,6 +59,24 @@ export default function RankingPage() {
             <RankingWithFilter data={data} />
           </Suspense>
         </div>
+
+        {/* 年収帯から探す（ロングテール導線） */}
+        <section className="mt-12">
+          <h2 className="text-[17px] font-black text-[var(--color-text)] mb-4">
+            年収帯から企業を探す
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {SALARY_BANDS.map((b) => (
+              <Link
+                key={b.slug}
+                href={`/salary/${b.slug}`}
+                className="bg-white border border-[var(--color-border)] rounded-full px-4 py-2 text-sm font-bold text-[var(--color-text-body)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors"
+              >
+                年収{b.label}
+              </Link>
+            ))}
+          </div>
+        </section>
 
         {/* 切り口別ランキング */}
         <section className="mt-12">

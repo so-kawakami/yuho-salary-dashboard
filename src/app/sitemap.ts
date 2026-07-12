@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import companiesJson from "@/data/generated/companies.json";
 import { getAllIndustrySlugs, getPopularComparisonCodes, getExecPayIndustries } from "@/db/safe-queries";
+import { SALARY_BANDS } from "@/lib/salary-bands";
 
 const SITE_URL = "https://yuho-nenshu.com";
 
@@ -49,6 +50,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   ];
 
+  // 年収帯別の企業一覧ページ（ロングテール）
+  const salaryBandPages: MetadataRoute.Sitemap = SALARY_BANDS.map((b) => ({
+    url: `${SITE_URL}/salary/${b.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
+
   // 年収偏差値チェッカー結果ページ（事前生成分）
   const checkerPages: MetadataRoute.Sitemap = [];
   for (let s = 100; s <= 2000; s += 50) {
@@ -85,5 +94,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  return [...staticPages, ...specialRankingPages, ...execPayPages, ...checkerPages, ...industryPages, ...companyPages, ...comparePages];
+  return [...staticPages, ...specialRankingPages, ...execPayPages, ...salaryBandPages, ...checkerPages, ...industryPages, ...companyPages, ...comparePages];
 }
