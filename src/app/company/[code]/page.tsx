@@ -4,6 +4,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { CompanyDetailFromDb, type RankContext } from "@/components/CompanyDetailFromDb";
 import { buildHistogram, bucketIndexFor } from "@/lib/distribution";
+import { buildCompanyFaq, buildCompanyJsonLd } from "@/lib/company-jsonld";
 import {
   getCompany,
   getPeers,
@@ -149,15 +150,28 @@ export default async function CompanyPage({
     );
   }
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "ホーム", item: "https://yuho-nenshu.com" },
-      { "@type": "ListItem", position: 2, name: "ランキング", item: "https://yuho-nenshu.com/ranking" },
-      { "@type": "ListItem", position: 3, name: data.company.name, item: `https://yuho-nenshu.com/company/${code}` },
-    ],
+  const faqFacts = {
+    name: data.company.name,
+    code,
+    industry: data.company.industry ?? null,
+    latest: {
+      fiscalYear: latestForSimilar?.fiscalYear ?? "",
+      salaryMan: salaryMan > 0 ? salaryMan : null,
+      avgAge: latestForSimilar?.avgAge ?? null,
+      avgTenure: latestForSimilar?.avgTenure ?? null,
+      employees: latestForSimilar?.employees ?? null,
+    },
+    context: context
+      ? {
+          rank: context.rank,
+          totalRanked: context.totalRanked,
+          industryRank: context.industryRank,
+          industryCount: context.industryCount,
+        }
+      : null,
   };
+  const faq = buildCompanyFaq(faqFacts);
+  const jsonLd = buildCompanyJsonLd(faqFacts, faq);
 
   return (
     <div className="flex flex-col min-h-full">
@@ -172,6 +186,7 @@ export default async function CompanyPage({
           industryDei={industryDei}
           similarCompanies={similarCompanies}
           context={context}
+          faq={faq}
         />
       </main>
 

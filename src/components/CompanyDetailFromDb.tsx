@@ -100,6 +100,7 @@ export function CompanyDetailFromDb({
   industryDei = null,
   similarCompanies = [],
   context = null,
+  faq = [],
 }: {
   company: Company;
   salaryHistory: SalaryRecord[];
@@ -108,6 +109,7 @@ export function CompanyDetailFromDb({
   industryDei?: IndustryDei | null;
   similarCompanies?: SimilarCompany[];
   context?: RankContext | null;
+  faq?: { q: string; a: string }[];
 }) {
   const latest = salaryHistory[salaryHistory.length - 1];
   const salaryMan = latest?.avgSalary ? Math.round(latest.avgSalary / 10000) : 0;
@@ -439,6 +441,41 @@ export function CompanyDetailFromDb({
                   {c.industry}
                 </span>
               </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── よくある質問（FAQ・構造化データと内容一致） ── */}
+      {faq.length > 0 && (
+        <div className={`${CARD} px-6 py-6 sm:px-8 sm:py-7`}>
+          <h2 className="text-base font-black text-[var(--color-text)] mb-4">
+            {company.name}の年収に関するよくある質問
+          </h2>
+          <div className="space-y-2.5">
+            {faq.map((item) => (
+              <details
+                key={item.q}
+                className="rounded-xl border border-[var(--color-border)] px-4 py-3 group"
+              >
+                <summary className="flex items-center justify-between cursor-pointer list-none">
+                  <span className="text-sm font-bold text-[var(--color-text)] pr-4">
+                    Q. {item.q}
+                  </span>
+                  <svg
+                    className="h-4 w-4 shrink-0 text-[var(--color-text-faint)] transition-transform group-open:rotate-180"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <p className="mt-2 text-sm text-[var(--color-text-body)] leading-relaxed">
+                  {item.a}
+                </p>
+              </details>
             ))}
           </div>
         </div>
