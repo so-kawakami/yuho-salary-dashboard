@@ -90,6 +90,19 @@ const stddev = Math.sqrt(
 );
 const median = latestSalaries[Math.floor(latestSalaries.length / 2)];
 
+// データ年度: 十分な社数（300社以上）が揃っている最新の3月期をDBから自動判定
+const dataYearRow = db
+  .prepare(
+    `SELECT substr(fiscal_year, 1, 4) as y
+    FROM salary_data
+    WHERE avg_salary IS NOT NULL AND substr(fiscal_year, 6, 2) = '03'
+    GROUP BY fiscal_year
+    HAVING COUNT(*) >= 300
+    ORDER BY fiscal_year DESC
+    LIMIT 1`
+  )
+  .get() as { y: string } | undefined;
+
 const stats = {
   totalCompanies: latestSalaries.length,
   listedCompanies: listedRow.cnt,
@@ -98,7 +111,7 @@ const stats = {
   // 年収偏差値の計算用（実データの分布・万円）
   salaryMean: Math.round(mean / 10000),
   salaryStddev: Math.round(stddev / 10000),
-  dataYear: "2025年3月期",
+  dataYear: dataYearRow ? `${dataYearRow.y}年3月期` : "2025年3月期",
 };
 
 // 年度別の平均年収トレンド（3月期決算で集計、十分なサンプル数がある年度のみ）

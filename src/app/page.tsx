@@ -67,7 +67,7 @@ export default function Home() {
     },
     {
       q: "データはいつ時点のものですか？",
-      a: `各企業が直近に提出した有価証券報告書の値で、多くは2025年3月期（2024年4月〜2025年3月）です。決算月は企業によって異なります。現在${stats.totalCompanies.toLocaleString()}社のデータを掲載しています。`,
+      a: `各企業が直近に提出した有価証券報告書の値で、多くは${stats.dataYear}です。決算月は企業によって異なります。現在${stats.totalCompanies.toLocaleString()}社のデータを掲載しています。`,
     },
     {
       q: "持株会社の年収が高く見えるのはなぜですか？",

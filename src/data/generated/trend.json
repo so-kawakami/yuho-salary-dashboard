@@ -7,7 +7,7 @@
   {
     "year": "2023",
     "avgSalary": 652,
-    "companies": 2626
+    "companies": 2627
   },
   {
     "year": "2024",
@@ -16,7 +16,12 @@
   },
   {
     "year": "2025",
-    "avgSalary": 678,
-    "companies": 2855
+    "avgSalary": 677,
+    "companies": 3886
+  },
+  {
+    "year": "2026",
+    "avgSalary": 708,
+    "companies": 2458
   }
 ]

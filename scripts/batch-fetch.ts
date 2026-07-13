@@ -116,10 +116,25 @@ interface DocInfo {
   periodEnd: string;
 }
 
+// ネットワークエラー（ECONNRESET等）で全体が止まらないようリトライ付きfetch
+async function fetchWithRetry(url: string, retries = 3): Promise<Response | null> {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) return res;
+      if (res.status === 404) return null;
+    } catch {
+      // ECONNRESET等は待機して再試行
+    }
+    await sleep(2000 * (i + 1));
+  }
+  return null;
+}
+
 async function fetchDocList(date: string, apiKey: string): Promise<DocInfo[]> {
   const url = `${API_BASE}/documents.json?date=${date}&type=2&Subscription-Key=${apiKey}`;
-  const res = await fetch(url);
-  if (!res.ok) return [];
+  const res = await fetchWithRetry(url);
+  if (!res) return [];
   const data = await res.json();
   return (data.results ?? []).filter(
     (d: DocInfo) =>
@@ -154,8 +169,8 @@ interface ParsedData {
 
 async function downloadAndParse(docId: string, apiKey: string): Promise<ParsedData | null> {
   const url = `${API_BASE}/documents/${docId}?type=5&Subscription-Key=${apiKey}`;
-  const res = await fetch(url);
-  if (!res.ok) return null;
+  const res = await fetchWithRetry(url);
+  if (!res) return null;
 
   const buf = Buffer.from(await res.arrayBuffer());
 
@@ -369,7 +384,7 @@ async function main() {
 
       // CSVダウンロード＆パース
       await sleep(RATE_LIMIT_MS);
-      const parsed = await downloadAndParse(doc.docID, apiKey);
+      const parsed = await downloadAndParse(doc.docID, apiKey).catch(() => null);
       if (!parsed) continue;
 
       // salary_data に保存
