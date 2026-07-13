@@ -35,13 +35,14 @@ export async function generateMetadata({
     ? latest.fiscalYear.split("-")[0] + "年版"
     : "最新版";
 
+  // 「会社名 給与」検索の取りこぼし対策でタイトルに「年収・給与」を併記
   const title = salaryMan
-    ? `${company.name}の平均年収は${salaryMan.toLocaleString()}万円【${yearStr}】業界順位・推移も解説`
-    : `${company.name}の平均年収【有価証券報告書】`;
+    ? `${company.name}の平均年収・給与は${salaryMan.toLocaleString()}万円【${yearStr}】業界順位・推移`
+    : `${company.name}の平均年収・給与【有価証券報告書】`;
 
   const description = salaryMan
-    ? `${company.name}の平均年収は${salaryMan.toLocaleString()}万円（${latest?.fiscalYear ?? ""}期・有価証券報告書より）。年収推移グラフ・業界内ランキング・同業他社比較・DEI指標・財務データを掲載。転職・就職の企業研究に。`
-    : `${company.name}の平均年収・従業員数・平均年齢・勤続年数など有価証券報告書の詳細データ。業界内順位・同業他社比較も確認できます。`;
+    ? `${company.name}の平均年収（給与）は${salaryMan.toLocaleString()}万円（${latest?.fiscalYear ?? ""}期・有価証券報告書より）。年収推移グラフ・業界内ランキング・同業他社比較・DEI指標・財務データを掲載。転職・就職の企業研究に。`
+    : `${company.name}の平均年収・給与・従業員数・平均年齢・勤続年数など有価証券報告書の詳細データ。業界内順位・同業他社比較も確認できます。`;
 
   return {
     title,

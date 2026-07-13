@@ -998,6 +998,13 @@ function ExecCompSection({
           </div>
         )}
       </div>
+      <Link
+        href="/ranking/executive-pay"
+        className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[var(--color-primary)] hover:underline"
+      >
+        上場企業の役員報酬ランキングを見る
+        <span aria-hidden>→</span>
+      </Link>
     </div>
   );
 }
