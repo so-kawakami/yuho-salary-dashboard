@@ -8,6 +8,8 @@ import { getAllCompanies } from "@/db/safe-queries";
 import { SALARY_BANDS, getSalaryBand, isInBand, type SalaryBand } from "@/lib/salary-bands";
 
 export const dynamic = "force-static";
+// 全年収帯を事前生成済み。未知のURLは404にする（オンデマンド生成はISR Writesを消費するため）
+export const dynamicParams = false;
 
 // 一覧に表示する最大件数（内部リンクは充実させつつページ肥大を防ぐ）
 const MAX_ROWS = 200;

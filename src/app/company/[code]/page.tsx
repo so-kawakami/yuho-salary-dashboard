@@ -15,6 +15,8 @@ import {
 } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
+// 全企業を事前生成済み。未知のコードは404にする（オンデマンド生成はISR Writesを消費するため）
+export const dynamicParams = false;
 
 export async function generateMetadata({
   params,

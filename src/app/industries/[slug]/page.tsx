@@ -244,6 +244,8 @@ function getIndustryInfo(industry: string) {
 }
 
 export const dynamic = "force-static";
+// 全業界を事前生成済み。未知のスラッグは404にする（オンデマンド生成はISR Writesを消費するため）
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return getAllIndustrySlugs().map((industry) => ({ slug: industry }));

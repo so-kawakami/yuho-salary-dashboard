@@ -7,6 +7,8 @@ import { calcSalaryPercentile } from "@/data/mock";
 import { getStatsData, getAllCompanies, getRanking } from "@/db/safe-queries";
 
 export const dynamic = "force-static";
+// 事前生成済み（50万円刻み）以外のURLは404にする（オンデマンド生成はISR Writesを消費するため）
+export const dynamicParams = false;
 
 const SITE_URL = "https://yuho-nenshu.com";
 

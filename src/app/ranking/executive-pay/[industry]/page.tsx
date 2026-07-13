@@ -34,6 +34,8 @@ export async function generateMetadata({
 }
 
 export const dynamic = "force-static";
+// 全業界を事前生成済み。未知のURLは404にする（オンデマンド生成はISR Writesを消費するため）
+export const dynamicParams = false;
 
 export default async function ExecPayIndustryPage({
   params,
