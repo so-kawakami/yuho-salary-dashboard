@@ -46,3 +46,6 @@ data/yuho.db-wal
 
 # ローカル作業用（分析生データ・zip・docxなどリポジトリに入れない一時ファイル）
 /local
+
+# DBのバックアップ（サイズが大きく、履歴に入れる必要がない）
+data/yuho.db.bak-*
