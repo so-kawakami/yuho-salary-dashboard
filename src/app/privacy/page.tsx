@@ -16,7 +16,7 @@ export default function PrivacyPage() {
       <Header />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-12 sm:px-6 lg:px-8">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)] mb-8">
-          <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">
+          <Link prefetch={false} href="/" className="hover:text-[var(--color-primary)] transition-colors">
             ホーム
           </Link>
           <span>/</span>
@@ -113,7 +113,7 @@ export default function PrivacyPage() {
             <h2 className="text-lg font-bold text-[var(--color-text-primary)]">8. お問い合わせ</h2>
             <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
               本ポリシーに関するお問い合わせは
-              <Link href="/contact" className="text-[var(--color-primary)] hover:underline mx-1">
+              <Link prefetch={false} href="/contact" className="text-[var(--color-primary)] hover:underline mx-1">
                 お問い合わせページ
               </Link>
               からご連絡ください。

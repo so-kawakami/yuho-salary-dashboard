@@ -56,9 +56,9 @@ export default function ExecPay1OkuPage() {
       <Header />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 lg:px-8 space-y-6">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
-          <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
+          <Link prefetch={false} href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
           <span>/</span>
-          <Link href="/ranking/executive-pay" className="hover:text-[var(--color-primary)] transition-colors">役員報酬</Link>
+          <Link prefetch={false} href="/ranking/executive-pay" className="hover:text-[var(--color-primary)] transition-colors">役員報酬</Link>
           <span>/</span>
           <span className="text-[var(--color-text-primary)]">1億円以上</span>
         </nav>
@@ -102,7 +102,7 @@ export default function ExecPay1OkuPage() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <Link href={`/company/${row.code}`} className="font-semibold text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors">
+                      <Link prefetch={false} href={`/company/${row.code}`} className="font-semibold text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors">
                         {row.name}
                       </Link>
                     </td>
@@ -135,7 +135,7 @@ export default function ExecPay1OkuPage() {
         </div>
 
         <div className="text-center">
-          <Link
+          <Link prefetch={false}
             href="/ranking/executive-pay"
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-primary)] text-white text-sm font-bold shadow-lg hover:opacity-90 transition-opacity"
           >

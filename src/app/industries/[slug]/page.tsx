@@ -315,9 +315,9 @@ export default async function IndustryPage({
         {/* パンくず＋ヘッダー */}
         <div className="glass rounded-2xl px-5 py-4">
           <nav className="flex items-center gap-2 text-xs text-[var(--color-text-muted)] mb-3">
-            <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
+            <Link prefetch={false} href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
             <span>/</span>
-            <Link href="/industries" className="hover:text-[var(--color-primary)] transition-colors">業界別</Link>
+            <Link prefetch={false} href="/industries" className="hover:text-[var(--color-primary)] transition-colors">業界別</Link>
             <span>/</span>
             <span className="text-[var(--color-text-primary)]">{industry}</span>
           </nav>
@@ -340,7 +340,7 @@ export default async function IndustryPage({
                   </div>
                 </div>
               )}
-              <Link
+              <Link prefetch={false}
                 href="/industries"
                 className="inline-flex items-center gap-1 text-xs text-[var(--color-primary)] hover:underline"
               >
@@ -422,7 +422,7 @@ export default async function IndustryPage({
         {companies.length > 0 ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
             {companies.map((company, i) => (
-              <Link
+              <Link prefetch={false}
                 key={company.code}
                 href={`/company/${company.code}`}
                 className="glass rounded-xl flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors"

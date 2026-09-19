@@ -18,7 +18,7 @@ export function RankingNav({ current }: { current: string }) {
       </p>
       <div className="flex flex-wrap gap-2">
         {RANKING_PAGES.filter((p) => p.href !== current).map((p) => (
-          <Link
+          <Link prefetch={false}
             key={p.href}
             href={p.href}
             className="inline-flex items-center text-[13px] px-3.5 py-[7px] rounded-full bg-white border border-[var(--color-border-input)] text-[var(--color-text-body)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] font-medium transition-colors"

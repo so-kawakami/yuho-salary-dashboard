@@ -134,7 +134,7 @@ export function SalaryChecker({
               </p>
               <div className="flex gap-2 flex-wrap">
                 {nearbyCompanies.map((c) => (
-                  <Link
+                  <Link prefetch={false}
                     key={c.code}
                     href={`/company/${c.code}`}
                     className="text-[13px] px-3.5 py-[7px] rounded-full border border-[var(--color-border-input)] text-[var(--color-text-body)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-colors"
@@ -173,13 +173,13 @@ export function SalaryChecker({
                 </svg>
                 LINEで送る
               </a>
-              <Link
+              <Link prefetch={false}
                 href={`/checker/${checkerPageSalary}`}
                 className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border-[1.5px] border-[var(--color-primary)] text-[var(--color-primary)] text-xs font-bold hover:bg-[var(--color-primary-tint)] transition-colors"
               >
                 詳しい結果ページを見る →
               </Link>
-              <Link
+              <Link prefetch={false}
                 href="/ranking"
                 className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border-[1.5px] border-[var(--color-primary)] text-[var(--color-primary)] text-xs font-bold hover:bg-[var(--color-primary-tint)] transition-colors"
               >

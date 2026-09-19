@@ -85,9 +85,9 @@ export default function ExecutivePayPage() {
       <Header />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 lg:px-8 space-y-6">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
-          <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
+          <Link prefetch={false} href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
           <span>/</span>
-          <Link href="/ranking" className="hover:text-[var(--color-primary)] transition-colors">ランキング</Link>
+          <Link prefetch={false} href="/ranking" className="hover:text-[var(--color-primary)] transition-colors">ランキング</Link>
           <span>/</span>
           <span className="text-[var(--color-text-primary)]">役員報酬</span>
         </nav>
@@ -103,7 +103,7 @@ export default function ExecutivePayPage() {
 
         {/* 注目ページへの導線 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <Link href="/ranking/executive-pay/1oku" className="glass rounded-xl p-4 glass-hover flex items-center gap-3">
+          <Link prefetch={false} href="/ranking/executive-pay/1oku" className="glass rounded-xl p-4 glass-hover flex items-center gap-3">
             <div>
               <p className="text-sm font-bold text-[var(--color-text-primary)]">役員報酬1億円以上の企業一覧</p>
               <p className="text-xs text-[var(--color-text-muted)]">1人あたり平均1億円超えは{over1oku.length}社</p>
@@ -139,7 +139,7 @@ export default function ExecutivePayPage() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <Link href={`/company/${row.code}`} className="font-semibold text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors">
+                      <Link prefetch={false} href={`/company/${row.code}`} className="font-semibold text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors">
                         {row.name}
                       </Link>
                     </td>
@@ -174,7 +174,7 @@ export default function ExecutivePayPage() {
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
             {industries.map((ind) => (
-              <Link
+              <Link prefetch={false}
                 key={ind.industry}
                 href={`/ranking/executive-pay/${encodeURIComponent(ind.industry)}`}
                 className="px-3 py-2.5 rounded-xl bg-[var(--color-surface-secondary)] hover:bg-[var(--color-primary-light)] text-xs font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors"

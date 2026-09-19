@@ -66,7 +66,7 @@ export default function IndustriesPage() {
               className="bg-white border border-[var(--color-border)] rounded-2xl px-6 py-5"
             >
               <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-                <Link
+                <Link prefetch={false}
                   href={`/industries/${ind.name}`}
                   className="text-[15.5px] font-bold text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors"
                 >
@@ -79,7 +79,7 @@ export default function IndustriesPage() {
                   <span className="text-sm font-bold text-[var(--color-primary)]">
                     平均 {ind.avgSalary.toLocaleString()}万円
                   </span>
-                  <Link
+                  <Link prefetch={false}
                     href={`/industries/${ind.name}`}
                     className="text-[13px] font-bold text-[var(--color-primary)] hover:underline"
                   >
@@ -89,7 +89,7 @@ export default function IndustriesPage() {
               </div>
               <div className="flex flex-wrap gap-2">
                 {ind.topCompanies.map((c) => (
-                  <Link
+                  <Link prefetch={false}
                     key={c.code}
                     href={`/company/${c.code}`}
                     className="text-[13px] px-3.5 py-[7px] rounded-full bg-white border border-[var(--color-border-input)] text-[var(--color-text-body)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors"

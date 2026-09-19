@@ -141,7 +141,7 @@ export default async function CompanyPage({
             <p className="text-[var(--color-text-faint)] mb-4">
               コード: {code}
             </p>
-            <Link
+            <Link prefetch={false}
               href="/"
               className="text-[var(--color-primary)] font-bold hover:underline"
             >

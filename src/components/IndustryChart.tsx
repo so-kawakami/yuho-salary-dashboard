@@ -37,7 +37,7 @@ export function IndustryChart({
       />
       <div className="flex flex-col gap-3.5 relative">
         {sorted.map((ind, i) => (
-          <Link
+          <Link prefetch={false}
             key={ind.industry}
             href={`/industries/${encodeURIComponent(ind.industry)}`}
             className="grid grid-cols-[var(--label-w)_1fr_var(--value-w)] gap-4 items-center group"

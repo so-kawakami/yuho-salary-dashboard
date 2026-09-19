@@ -81,9 +81,9 @@ export default async function ExecPayIndustryPage({
       <Header />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 lg:px-8 space-y-6">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
-          <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
+          <Link prefetch={false} href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
           <span>/</span>
-          <Link href="/ranking/executive-pay" className="hover:text-[var(--color-primary)] transition-colors">役員報酬</Link>
+          <Link prefetch={false} href="/ranking/executive-pay" className="hover:text-[var(--color-primary)] transition-colors">役員報酬</Link>
           <span>/</span>
           <span className="text-[var(--color-text-primary)]">{industry}</span>
         </nav>
@@ -118,7 +118,7 @@ export default async function ExecPayIndustryPage({
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <Link href={`/company/${row.code}`} className="font-semibold text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors">
+                      <Link prefetch={false} href={`/company/${row.code}`} className="font-semibold text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors">
                         {row.name}
                       </Link>
                     </td>
@@ -142,14 +142,14 @@ export default async function ExecPayIndustryPage({
 
         {/* この業界の年収情報への導線 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <Link href={`/industries/${encodeURIComponent(industry)}`} className="glass rounded-xl p-4 glass-hover flex items-center gap-3">
+          <Link prefetch={false} href={`/industries/${encodeURIComponent(industry)}`} className="glass rounded-xl p-4 glass-hover flex items-center gap-3">
             <span className="text-2xl">📊</span>
             <div>
               <p className="text-sm font-bold text-[var(--color-text-primary)]">{industry}業界の平均年収を見る</p>
               <p className="text-xs text-[var(--color-text-muted)]">従業員の年収ランキング・業界統計</p>
             </div>
           </Link>
-          <Link href="/ranking/executive-pay/1oku" className="glass rounded-xl p-4 glass-hover flex items-center gap-3">
+          <Link prefetch={false} href="/ranking/executive-pay/1oku" className="glass rounded-xl p-4 glass-hover flex items-center gap-3">
             <div>
               <p className="text-sm font-bold text-[var(--color-text-primary)]">役員報酬1億円以上の企業一覧</p>
               <p className="text-xs text-[var(--color-text-muted)]">全業界の1億円プレイヤー企業</p>
@@ -164,7 +164,7 @@ export default async function ExecPayIndustryPage({
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
             {otherIndustries.map((ind) => (
-              <Link
+              <Link prefetch={false}
                 key={ind.industry}
                 href={`/ranking/executive-pay/${encodeURIComponent(ind.industry)}`}
                 className="px-3 py-2.5 rounded-xl bg-[var(--color-surface-secondary)] hover:bg-[var(--color-primary-light)] text-xs font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors text-center"

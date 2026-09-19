@@ -54,7 +54,7 @@ export function Footer() {
               <ul className="space-y-2">
                 {section.links.map((link) => (
                   <li key={link.href}>
-                    <Link
+                    <Link prefetch={false}
                       href={link.href}
                       className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors"
                     >
@@ -85,7 +85,7 @@ export function Footer() {
           </p>
           <p className="text-xs text-[var(--color-text-muted)]">
             © {new Date().getFullYear()} 有報年収ダッシュボード 運営事務局 ·{" "}
-            <Link href="/about" className="hover:text-[var(--color-primary)] transition-colors">運営者情報</Link>
+            <Link prefetch={false} href="/about" className="hover:text-[var(--color-primary)] transition-colors">運営者情報</Link>
           </p>
         </div>
       </div>

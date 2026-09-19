@@ -66,9 +66,9 @@ export default async function SalaryRangePage({
       <Header />
       <main className="mx-auto w-full max-w-5xl flex-1 px-5 sm:px-8 lg:px-12 pb-14">
         <nav className="flex flex-wrap items-center gap-2 text-sm text-[var(--color-text-faint)] pt-8">
-          <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
+          <Link prefetch={false} href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
           <span>/</span>
-          <Link href="/ranking" className="hover:text-[var(--color-primary)] transition-colors">年収ランキング</Link>
+          <Link prefetch={false} href="/ranking" className="hover:text-[var(--color-primary)] transition-colors">年収ランキング</Link>
           <span>/</span>
           <span className="text-[var(--color-text)]">年収{band.label}</span>
         </nav>
@@ -107,13 +107,13 @@ export default async function SalaryRangePage({
                       {i + 1}
                     </td>
                     <td className="px-4 py-3">
-                      <Link href={`/company/${row.code}`} className="font-bold text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors">
+                      <Link prefetch={false} href={`/company/${row.code}`} className="font-bold text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors">
                         {row.name}
                       </Link>
                     </td>
                     <td className="px-4 py-3 text-[var(--color-text-muted)] hidden sm:table-cell text-xs">
                       {row.industry ? (
-                        <Link href={`/industries/${encodeURIComponent(row.industry)}`} className="hover:text-[var(--color-primary)] transition-colors">
+                        <Link prefetch={false} href={`/industries/${encodeURIComponent(row.industry)}`} className="hover:text-[var(--color-primary)] transition-colors">
                           {row.industry}
                         </Link>
                       ) : "-"}
@@ -138,7 +138,7 @@ export default async function SalaryRangePage({
           <h2 className="text-[17px] font-black text-[var(--color-text)] mb-4">他の年収帯で見る</h2>
           <div className="flex flex-wrap gap-2">
             {SALARY_BANDS.map((b) => (
-              <Link
+              <Link prefetch={false}
                 key={b.slug}
                 href={`/salary/${b.slug}`}
                 className={`px-4 py-2 rounded-full text-sm font-bold border transition-colors ${

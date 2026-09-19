@@ -36,7 +36,7 @@ export function Header() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12">
         <div className="flex h-14 md:h-[68px] items-center justify-between">
           {/* ロゴ */}
-          <Link
+          <Link prefetch={false}
             href="/"
             className="flex items-center gap-2"
             onClick={() => setOpen(false)}
@@ -52,7 +52,7 @@ export function Header() {
             {navItems.map((item) => {
               const active = isActive(pathname, item.href);
               return (
-                <Link
+                <Link prefetch={false}
                   key={item.href}
                   href={item.href}
                   className={
@@ -113,7 +113,7 @@ export function Header() {
             {navItems.map((item) => {
               const active = isActive(pathname, item.href);
               return (
-                <Link
+                <Link prefetch={false}
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}

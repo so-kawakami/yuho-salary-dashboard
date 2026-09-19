@@ -67,7 +67,7 @@ export default function RankingPage() {
           </h2>
           <div className="flex flex-wrap gap-2">
             {SALARY_BANDS.map((b) => (
-              <Link
+              <Link prefetch={false}
                 key={b.slug}
                 href={`/salary/${b.slug}`}
                 className="bg-white border border-[var(--color-border)] rounded-full px-4 py-2 text-sm font-bold text-[var(--color-text-body)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors"
@@ -91,7 +91,7 @@ export default function RankingPage() {
               { href: "/ranking/long-tenure", label: "勤続年数×高年収", sub: "定着率" },
               { href: "/ranking/young-high-income", label: "若手×高年収", sub: "平均年齢40歳未満" },
             ].map((item) => (
-              <Link
+              <Link prefetch={false}
                 key={item.href}
                 href={item.href}
                 className="bg-white border border-[var(--color-border)] rounded-2xl px-5 py-4 hover:bg-[var(--color-surface-section)] transition-colors"

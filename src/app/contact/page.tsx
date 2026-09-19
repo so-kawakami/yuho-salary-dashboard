@@ -16,7 +16,7 @@ export default function ContactPage() {
       <Header />
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 py-12 sm:px-6 lg:px-8">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)] mb-8">
-          <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">
+          <Link prefetch={false} href="/" className="hover:text-[var(--color-primary)] transition-colors">
             ホーム
           </Link>
           <span>/</span>

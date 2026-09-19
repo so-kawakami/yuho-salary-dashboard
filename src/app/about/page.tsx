@@ -20,7 +20,7 @@ export default function AboutPage() {
       <Header />
       <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-12 sm:px-6 lg:px-8">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)] mb-8">
-          <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">
+          <Link prefetch={false} href="/" className="hover:text-[var(--color-primary)] transition-colors">
             ホーム
           </Link>
           <span>/</span>
@@ -104,7 +104,7 @@ export default function AboutPage() {
                 <dt className="text-sm font-bold text-[var(--color-text-primary)]">お問い合わせ</dt>
                 <dd className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                   データの誤り・掲載削除のご依頼・ご意見は
-                  <Link href="/contact" className="text-[var(--color-primary)] hover:underline mx-1">
+                  <Link prefetch={false} href="/contact" className="text-[var(--color-primary)] hover:underline mx-1">
                     お問い合わせフォーム
                   </Link>
                   より承っています。
@@ -191,13 +191,13 @@ export default function AboutPage() {
               企業情報の掲載に関するご要望は、下記お問い合わせページよりご連絡ください。
             </p>
             <div className="flex gap-3">
-              <Link
+              <Link prefetch={false}
                 href="/contact"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-bold hover:opacity-90 transition-opacity"
               >
                 お問い合わせ
               </Link>
-              <Link
+              <Link prefetch={false}
                 href="/privacy"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl glass text-[var(--color-text-secondary)] text-sm font-medium hover:text-[var(--color-primary)] transition-colors"
               >

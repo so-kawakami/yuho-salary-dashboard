@@ -28,9 +28,9 @@ export default function SalesPerEmployeePage() {
       <Header />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8 sm:px-6 lg:px-8 space-y-6">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
-          <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
+          <Link prefetch={false} href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
           <span>/</span>
-          <Link href="/ranking" className="hover:text-[var(--color-primary)] transition-colors">ランキング</Link>
+          <Link prefetch={false} href="/ranking" className="hover:text-[var(--color-primary)] transition-colors">ランキング</Link>
           <span>/</span>
           <span className="text-[var(--color-text-primary)]">従業員1人あたり売上高</span>
         </nav>
@@ -66,7 +66,7 @@ export default function SalesPerEmployeePage() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      <Link href={`/company/${row.code}`} className="font-semibold text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors">
+                      <Link prefetch={false} href={`/company/${row.code}`} className="font-semibold text-[var(--color-text-primary)] hover:text-[var(--color-primary)] transition-colors">
                         {row.name}
                       </Link>
                     </td>

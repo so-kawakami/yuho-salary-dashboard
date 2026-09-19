@@ -17,13 +17,13 @@ export default function NotFound() {
             企業名で検索するか、ランキングからお探しください。
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
+            <Link prefetch={false}
               href="/search"
               className="px-6 py-3 rounded-full bg-[var(--color-primary)] text-white text-sm font-bold hover:bg-[var(--color-primary-dark)] transition-colors"
             >
               企業を検索する
             </Link>
-            <Link
+            <Link prefetch={false}
               href="/ranking"
               className="px-6 py-3 rounded-full bg-white border-[1.5px] border-[var(--color-primary)] text-sm font-bold text-[var(--color-primary)] hover:bg-[var(--color-primary-tint)] transition-colors"
             >

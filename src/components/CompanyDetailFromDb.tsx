@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { track } from "@vercel/analytics";
+import { JOB_SITES, jobSiteHref, isMonetized } from "@/lib/affiliate";
 import { AdBanner } from "@/components/AdBanner";
 import { SalaryHistogram } from "@/components/SalaryHistogram";
 import { TrendLine } from "@/components/TrendLine";
@@ -156,13 +157,13 @@ export function CompanyDetailFromDb({
         <div>
           {/* パンくず */}
           <nav className="text-[13px] sm:text-[13.5px] text-[var(--color-text-faint)]">
-            <Link href="/" className="hover:text-[var(--color-primary)]">ホーム</Link>
+            <Link prefetch={false} href="/" className="hover:text-[var(--color-primary)]">ホーム</Link>
             <span className="mx-1.5">/</span>
-            <Link href="/search" className="hover:text-[var(--color-primary)]">企業を探す</Link>
+            <Link prefetch={false} href="/search" className="hover:text-[var(--color-primary)]">企業を探す</Link>
             {company.industry && (
               <>
                 <span className="mx-1.5">/</span>
-                <Link
+                <Link prefetch={false}
                   href={`/industries/${encodeURIComponent(company.industry)}`}
                   className="hover:text-[var(--color-primary)]"
                 >
@@ -349,7 +350,7 @@ export function CompanyDetailFromDb({
             <>
               <div className="flex flex-col flex-1 mt-3">
                 {sortedPeers.slice(0, 4).map((peer) => (
-                  <Link
+                  <Link prefetch={false}
                     key={peer.code}
                     href={`/company/${peer.code}`}
                     className="flex justify-between items-baseline py-3 border-b border-[var(--color-border-subtle)] last:border-b-0 hover:text-[var(--color-primary)] transition-colors"
@@ -363,7 +364,7 @@ export function CompanyDetailFromDb({
               </div>
               <div className="flex flex-col sm:flex-row gap-2.5 mt-5">
                 {compareHref && comparePeer && (
-                  <Link
+                  <Link prefetch={false}
                     href={compareHref}
                     className="flex-1 text-center bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white rounded-full py-3 text-sm font-bold transition-colors"
                   >
@@ -371,7 +372,7 @@ export function CompanyDetailFromDb({
                   </Link>
                 )}
                 {company.industry && (
-                  <Link
+                  <Link prefetch={false}
                     href={`/industries/${encodeURIComponent(company.industry)}`}
                     className="flex-1 text-center bg-white border-[1.5px] border-[var(--color-primary)] text-[var(--color-primary)] rounded-full py-3 text-sm font-bold hover:bg-[var(--color-primary-tint)] transition-colors"
                   >
@@ -426,7 +427,7 @@ export function CompanyDetailFromDb({
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
             {similarCompanies.map((c) => (
-              <Link
+              <Link prefetch={false}
                 key={c.code}
                 href={`/company/${c.code}`}
                 className="flex flex-col gap-0.5 p-3.5 rounded-xl border border-[var(--color-border)] hover:bg-[var(--color-surface-section)] transition-colors"
@@ -496,17 +497,19 @@ export function CompanyDetailFromDb({
             </span>
           </div>
           <div className="flex flex-col gap-2">
-            {[
-              { name: "doda", url: `https://doda.jp/DodaFront/View/JobSearchResult/j_ks__searchkeyword-${encodeURIComponent(company.name)}/` },
-              { name: "リクナビNEXT", url: `https://next.rikunabi.com/tag/KEYWORD_${encodeURIComponent(company.name)}/` },
-              { name: "ビズリーチ", url: `https://www.bizreach.jp/job-list/?free_word=${encodeURIComponent(company.name)}` },
-            ].map((site) => (
+            {JOB_SITES.map((site) => (
               <a
                 key={site.name}
-                href={site.url}
+                href={jobSiteHref(site, company.name)}
                 target="_blank"
                 rel="sponsored nofollow noopener noreferrer"
-                onClick={() => track("job_link_click", { site: site.name, company: company.name })}
+                onClick={() =>
+                  track("job_link_click", {
+                    site: site.name,
+                    company: company.name,
+                    monetized: isMonetized(site),
+                  })
+                }
                 className="flex items-center justify-center gap-2 px-3 py-2.5 rounded-full border-[1.5px] border-[var(--color-border-input)] text-[var(--color-text-body)] text-[13.5px] font-bold hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors"
               >
                 {site.name}で求人を見る
@@ -530,7 +533,7 @@ export function CompanyDetailFromDb({
             {sortedPeers.length > 0 && company.secCode && (
               <div className="flex flex-wrap gap-1.5">
                 {sortedPeers.slice(0, 5).map((peer) => (
-                  <Link
+                  <Link prefetch={false}
                     key={peer.code}
                     href={`/compare/${[company.secCode, peer.code].sort().join("-vs-")}`}
                     className="text-[13px] px-3 py-1.5 rounded-full border border-[var(--color-border-input)] text-[var(--color-text-body)] hover:text-[var(--color-primary)] hover:border-[var(--color-primary)] transition-colors"
@@ -998,7 +1001,7 @@ function ExecCompSection({
           </div>
         )}
       </div>
-      <Link
+      <Link prefetch={false}
         href="/ranking/executive-pay"
         className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[var(--color-primary)] hover:underline"
       >

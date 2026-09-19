@@ -140,13 +140,13 @@ export default function TrendsPage() {
                   平均年収が高い業界トップ6
                 </p>
               </div>
-              <Link href="/industries" className="text-sm text-[var(--color-primary)] hover:underline shrink-0">
+              <Link prefetch={false} href="/industries" className="text-sm text-[var(--color-primary)] hover:underline shrink-0">
                 業界一覧へ →
               </Link>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               {topIndustries.map((ind, i) => (
-                <Link
+                <Link prefetch={false}
                   key={ind.industry}
                   href={`/industries/${ind.industry}`}
                   className="rounded-xl bg-[var(--color-surface-secondary)] p-4 hover:bg-[var(--color-primary-light)] transition-colors block"

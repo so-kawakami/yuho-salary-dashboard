@@ -91,9 +91,9 @@ export default async function CheckerResultPage({
       <Header />
       <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 sm:px-6 lg:px-8 space-y-6">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
-          <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
+          <Link prefetch={false} href="/" className="hover:text-[var(--color-primary)] transition-colors">ホーム</Link>
           <span>/</span>
-          <Link href="/#checker" className="hover:text-[var(--color-primary)] transition-colors">年収偏差値チェッカー</Link>
+          <Link prefetch={false} href="/#checker" className="hover:text-[var(--color-primary)] transition-colors">年収偏差値チェッカー</Link>
           <span>/</span>
           <span className="text-[var(--color-text-primary)]">{salary.toLocaleString()}万円</span>
         </nav>
@@ -151,7 +151,7 @@ export default async function CheckerResultPage({
             >
               LINEで送る
             </a>
-            <Link
+            <Link prefetch={false}
               href="/#checker"
               className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl glass text-sm font-bold text-[var(--color-primary)] hover:bg-[var(--color-primary-light)] transition-colors"
             >
@@ -203,7 +203,7 @@ export default async function CheckerResultPage({
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {nearbyCompanies.map((c) => (
-                <Link
+                <Link prefetch={false}
                   key={c.code}
                   href={`/company/${c.code}`}
                   className="flex flex-col gap-0.5 p-3 rounded-xl bg-[var(--color-surface-secondary)] hover:bg-[var(--color-primary-light)] transition-colors"
@@ -234,7 +234,7 @@ export default async function CheckerResultPage({
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
               {nextLevel.map((c) => (
-                <Link
+                <Link prefetch={false}
                   key={c.code}
                   href={`/company/${c.code}`}
                   className="flex flex-col gap-0.5 p-3 rounded-xl bg-[var(--color-surface-secondary)] hover:bg-[var(--color-primary-light)] transition-colors"
@@ -260,13 +260,13 @@ export default async function CheckerResultPage({
             <h2 className="text-lg font-bold text-[var(--color-text-primary)]">
               年収ランキング TOP5
             </h2>
-            <Link href="/ranking" className="text-sm text-[var(--color-primary)] hover:underline">
+            <Link prefetch={false} href="/ranking" className="text-sm text-[var(--color-primary)] hover:underline">
               全ランキングを見る →
             </Link>
           </div>
           <div className="space-y-2">
             {top5.map((r, i) => (
-              <Link
+              <Link prefetch={false}
                 key={r.code}
                 href={`/company/${r.code}`}
                 className="flex items-center gap-3 px-4 py-3 rounded-xl bg-[var(--color-surface-secondary)] hover:bg-[var(--color-primary-light)] transition-colors"

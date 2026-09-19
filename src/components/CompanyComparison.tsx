@@ -95,7 +95,7 @@ export function CompanyComparison({
         </h1>
         <div className="grid grid-cols-[1fr_auto_1fr] gap-4 items-center">
           {/* 企業1 */}
-          <Link href={`/company/${data1.company.secCode ?? ""}`} className="text-center group">
+          <Link prefetch={false} href={`/company/${data1.company.secCode ?? ""}`} className="text-center group">
             {data1.company.industry && (
               <p className="text-xs text-[var(--color-text-muted)] mb-1">{data1.company.industry}</p>
             )}
@@ -122,7 +122,7 @@ export function CompanyComparison({
           </div>
 
           {/* 企業2 */}
-          <Link href={`/company/${data2.company.secCode ?? ""}`} className="text-center group">
+          <Link prefetch={false} href={`/company/${data2.company.secCode ?? ""}`} className="text-center group">
             {data2.company.industry && (
               <p className="text-xs text-[var(--color-text-muted)] mb-1">{data2.company.industry}</p>
             )}
@@ -214,14 +214,14 @@ export function CompanyComparison({
 
       {/* 各企業の詳細リンク */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Link
+        <Link prefetch={false}
           href={`/company/${data1.company.secCode ?? ""}`}
           className="glass rounded-xl p-5 glass-hover block text-center"
         >
           <p className="text-sm font-bold text-[var(--color-text-primary)] mb-1">{name1}の詳細</p>
           <p className="text-xs text-[var(--color-primary)]">企業ページを見る →</p>
         </Link>
-        <Link
+        <Link prefetch={false}
           href={`/company/${data2.company.secCode ?? ""}`}
           className="glass rounded-xl p-5 glass-hover block text-center"
         >

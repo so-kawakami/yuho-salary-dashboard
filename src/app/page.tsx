@@ -133,7 +133,7 @@ export default function Home() {
               </div>
               <div className="flex sm:hidden flex-wrap gap-2 mt-3">
                 {["キーエンス", "トヨタ", "任天堂"].map((name) => (
-                  <Link
+                  <Link prefetch={false}
                     key={name}
                     href={`/search?q=${encodeURIComponent(name)}`}
                     className="text-[13.5px] px-3.5 py-[7px] rounded-full bg-white border border-[var(--color-border-input)] text-[var(--color-text-body)]"
@@ -213,7 +213,7 @@ export default function Home() {
 
             {/* 3枚カード列 */}
             <div className="grid sm:grid-cols-3 gap-4 mt-4">
-              <Link
+              <Link prefetch={false}
                 href="/ranking"
                 className="bg-white border-[1.5px] border-[var(--color-border)] rounded-2xl px-7 py-6 hover:bg-[var(--color-surface-section)] transition-colors"
               >
@@ -227,7 +227,7 @@ export default function Home() {
                   全{allCompanies.filter((c) => c.salary > 0).length.toLocaleString()}社を見る →
                 </p>
               </Link>
-              <Link
+              <Link prefetch={false}
                 href="/industries"
                 className="bg-white border-[1.5px] border-[var(--color-border)] rounded-2xl px-7 py-6 hover:bg-[var(--color-surface-section)] transition-colors"
               >
@@ -276,7 +276,7 @@ export default function Home() {
                 { href: "/ranking/executive-pay/1oku", title: "報酬1億円以上の企業一覧", sub: "1人あたり平均1億円超えの上場企業だけを厳選" },
                 { href: "/ranking/executive-pay#industry", title: "業界別 役員報酬ランキング", sub: "33業界ごとの役員報酬水準を比較" },
               ].map((item) => (
-                <Link
+                <Link prefetch={false}
                   key={item.href}
                   href={item.href}
                   className="bg-white border border-[var(--color-border)] rounded-2xl px-7 py-6 hover:bg-[var(--color-surface-section)] transition-colors"
@@ -298,7 +298,7 @@ export default function Home() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {featuredComparisons.map((c) => (
-                  <Link
+                  <Link prefetch={false}
                     key={c.codes}
                     href={`/compare/${c.codes}`}
                     className="bg-white border border-[var(--color-border)] rounded-2xl px-6 py-5 hover:bg-[var(--color-surface-section)] transition-colors block"
@@ -329,13 +329,13 @@ export default function Home() {
                   <h2 className="text-[17px] sm:text-lg font-black text-[var(--color-text)]">若手に人気の高年収企業</h2>
                   <p className="text-sm text-[var(--color-text-faint)] mt-0.5">平均年齢38歳未満 × 年収600万円以上</p>
                 </div>
-                <Link href="/ranking/young-high-income" className="text-sm font-bold text-[var(--color-primary)] hover:underline shrink-0">
+                <Link prefetch={false} href="/ranking/young-high-income" className="text-sm font-bold text-[var(--color-primary)] hover:underline shrink-0">
                   もっと見る →
                 </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {youngHighPay.map((r) => (
-                  <Link
+                  <Link prefetch={false}
                     key={r.code}
                     href={`/company/${r.code}`}
                     className="bg-white border border-[var(--color-border)] rounded-2xl px-6 py-5 hover:bg-[var(--color-surface-section)] transition-colors block"
@@ -358,13 +358,13 @@ export default function Home() {
                   <h2 className="text-[17px] sm:text-lg font-black text-[var(--color-text)]">長く働ける高年収企業</h2>
                   <p className="text-sm text-[var(--color-text-faint)] mt-0.5">平均勤続年数が長い × 年収500万円以上</p>
                 </div>
-                <Link href="/ranking/long-tenure" className="text-sm font-bold text-[var(--color-primary)] hover:underline shrink-0">
+                <Link prefetch={false} href="/ranking/long-tenure" className="text-sm font-bold text-[var(--color-primary)] hover:underline shrink-0">
                   もっと見る →
                 </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {longTenure.map((r) => (
-                  <Link
+                  <Link prefetch={false}
                     key={r.code}
                     href={`/company/${r.code}`}
                     className="bg-white border border-[var(--color-border)] rounded-2xl px-6 py-5 hover:bg-[var(--color-surface-section)] transition-colors block"
@@ -412,7 +412,7 @@ export default function Home() {
               ))}
             </div>
             <div className="mt-4 text-center">
-              <Link href="/about" className="text-sm font-bold text-[var(--color-primary)] hover:underline">
+              <Link prefetch={false} href="/about" className="text-sm font-bold text-[var(--color-primary)] hover:underline">
                 データの詳しい説明・集計方法を見る →
               </Link>
             </div>

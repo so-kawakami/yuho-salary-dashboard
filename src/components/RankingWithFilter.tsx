@@ -162,7 +162,7 @@ export function RankingWithFilter({ data }: { data: RankingRow[] }) {
                 : "#a3bedd";
           const barWidth = `${Math.max(2, (company.salary / maxSalary) * 100)}%`;
           return (
-            <Link
+            <Link prefetch={false}
               key={company.code}
               href={`/company/${company.code}`}
               className="group block border-b border-[var(--color-border-subtle)] last:border-b-0 hover:bg-[var(--color-surface-section)] transition-colors -mx-2 px-2"

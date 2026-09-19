@@ -75,7 +75,7 @@ export default async function ComparePage({
             <p className="text-[var(--color-text-muted)] mb-4">
               /compare/証券コード1-vs-証券コード2 の形式で指定してください
             </p>
-            <Link href="/search" className="text-[var(--color-primary)] hover:underline">
+            <Link prefetch={false} href="/search" className="text-[var(--color-primary)] hover:underline">
               企業を探す
             </Link>
           </div>
@@ -103,7 +103,7 @@ export default async function ComparePage({
               {!data2 && `コード ${code2} `}
               が見つかりませんでした
             </p>
-            <Link href="/search" className="text-[var(--color-primary)] hover:underline">
+            <Link prefetch={false} href="/search" className="text-[var(--color-primary)] hover:underline">
               企業を探す
             </Link>
           </div>
@@ -131,7 +131,7 @@ export default async function ComparePage({
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
         <nav className="flex items-center gap-2 text-sm text-[var(--color-text-muted)] mb-6">
-          <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">
+          <Link prefetch={false} href="/" className="hover:text-[var(--color-primary)] transition-colors">
             ホーム
           </Link>
           <span>/</span>
@@ -153,7 +153,7 @@ export default async function ComparePage({
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
               {related.map((r) => (
-                <Link
+                <Link prefetch={false}
                   key={r.codes}
                   href={`/compare/${r.codes}`}
                   className="flex items-center justify-center gap-2 px-3 py-3 rounded-xl bg-[var(--color-surface-secondary)] hover:bg-[var(--color-primary-light)] text-xs font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors text-center"

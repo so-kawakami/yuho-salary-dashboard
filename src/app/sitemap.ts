@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import companiesJson from "@/data/generated/companies.json";
-import { getAllIndustrySlugs, getPopularComparisonCodes, getExecPayIndustries } from "@/db/safe-queries";
+import { getAllIndustrySlugs, getExecPayIndustries } from "@/db/safe-queries";
 import { SALARY_BANDS } from "@/lib/salary-bands";
 
 const SITE_URL = "https://yuho-nenshu.com";
@@ -86,13 +86,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  // 人気の企業比較ページ（同業界上位企業のペア）
-  const comparePages: MetadataRoute.Sitemap = getPopularComparisonCodes().map((codes) => ({
-    url: `${SITE_URL}/compare/${codes}`,
-    lastModified: now,
-    changeFrequency: "monthly" as const,
-    priority: 0.5,
-  }));
+  // 比較ページ（/compare/）は robots.txt でクロールを断っているため sitemap には載せない。
+  // 事前生成していない組み合わせはアクセスのたびに生成され（ISR Write）、
+  // そのページ内の関連比較リンクを辿られて読み込みが連鎖的に増えるため。
+  // 人間は今までどおり比較機能を使える。
 
-  return [...staticPages, ...specialRankingPages, ...execPayPages, ...salaryBandPages, ...checkerPages, ...industryPages, ...companyPages, ...comparePages];
+  return [...staticPages, ...specialRankingPages, ...execPayPages, ...salaryBandPages, ...checkerPages, ...industryPages, ...companyPages];
 }

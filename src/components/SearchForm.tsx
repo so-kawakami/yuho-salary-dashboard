@@ -52,7 +52,7 @@ export function SearchForm({ companies }: { companies: CompanySalary[] }) {
   };
 
   const renderCard = (company: CompanySalary) => (
-    <Link
+    <Link prefetch={false}
       key={company.code}
       href={`/company/${company.code}`}
       className="glass rounded-xl p-5 glass-hover block"
@@ -166,7 +166,7 @@ export function SearchForm({ companies }: { companies: CompanySalary[] }) {
           <p className="text-sm text-[var(--color-text-muted)]">
             ヒント：正式社名の一部（例：「トヨタ」「ソニー」）や業種名（例：「銀行」）で検索してみてください
           </p>
-          <Link href="/ranking" className="inline-block text-sm text-[var(--color-primary)] hover:underline">
+          <Link prefetch={false} href="/ranking" className="inline-block text-sm text-[var(--color-primary)] hover:underline">
             年収ランキングから探す →
           </Link>
         </div>
