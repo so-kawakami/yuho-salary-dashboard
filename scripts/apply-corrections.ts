@@ -6,6 +6,7 @@
  *
  * 異常値の検出方法:
  *   - 前年比3倍超 or 1/3未満の変動をスキャン
+ *   - 役員報酬は「1人あたり金額」「売上との比較」で桁違いを検出
  *   - 同一有報内の「前年比増減率」タグ（ChangeFromPreviousFiscalYearIn
  *     AverageAnnualSalary...）と突き合わせて正しい値を確定
  *
@@ -21,13 +22,23 @@ const DB_PATH = path.join(process.cwd(), "data", "yuho.db");
 interface Correction {
   docId: string;
   company: string;
-  field: "avg_salary";
+  field: "avg_salary" | "exec_comp_total";
   wrong: number;
   correct: number;
   reason: string;
 }
 
 const CORRECTIONS: Correction[] = [
+  {
+    docId: "S100XVK0",
+    company: "株式会社ガーラ",
+    field: "exec_comp_total",
+    wrong: 89025505000,
+    correct: 89025505,
+    reason:
+      "千円単位で取り込み1000倍に。役員9人で890億円は売上25.9億円・純損失5.3億円と矛盾" +
+      "（前年は総額1.09億円＝1人1,210万円。修正後は989万円で連続性がある）",
+  },
   {
     docId: "S100YG4R",
     company: "株式会社加藤製作所",
