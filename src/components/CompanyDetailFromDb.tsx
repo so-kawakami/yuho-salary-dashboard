@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { track } from "@vercel/analytics";
 import { JOB_SITES, jobSiteHref, isMonetized } from "@/lib/affiliate";
+import { buildCompanyInsights } from "@/lib/company-insights";
 import { AdBanner } from "@/components/AdBanner";
 import { SalaryHistogram } from "@/components/SalaryHistogram";
 import { TrendLine } from "@/components/TrendLine";
@@ -132,6 +133,13 @@ export function CompanyDetailFromDb({
     context && context.totalRanked > 0
       ? Math.max(0.1, Math.round((context.rank / context.totalRanked) * 1000) / 10)
       : null;
+
+  const insights = buildCompanyInsights(
+    company.name,
+    salaryHistory,
+    financialsHistory ?? [],
+    context?.industryAvg != null ? context.industryAvg * 10000 : null
+  );
 
   const industryDiff =
     context?.industryAvg != null ? salaryMan - context.industryAvg : null;
@@ -442,6 +450,30 @@ export function CompanyDetailFromDb({
                   {c.industry}
                 </span>
               </Link>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── データで読む年収（有報の数値から機械的に導ける事実のみ） ── */}
+      {insights.length > 0 && (
+        <div className={`${CARD} px-6 py-6 sm:px-8 sm:py-7`}>
+          <h2 className="text-base font-black text-[var(--color-text)] mb-1">
+            データで読む{company.name}の年収
+          </h2>
+          <p className="text-[12.5px] text-[var(--color-text-faint)] mb-5">
+            有価証券報告書に記載された数値から算出しています。
+          </p>
+          <div className="space-y-5">
+            {insights.map((item) => (
+              <section key={item.heading}>
+                <h3 className="text-[14.5px] font-bold text-[var(--color-text)] mb-1.5">
+                  {item.heading}
+                </h3>
+                <p className="text-[13.5px] leading-relaxed text-[var(--color-text-body)]">
+                  {item.body}
+                </p>
+              </section>
             ))}
           </div>
         </div>
